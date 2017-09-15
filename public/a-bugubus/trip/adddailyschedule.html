@@ -1,0 +1,156 @@
+ <div class="wrapper-md">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            添加排班
+        </div>
+        <div class="panel-body">
+        <form class="form-horizontal form-validation" name="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">产品类型<span class="text-danger text-md ">*</span></label>
+                <div class="col-sm-10">
+                    <div class="radio inline">
+                        <label class="i-checks">
+                            <input type="radio" name="productType" value="0"
+                                ng-model="product.productType"
+                                ng-checked="product.productType =='0'"
+                                ng-required="true"
+                                ng-click="singleType()"
+                            >
+                            <i></i>
+                            单程
+                        </label>
+                    </div>
+                    <div class="radio inline m-l">
+                        <label class="i-checks">
+                            <input type="radio" name="productType" value="1"
+                                ng-model="product.productType" 
+                                ng-checked="product.productType=='1'"
+                                ng-required="true"
+                                ng-click="returnType()"
+                            >
+                            <i></i>
+                            往返
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="line line-dashed b-b line-lg"></div>
+        <div class="panel b-a">
+            <div class="panel-heading b-b b-light">选择排班<span class="text-danger text-md ">*</span></div>
+            <div class="wrapper b-light row">
+                <div class="table-responsive" ng-if="isShowSelectedSchedule">
+                    <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light" >
+                        <thead>
+                            <tr>
+                                <th>选择排班</th>
+                                <th>排班ID</th>
+                                <th>线路名称</th>
+                                <th>司机</th>
+                                <th>车牌号</th>
+                                <th>发车时间</th>
+                                <th>票价</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-if="goLineType||backLineType">
+                                <td>
+                                    <a ng-click="selectRouteToggle('goLine')">
+                                        <span class="label label-success">选择去程排班</span>
+                                    </a>
+                                </td>
+                                <td ng-bind="goLine.bsid"></td>
+                                <td ng-bind="goLine.linename"></td>
+                                <td ng-bind="goLine.driverid"></td>
+                                <td ng-bind="goLine.platenum"></td>
+                                <td ng-bind="goLine.departtime"></td>
+                                <td ng-bind="goLine.price"></td>
+                            </tr>
+                            <tr ng-if="backLineType">
+                                <td>
+                                    <a ng-click="selectRouteToggle('backLine')">
+                                        <span class="label label-info">选择返程排班</span>
+                                    </a>
+                                </td>
+                                <td ng-bind="backLine.bsid"></td>
+                                <td ng-bind="backLine.linename"></td>
+                                <td ng-bind="backLine.departaddr"></td>
+                                <td ng-bind="backLine.arriveaddr"></td>
+                                <td ng-bind="backLine.departtime"></td>
+                                <td ng-bind="backLine.price"></td>
+                            </tr>
+                        </tbody>
+                  </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="table-responsive" ng-if="routeEditMode"  style="overflow-x: hidden;">
+                <form class="row wrapper" id="J_search_form">
+                        <div class="col-sm-5 m-b-xs">
+                            <!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
+                        </div>
+                        <div class="col-sm-3">
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" class="input-sm form-control" name="keyword" placeholder="请输入线路名称" ng-model="search_context">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-sm btn-default" ng-click="pageRequest.getResponse()" type="button">查询</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                    <table cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light">
+                        <thead>
+                            <tr>
+                                <th>
+                                    选择
+                                </th>
+                                <th sort-name ="BSID">班次ID</th>
+                                <!-- 新增: 班次名称 -->
+                                <!-- <th>班次名称</th> -->
+                                <th sort-name ="DRIVERID">线路名称</th>
+                                <!-- <th sort-name ="RUNSTATUS">线路状态</th> -->
+                                <th sort-name ="DRIVERID">司机</th>
+                                <th sort-name ="PLATENUM">车牌号</th>
+                                <th sort-name ="DEPARTTIME">发车时间</th>
+                                <!-- <th sort-name ="BSSTATUS">排班状态</th> -->
+                                <!-- <th sort-name ="CHARGINGTYPE">单程票</th> -->
+                                <th sort-name ="PRICE">单价</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in pageResponse.buslineSchedules">
+                                <td>
+                                    <label class="i-checks m-b-none">
+                                        <input type="radio" ng-click="selectRoute(item)"><i></i>
+                                    </label>
+                                </td>
+                                <td ng-bind="item.bsid"></td>
+                                <!-- <td>这里为啥子没有排班名称</td> -->
+                                <td ng-bind="item.linename"></td>
+                                <td ng-bind="item.driverid">王A</td>
+                                <td ng-bind="item.platenum"></td>
+                                <td ng-bind="item.departtime"></td>
+                                <td ng-bind="item.price"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+        <footer class="panel-footer" ng-if="routeEditMode">
+            <div class="box-body" table-pagination style="padding: 0 20px 0 20px;"></div>
+        </footer>
+        </div>
+        <div class="wrapper b-t b-light text-center" ng-show="routeEditMode">
+            <a href class="btn btn-info" ng-click="selectRouteToggle()">收起</a>
+        </div>
+        </div>
+        <div class="form-group clear-float">
+            <div class="col-sm-4 col-sm-offset-8">
+                <button type="submit" style="float: right;margin-left: 20px;" ng-click="submit()" class="btn btn-primary " ng-disabled="missParam||submiting">保存</button>
+                <button class="btn btn-default" ng-click="close()" style="float: right;">关闭</button>   
+            </div>
+        </div>
+    </div>
+</div>

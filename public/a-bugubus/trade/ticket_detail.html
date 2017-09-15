@@ -1,0 +1,71 @@
+<div class="modal-header">
+    <h4 class="modal-title">车票详情</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-6">
+            <h5 style="margin-top:0px;">车票信息</h5>
+            <form name="form" class="form-horizontal">
+                <div class="row">
+                    <label class="col-sm-4 text-xs">班次编号</label>
+                    <div class="col-sm-8 text-dark" ng-bind="data.ticketInfo.ticketId"></div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">线路编号</label>
+                    <div class="col-sm-8" ng-bind="data.busline.lineid"></div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">始发站</label>
+                    <div class="col-sm-8" ng-bind="data.busline.departaddr"></div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">终到站</label>
+                    <div class="col-sm-8" ng-bind="data.busline.arriveaddr"></div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">去程发车</label>
+                    <div class="col-sm-8" ng-bind="data.buslineSchedule.departtime"></div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">返程发车</label>
+                    <div class="col-sm-8" ng-bind="data.buslineSchedule.backDeparttime"></div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">票价</label>
+                    <div class="col-sm-8" ng-bind="data.buslineSchedule.monthprice"></div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">车牌号</label>
+                    <div class="col-sm-8" ng-bind="data.buslineSchedule.platenum"></div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h5 style="margin-top:0px;">用户信息</h5>
+            <div class="row">
+                <label class="col-sm-4 text-xs">用户编号</label>
+                <div class="col-sm-8" ng-bind="data.user.userid"></div>
+            </div>
+            <div class="row">
+                <label class="col-sm-4 text-xs">用户昵称</label>
+                <div class="col-sm-8" ng-bind="data.user.username"></div>
+            </div>
+            <div class="row">
+                <label class="col-sm-4 text-xs">性别</label>
+                <div class="col-sm-8" ng-bind="data.user.sex==0?'男':'女'"></div>
+            </div>
+            <div class="row">
+                <label class="col-sm-4 text-xs">手机号</label>
+                <div class="col-sm-8" ng-bind="data.user.phone"></div>
+            </div>
+            <div class="row">
+                <label class="col-sm-4 text-xs">账户余额</label>
+                <div class="col-sm-8" ng-bind="data.user.balance"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary btn-sm" ng-click="ok()">关闭</button>
+</div>

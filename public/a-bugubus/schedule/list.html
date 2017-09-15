@@ -1,0 +1,79 @@
+﻿<div class="wrapper-md" ng-controller="ScheduleListController">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <ul class="nav nav-pills pull-right">
+                <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="app.schedule.add"><i class="fa fa-plus"></i>添加排班</button></li>
+            </ul>
+            排班列表
+        </div>
+        <form class="row wrapper" id="J_search_form">
+            <div class="col-sm-5 m-b-xs">
+                <!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
+            </div>
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <input type="text" class="input-sm form-control" name="keyword" placeholder="请输入线路名称" ng-model="search_context">
+                    <span class="input-group-btn">
+                        <button class="btn btn-sm btn-default" ng-click="pageRequest.getResponse()" type="button">查询</button>
+                    </span>
+                </div>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light">
+                <thead>
+                    <tr>
+                       <!--  <th>
+                            <label class="i-checks m-b-none">
+                                <input type="checkbox" ng-click="selectAll()"><i></i>
+                            </label>
+                        </th> -->
+                        <th sort-name ="BSID">班次ID</th>
+                        <!-- 新增: 班次名称 -->
+                        <!-- <th>班次名称</th> -->
+                        <th>班次名称</th>
+                        <th sort-name ="DRIVERID">线路名称</th>
+                        <!-- <th sort-name ="RUNSTATUS">线路状态</th> -->
+                        <th sort-name ="DRIVERID">司机</th>
+                        <th sort-name ="PLATENUM">车牌号</th>
+                        <th sort-name ="DEPARTTIME">发车时间</th>
+                        <!-- <th sort-name ="BSSTATUS">排班状态</th> -->
+                        <!-- <th sort-name ="CHARGINGTYPE">单程票</th> -->
+                        <th sort-name ="PRICE">单价</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in pageResponse.buslineSchedules">
+                       <!--  <td>
+                            <label class="i-checks m-b-none">
+                                <input type="checkbox" ng-model="item.selected"><i></i>
+                            </label>
+                        </td> -->
+                        <td ng-bind="item.bsid"></td>
+                        <!-- <td>这里为啥子没有排班名称</td> -->
+                        <td ng-bind="item.bsname"></td>
+                        <td ng-bind="item.linename"></td>
+                        <td ng-bind="item.driverid">王A</td>
+                        <td ng-bind="item.platenum"></td>
+                        <td ng-bind="item.departtime"></td>
+                        <td ng-bind="item.price"></td>
+                        <td>
+                            <a ui-sref="app.schedule.edit({id:item.bsid})" data-original-title="编辑">
+                                <span class="label label-primary">编辑</span>
+                            </a>
+                            <a ng-click="delete(item)" data-original-title="删除">
+                                <span class="label btn-danger">删除</span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="panel-footer">
+            <div class="box-body" table-pagination></div>
+        </footer>
+    </div>
+</div>

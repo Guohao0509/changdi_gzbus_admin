@@ -1,0 +1,62 @@
+﻿<div class="wrapper-md" ng-controller="RouteCreateListController">
+  	<div class="panel panel-default">
+    	<div class="panel-heading">
+      		<ul class="nav nav-pills pull-right">
+        		<li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="layout.route_add"><i class="fa fa-plus"></i>添加线路</button></li>
+      		</ul>
+      		线路发起
+    	</div>
+    	<form class="row wrapper" id="J_search_form">
+	 	 	<div class="col-sm-5 m-b-xs">
+	        	<!--<button class="btn m-b-xs btn-sm btn-default btn-addon"><i class="fa fa-trash-o"></i>批量删除</button>-->
+	      	</div>
+	      	<div class="col-sm-3">
+	      	</div>
+	      	<div class="col-sm-4">
+	       		<div class="input-group">
+	          		<input type="text" class="input-sm form-control" name="keyword" placeholder="报名人手机号" ng-model="keyword">
+	          		<span class="input-group-btn">
+	            		<button class="btn btn-sm btn-default" ng-click="pageRequest.getResponse()">查询</button>
+	          		</span>
+	        	</div>
+  			</div>
+    	</form>
+	    <div class="table-responsive">
+	        <table cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light">
+	        	<thead>
+	        		<tr>
+	          			<th>
+	            			<label class="i-checks m-b-none">
+	              				<input type="checkbox" ng-click="selectAll()"><i></i>
+	            			</label>
+	          			</th>
+						<th sort-name ="PHONE">联系人</th>
+						<th sort-name ="GETONADDR">出发地</th>
+						<th sort-name ="GETOFFADDR">目的地</th>
+						<th sort-name ="STARTWORK_TIME">出发</th>
+						<th sort-name ="ENDWORK_TIME">返回</th>
+						<th sort-name ="APPLY_TIME">申请日期</th>
+	        		</tr>
+	        	</thead>
+	        	<tbody>
+	   		 		<tr ng-repeat="item in pageResponse.applyBuslines">
+						<td>
+							<label class="i-checks m-b-none">
+							  	<input type="checkbox" ng-model="item.selected"><i></i>
+							</label>
+						</td>
+						<td ng-bind="item.phone"></td>
+						<td ng-bind="item.getonaddr+'('+item.getonlgt+','+item.getonlat+')'"></td>
+						<td ng-bind="item.getoffaddr+'('+item.getofflgt+','+item.getofflat+')'"></td>
+						<td ng-bind="item.startworktime"></td>
+						<td ng-bind="item.endworktime"></td>
+						<td ng-bind="item.applytime | date:'yyyy/MM/dd'"></td>
+	        		</tr>
+	        	</tbody>
+	      	</table>
+	    </div>
+	    <footer class="panel-footer">
+	      	<div class="box-body" table-pagination></div>
+	    </footer>
+  	</div>
+</div>

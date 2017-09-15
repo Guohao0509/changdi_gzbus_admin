@@ -1,0 +1,203 @@
+<div class="wrapper-md" ng-controller="charterbusEditController">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="3000" close="closeAlert($index)" >{{alert.msg}}</alert>
+    <div class="panel panel-default">
+        <div class="panel-heading" ng-show="!editMode">
+            添加包车服务信息
+        </div>
+        <!--<div class="panel-heading" ng-show="editMode">-->
+            <!--<ul class="nav nav-pills pull-right">-->
+                <!--<li style=" padding-top:4px; padding-right:15px">-->
+                    <!--<button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="app.driver.add"><i class="fa fa-plus"></i>添加司机</button></li>-->
+            <!--</ul>-->
+            <!--编辑包车信息-->
+        <!--</div>-->
+        <div class="panel-body">
+            <form class="form-horizontal form-validation" name="form">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">联系人<span class="text-danger text-md ">*</span></label>
+                    <div class="col-sm-10">
+                        <input type="text"  class="form-control" name="commName"  ng-model="charters.commName" placeholder="输入2-4位的中文昵称 " ng-required="true" disabled>
+                    </div>
+                </div>
+
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">联系方式<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="commMobile" ng-model="charters.commMobile" placeholder="用户手机号" ng-required="true" disabled>
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">出发地<span class="text-danger text-md ">*</span></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="startLocation" ng-model="charters.startLocation" placeholder="" ng-required="true" disabled>
+                    </div>
+                    <label class="col-sm-2 control-label">出发时间<span class="text-danger text-md ">*</span></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="charterStartTime" ng-model="chartertime.charterStartTime" placeholder="如:2017-4-17"
+                                   ng-required="true" disabled>
+                    </div>
+
+                </div>
+
+
+
+
+
+
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">目的地<span class="text-danger text-md ">*</span></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="endLocation" ng-model="charters.endLocation" ng-required="true" disabled>
+                    </div>
+                    <label class="col-sm-2 control-label">到达时间<span class="text-danger text-md ">*</span></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="charterEndTime" ng-model="chartertime.charterEndTime"  placeholder="如:2017-4-17" ng-required="true" disabled>
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">类型<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="charterType" ng-model="charters.charterType" value="1" ng-checked="charters.charterType=='1'||charters.charterType==undefined" ng-required="true" disabled>
+                                <i></i>
+                                单程
+                            </label>
+                        </div>
+
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="charterType" ng-model="charters.charterType" value="2" ng-checked="charters.charterType=='2'" disabled>
+                                <i></i>
+                                往返
+                            </label>
+                        </div>
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="charterType" ng-model="charters.charterType" value="3" ng-checked="charters.charterType=='3'" disabled>
+                                <i></i>
+                                包天
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">乘坐人数<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" name="charterCount"
+                               ng-model="charters.charterCount"
+                               placeholder="格式纯数字"
+                               ng-required="true" disabled>
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否需要代驾<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="needInfo" ng-model="charters.needInfo" value="true" ng-checked="charters.needInfo=='true'||charters.needInfo==undefined" ng-required="true" disabled>
+                                <i></i>
+                                是
+                            </label>
+                        </div>
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="needInfo" ng-model="charters.needInfo" value="false" ng-checked="charters.needInfo=='false'||charters.needInfo==undefined" ng-required="true" disabled>
+                                <i></i>
+                                否
+                            </label>
+                        </div>
+                        <!--<input type="" class="form-control" ng-model="charterinfo[charters.needInfo]" placeholder="如:是/否" ng-required="true">-->
+                    </div>
+                </div>
+
+
+
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">消费金额<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               ng-model="charters.totalfee"
+                               placeholder="纯数字"
+                               ng-min="0.01" ng-pattern="/^\d+(\.\d{1,2})?$/"
+                               ng-required="true"
+                               ng-disabled="charters.caseStatus=='5'||charters.caseStatus=='6'">
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">审核状态<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="caseStatus" ng-model="charters.caseStatus" value="1" ng-checked="charters.caseStatus=='1'||charters.caseStatus==undefined" ng-required="true" >
+                                <i></i>
+                                待审核
+                            </label>
+                        </div>
+
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="caseStatus" ng-model="charters.caseStatus" value="2" ng-checked="charters.caseStatus=='2'" >
+                                <i></i>
+                                审核失败
+                            </label>
+                        </div>
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="caseStatus" ng-model="charters.caseStatus" value="3" ng-checked="charters.caseStatus=='3'" >
+                                <i></i>
+                                未支付
+                            </label>
+                        </div>
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="caseStatus" ng-model="charters.caseStatus" value="4" ng-checked="charters.caseStatus=='4'" >
+                                <i></i>
+                                支付失败
+                            </label>
+                        </div>
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="caseStatus" ng-model="charters.caseStatus" value="5" ng-checked="charters.caseStatus=='5'" >
+                                <i></i>
+                                已支付
+                            </label>
+                        </div>
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="caseStatus" ng-model="charters.caseStatus" value="6" ng-checked="charters.caseStatus=='6'" >
+                                <i></i>
+                                已完成
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">备注</label>
+                    <div class="col-sm-10">
+                        <textarea  ng-model="charters.reqInfo" class="form-control" disabled></textarea>
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button type="reset" ng-show="!editMode" class="btn btn-default">清空</button>
+                        <button type="button" ng-show="editMode" ng-click="delete(charters)" class="btn btn-danger">删除</button>
+                        <button type="submit" ng-click="submit()" ng-disabled="form.$invalid||submiting" class="btn btn-primary m-l">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

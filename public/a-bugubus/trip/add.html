@@ -1,0 +1,451 @@
+<div class="wrapper-md" ng-controller="tripAddController">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="3000" close="closeAlert($index)" >{{alert.msg}}</alert>
+    <div class="panel panel-default">
+        <div class="panel-heading" ng-show="!editMode">
+            添加产品
+        </div>
+        <div class="panel-heading" ng-show="editMode">
+            编辑产品
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal form-validation" name="form">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">产品类型<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="productType" value="0"
+                                    ng-model="product.productType"
+                                    ng-checked="product.productType =='0'"
+                                    ng-required="true"
+                                    ng-click="singleType()"
+                                >
+                                <i></i>
+                                单程
+                            </label>
+                        </div>
+                        <div class="radio inline m-l">
+                            <label class="i-checks">
+                                <input type="radio" name="productType" value="1"
+                                    ng-model="product.productType" 
+                                    ng-checked="product.productType=='1'"
+                                    ng-required=true
+                                    ng-click="returnType()"
+                                >
+                                <i></i>
+                                往返
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        是否推荐
+                        <span class="text-xs">(非必选)</span>
+                    </label>
+
+                    <div class="col-sm-1">
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="checkbox" name="product" ng-model="product.isPush">
+                                <i></i>
+                                推荐
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">推荐标题<span class="text-danger text-md ">*</span></label>
+                    <div class="col-sm-10">
+                        <input type="text"  class="form-control"
+                               name="name"
+                               ng-model="product.titleName"
+                               maxlength="20"
+                               ng-required="true"
+                                >
+                    </div>
+                </div>
+            </form>
+            <div class="form-group" style="margin-left: 8%;">
+                <div class="row">
+                    <form id="myForm">
+                        <div class="form-group">
+                            <label for="file_upload" class="col-sm-1 control-label text-right" style="margin: 5px 0 0 20px;">图片选择<span class="text-danger text-md ">*</span></label>
+                            <div class="col-sm-7" style="position:relative;border: 1px solid #ddd;border-radius:3px; width:230px; padding: 0;height:30px;margin-left: 15px;">
+                                <i class="glyphicon glyphicon-folder-open" style="position: absolute;bottom: 0;right: 10px;margin-top: 5px;"></i>
+                                <input type="file" name="fulAvatar" id="file_upload"  style="position: absolute;opacity: 0;height:30px;" value="" placeholder="图片地址" onchange="angular.element(this).scope().uploadByForm()">
+                               
+                            </div>
+                        </div>
+                    </form>
+                    <div class="col-sm-2 col-sm-offset-1" ng-if="product.photoPath">
+                        <a class="thumbnail">
+                           <img ng-src="{{product.photoPath}}" class="img-responsive"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg"></div>
+            <div class="panel b-a">
+                <div class="panel-heading b-b b-light">选择线路<span class="text-danger text-md ">*</span></div>
+                    <div class="table-responsive" ng-if="isShowSelectedTable">
+                        <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light" >
+                            <thead>
+                                <tr>
+                                    <th>路线</th>
+                                    <th>线路名称</th>
+                                    <th>起点</th>
+                                    <th>终点</th>
+                                    <th>线路ID</th>
+                                    <th>距离</th>
+                                    <th>时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-if="goLineType||backLineType">
+                                    <td>
+                                        <a ng-click="selectRouteToggle('goLine')">
+                                            <span class="label label-success">选择去程线路</span>
+                                        </a>
+                                    </td>
+                                    <td ng-bind="goLine.linename"></td>
+                                    <td ng-bind="goLine.departaddr"></td>
+                                    <td ng-bind="goLine.arriveaddr"></td>
+                                    <td ng-bind="goLine.lineid"></td>
+                                    <td ng-bind="goLine.drivedistance"></td>
+                                    <td ng-bind="goLine.drivetime"></td>
+                                </tr>
+                                <tr ng-if="backLineType">
+                                    <td>
+                                        <a ng-click="selectRouteToggle('backLine')">
+                                            <span class="label label-info">选择返程线路</span>
+                                        </a>
+                                    </td>
+                                    <td ng-bind="backLine.linename"></td>
+                                    <td ng-bind="backLine.departaddr"></td>
+                                    <td ng-bind="backLine.arriveaddr"></td>
+                                    <td ng-bind="backLine.lineid"></td>
+                                    <td ng-bind="backLine.drivedistance"></td>
+                                    <td ng-bind="backLine.drivetime"></td>
+                                </tr>
+                            </tbody>
+                      </table>
+                    </div>
+                <div class="table-responsive" ng-if="routeEditMode" style="overflow-x: visible">
+                    
+                    <div class="line line-dashed b-b line-lg"></div>
+                    <form class="row wrapper form-horizontal form-validation" id="J_search_form">
+                        <div class="col-sm-5 m-b-xs">
+                                <!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" type="button" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
+                        </div>
+                        <div class="col-sm-3">
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" class="input-sm form-control" name="keyword" placeholder="线路ID/出发地/目的地" ng-model="search_context">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-sm btn-default"  ng-click="pageRequest.getResponse()" >查询</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                  	<table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light">
+                        <thead>
+                            <tr>
+    							<th>
+    								<label class="i-checks m-b-none">选择</label>
+    							</th>
+    							<th sort-name="LINENAME">线路名称</th>
+    							<th sort-name ="DEPARTADDR">起点</th>
+    							<th sort-name ="DEPARTADDR">终点</th>
+    							<th sort-name ="LINEID">线路ID</th>
+    							<!-- <th sort-name ="RUNSTATUS">状态</th> -->
+    							<th sort-name ="DRIVEDISTANCE">距离(km)</th>
+    							<th sort-name ="DRIVETIME">时间(min)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                   	 		<tr ng-repeat="item in pageResponse.buslines">
+                          		<td>
+    	                            <label class="i-checks m-b-none">
+    	                              	<input type="radio" name="selectRoute" ng-click=selectRoute(item)><i></i>
+    	                            </label>
+                          		</td>
+    							<td ng-bind="item.linename"></td>
+    							<td ng-bind="item.departaddr"></td>
+    							<td ng-bind="item.arriveaddr"></td>
+    							<td ng-bind="item.lineid"></td>
+                             	<!--<td>
+    	                            <div ng-show="item.runstatus=='1'">
+    	                              	<span class="label label-success">已开通</span>
+    	                            </div>
+    	                            <div ng-show="item.runstatus =='0'">
+    	                              	<span class="label label-danger">报名中</span>
+    	                            </div>
+                              	</td>-->
+                              	<td ng-bind="item.drivedistance"></td>
+                              	<td ng-bind="item.drivetime"></td>
+                        	</tr>
+                        </tbody>
+                  	</table>
+                </div>
+                <footer class="panel-footer" ng-show="routeEditMode">
+                  	<div class="box-body" table-pagination style="padding: 0 20px 0 20px;"></div>
+                </footer>
+                <div class="wrapper b-t b-light text-center" ng-show="routeEditMode">
+                    <a href class="btn btn-info" ng-click="selectRouteToggle()">收起</a>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             <div class="panel b-a">
+                <div class="panel-heading b-b b-light">
+                    选择排班
+                    <span class="text-danger text-md ">*</span>
+                </div>
+
+                <div class="panel-body text-xs" ng-if="!missParam">
+                    <div class="row">
+                        <div ng-class="{true: 'col-sm-6', false: 'col-sm-12'}[backLineType]" class="table-responsive" style="padding: 0;">
+                            <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed">
+                                <thead>
+                                    <tr>
+                                        <!-- <th>班次序号 -->
+                                           <!--  <a ng-click="scheduleToggle()">
+                                                <span class="label label-primary">新增</span>
+                                            </a> -->
+                                        <!-- </th> -->
+                                        <th>
+                                            <span class="label label-success" ng-if="backLineType">去程</span>
+                                            班次名称
+                                        </th>
+                                        <!-- <th>司机ID</th> -->
+                                        <th>司机</th>
+                                        <th>车牌号</th>
+                                        <!-- <th>线路名称</th> -->
+                                        <th>发车时间</th>
+                                        <!-- <th>单价</th> -->
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in goLineBs">
+                                        
+                                        <!-- <td ng-bind="item.bsid"></td> -->
+                                        <td ng-bind="item.bsname"></td>
+                                        <!-- <td  ng-bind="item.driverid"></td> -->
+                                        <td  ng-bind="item.drivername"></td>
+                                        <td  ng-bind="item.platenum"></td>
+                                        <!-- <td  ng-bind="item.linename"></td> -->
+                                        <td  ng-bind="item.departtime"></td>
+                                        <!-- <td ng-bind="item.price"></td> -->
+                                        <!-- <td>
+                                            <a ng-click="deleteSchedule(item)">
+                                              <span class="label btn-danger">删除</span>
+                                            </a>
+                                        </td> -->
+                                        <td>
+                                            <label class="label label-danger" ng-click="deleteBs($index)">移除</label>
+                                        </td>
+                                    </tr>
+                                    <tr  ng-if="!goLineBs[0]">
+                                        <td colspan="8" style="text-align: center;" class="text-danger">请绑定排班</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" style="text-align: center; border-bottom: 1px solid #EAEFF0;">
+                                            <a href class="label label-success" ng-click="bindSchedule('goLineBs')">
+                                            <i class="fa fa-plus"></i>
+                                            绑定排班</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div ng-if="backLineType" class="col-sm-6 " style="padding: 0;">
+                           <div class="table-responsive">
+                                <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <!-- <th>
+                                                <label class="i-checks m-b-none">选择</label>
+                                            </th> -->
+                                            <!-- <th>班次序号 -->
+                                               <!--  <a ng-click="scheduleToggle()">
+                                                    <span class="label label-primary">新增</span>
+                                                </a> -->
+                                            <!-- </th> -->
+                                            <th>
+                                                <span class="label label-info" ng-if="backLineType">返程</span>
+                                                班次名称
+                                            </th>
+                                            <!-- <th>司机ID</th> -->
+                                            <th>司机</th>
+                                            <th>车牌号</th>
+                                            <!-- <th>线路名称</th> -->
+                                            <th>发车时间</th>
+                                            <!-- <th>单价</th> -->
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in backLineBs">
+                                            <!-- <td>
+                                                <label class="i-checks m-b-none">
+                                                    <input type="radio" name="selectRoute" ng-click="selectSchedule(item)"><i></i>
+                                                </label>
+                                            </td> -->
+                                            <!-- <td ng-bind="item.bsid"></td> -->
+                                            <td ng-bind="item.bsname"></td>
+                                            <!-- <td  ng-bind="item.driverid"></td> -->
+                                            <td  ng-bind="item.drivername"></td>
+                                            <td  ng-bind="item.platenum"></td>
+                                            <!-- <td  ng-bind="item.linename"></td> -->
+                                            <td  ng-bind="item.departtime"></td>
+                                            <!-- <td ng-bind="item.price"></td> -->
+                                           <!--  <td>
+                                                <a ng-click="deleteSchedule(item)">
+                                                  <span class="label btn-danger">删除</span>
+                                                </a>
+                                            </td> -->
+                                            <td>
+                                                <label class="label label-danger" ng-click="deleteBs($index)">移除</label>
+                                            </td>
+                                        </tr>
+                                        <tr  ng-if="!backLineBs[0]">
+                                            <td colspan="8" style="text-align: center" class="text-danger">请绑定排班</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" style="text-align: center;border-bottom: 1px solid #EAEFF0">
+                                                <a href class="label label-info" ng-click="bindSchedule('backLineBs')"><i class="fa fa-plus"></i>绑定排班</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                           </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body text-xs" ng-if="isShowSchedules">
+                    <!--选择器-->
+                    <div class="row">
+                        <!-- <form class="row wrapper" id="J_search_form2">
+                            <div class="input-group w-md wrapper">
+                                <input type="text" class="input-sm form-control" name="keyword" placeholder="司机ID/司机姓名/司机电话/司机公司" ng-model="search_context">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-sm btn-default" ng-click="pageRequest.getResponse()" type="button">查询</button>
+                                </span>
+                            </div>
+                            <span class = "padder-l">提示：如果没有合适的司机，可以 <a ui-sref="app.driver.add" target="_blank" class="text-info">添加新的司机</a> ，或者编辑下面的司机信息，然后重新查询一下即可。</span>
+                        </form> -->
+                        <div class="table-responsive">
+                            <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t bg-light table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <label class="i-checks m-b-none">选择</label>
+                                        </th>
+                                        <th>班次序号
+                                           <!--  <a ng-click="scheduleToggle()">
+                                                <span class="label label-primary">新增</span>
+                                            </a> -->
+                                        </th>
+                                        <th>班次名称</th>
+                                        <th>司机ID</th>
+                                        <th>司机</th>
+                                        <th>车牌号</th>
+                                        <th>线路名称</th>
+                                        <th>发车时间</th>
+                                        <th>单价</th>
+                                        <!-- <th>操作</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in buslineSchedules">
+                                        <td>
+                                            <label class="i-checks m-b-none">
+                                                <input type="radio" name="selectRoute" ng-click="selectSchedule(item)"><i></i>
+                                            </label>
+                                        </td>
+                                        <td  ng-bind="item.bsid"></td>
+                                        <td  ng-bind="item.bsname"></td>
+                                        <td  ng-bind="item.driverid"></td>
+                                        <td  ng-bind="item.drivername"></td>
+                                        <td  ng-bind="item.platenum"></td>
+                                        <td  ng-bind="item.linename"></td>
+                                        <td  ng-bind="item.departtime"></td>
+                                        <td  ng-bind="item.price"></td>
+                                        <!-- <td>
+                                            <a ng-click="deleteSchedule(item)">
+                                              <span class="label btn-danger">删除</span>
+                                            </a>
+                                        </td> -->
+                                        <!-- <td>
+                                            <label class="label label-danger" ng-click="deleteBs($index)">移除</label>
+                                        </td> -->
+                                    </tr>
+                                    <tr  ng-if="!buslineSchedules[0]">
+                                        <td colspan="8" style="text-align: center">
+                                            此线路下没有排班,&nbsp;
+                                            <a ui-sref="app.schedule.add" class="text-info">点击添加排班</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="panel b-a">
+                <div class="panel-heading">
+                    用户须知
+                    <span class="text-danger text-md ">*</span>
+                </div>
+                <div class="wrapper">
+                    <div class="form-group">
+                        <div text-angular ng-model="userNotice"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group clear-float">
+                <div class="col-sm-2 col-sm-offset-10">
+                    <button style="float: right; margin-right: 20px;" type="submit" ng-click="submit()" class="btn btn-primary m-l" ng-disabled="form.$invalid||missParam||submiting||!userNotice||!(!!sendImgUrl||!!product.photoPath)">保存</button>
+                    <button style="float: right;" type="reset" ng-show="!editMode" class="btn btn-default" ng-click="reset()">清空</button>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,88 @@
+<div class="modal-header">
+    <h4 class="modal-title">充值详情</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-6">
+            <h5 style="margin-top:0px;">充值信息</h5>
+            <form name="form" class="form-horizontal">
+                <div class="row">
+                    <label class="col-sm-4 text-xs">充值编号</label>
+                    <div class="col-sm-8 text-dark" ng-bind="data.rechargeOrderInfo.pmrcorderid"></div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">订单类型</label>
+                    <!--<div class="col-sm-8" ng-bind="data.rechargeOrderInfo.pmordType">-->
+                    <div class="col-sm-8"  ng-show="data.rechargeOrderInfo.pmordType=='0'">充值余额</div>
+                    <div class="col-sm-8"  ng-show="data.rechargeOrderInfo.pmordType=='1'">购买月票</div>
+                    <div class="col-sm-8"  ng-show="data.rechargeOrderInfo.pmordType=='2'">优惠充值</div>
+                    <!--</div>-->
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">支付描述</label>
+                    <div class="col-sm-8" ng-bind="data.rechargeOrderInfo.orderDesc"></div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">支付金额</label>
+                    <div class="col-sm-8" ng-bind="data.rechargeOrderInfo.totalFee"></div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">订单创建时间</label>
+                    <!--<div class="col-sm-8" ng-bind="data.rechargeOrderInfo.createTime">-->
+                        <div class="col-sm-8">
+                            {{data.rechargeOrderInfo.createTime | date:'yyyy/MM/dd HH:mm:ss'}}
+                        </div>
+                    <!--</div>-->
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">订单支付状态</label>
+                    <!--<div class="col-sm-8" ng-bind="data.rechargeOrderInfo.orderStatus"></div>-->
+                    <div class="col-sm-8"  ng-show="data.rechargeOrderInfo.orderStatus=='0'">未支付</div>
+                    <div class="col-sm-8"  ng-show="data.rechargeOrderInfo.orderStatus=='1'">支付成功</div>
+                    <div class="col-sm-8"  ng-show="data.rechargeOrderInfo.orderStatus=='2'">支付失败</div>
+                    <div class="col-sm-8"  ng-show="data.rechargeOrderInfo.orderStatus=='3'">订单取消</div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">附加事件状态</label>
+                    <div class="col-sm-8" ng-bind="data.rechargeOrderInfo.handleStatus==0?'未完成':'已完成'"></div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">支付类型</label>
+                    <!--<div class="col-sm-8" ng-bind="data.rechargeOrderInfo.paymentType"></div>-->
+                    <div class="col-sm-8"  ng-show="data.rechargeOrderInfo.paymentType=='0'">支付宝</div>
+                    <div class="col-sm-8"  ng-show="data.rechargeOrderInfo.paymentType=='1'">微信</div>
+                    <div class="col-sm-8"  ng-show="data.rechargeOrderInfo.paymentType=='2'">银联</div>
+                    <div class="col-sm-8"  ng-show="data.rechargeOrderInfo.paymentType=='3'">其他</div>
+                </div>
+
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h5 style="margin-top:0px;">用户信息</h5>
+            <div class="row">
+                <label class="col-sm-4 text-xs">用户编号</label>
+                <div class="col-sm-8" ng-bind="data.rechargeOrderInfo.userid"></div>
+            </div>
+            <div class="row">
+                <label class="col-sm-4 text-xs">用户昵称</label>
+                <div class="col-sm-8" ng-bind="data.user.username"></div>
+            </div>
+            <div class="row">
+                <label class="col-sm-4 text-xs">性别</label>
+                <div class="col-sm-8" ng-bind="data.user.sex==0?'男':'女'"></div>
+            </div>
+            <div class="row">
+                <label class="col-sm-4 text-xs">手机号</label>
+                <div class="col-sm-8" ng-bind="data.user.phone"></div>
+            </div>
+            <div class="row">
+                <label class="col-sm-4 text-xs">账户余额</label>
+                <div class="col-sm-8" ng-bind="data.user.balance"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary btn-sm" ng-click="ok()">关闭</button>
+</div>

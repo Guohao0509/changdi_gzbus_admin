@@ -1,0 +1,117 @@
+<div class="wrapper-md" ng-controller="StatisticController">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+           关键指标
+        </div>
+        <div class="container-fluid">
+            <div class="row show-grid">
+                <div class="col-sm-3">
+                    <div class="padder-lr-10">
+                        <span class="text-xs">昨日收益(元)</span>
+                        <div class="h1 text-dark" ng-bind="statisticData.yesDayMon">-</div>
+                        <span class="text-xs">比前天 <span ng-class="{true:'text-danger',false:'text-success'}[statisticData.yesDayPro>=0]"  ng-bind="(statisticData.yesDayPro>=0?'+ ':'- ')+statisticData.yesDayPro*100+'%'">-</span></span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="padder-lr-10">
+                        <span class="text-xs">近七天收益(元)</span>
+                        <div class="h1 text-dark"ng-bind="statisticData.beWeekMon" >-</div>
+                        <span class="text-xs">比上周 <span ng-class="{true:'text-danger',false:'text-success'}[statisticData.ltWeekPro>=0]"  ng-bind="(statisticData.ltWeekPro>=0?'+ ':'- ')+statisticData.ltWeekPro*100+'%'">-</span></span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="padder-lr-10">
+                        <span class="text-xs">近30天收益(元)</span>
+                        <div class="h1 text-dark" ng-bind="statisticData.beMonthMon">-</div>
+                        <span class="text-xs">比上月 <span ng-class="{true:'text-danger',false:'text-success'}[statisticData.ltMonthPro>=0]"  ng-bind="(statisticData.ltMonthPro>=0?'+ ':'- ')+statisticData.ltMonthPro*100+'%'">-</span></span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="padder-lr-10">
+                        <span class="text-xs">总收益(元)</span>
+                        <div class="h1 text-dark" ng-bind="statisticData.totalMoney"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            收益统计
+        </div>
+        <form class="" id="J_search_form" ng-submit="queryStatitstic()">
+            <div class="row wrapper  form-horizontal ">
+                <div class="col-md-4">
+                    <div class="row padder-l">
+                        <div class="col-md-5 no-padder">
+                            <input type="text" placeholder="开始日期如2017-01-01" class="input-sm form-control" ng-click="startDateOption.open($event)" datepicker-popup="{{startDateOption.format}}" ng-model="startDate" is-open="startDateOption.opened" datepicker-options="startDateOption.dateOptions" close-text="关闭" clear-text="清空"  current-text="今天" />
+                        </div>
+                        <div class="col-md-1 no-padder text-center">
+                            <label class="control-label">-</label>
+                        </div>
+                        <div class="col-md-5 no-padder" >
+                            <input type="text" placeholder="结束日期如2017-01-01" class="input-sm form-control" ng-click="endDateOption.open($event)" datepicker-popup="{{endDateOption.format}}" ng-model="endDate" is-open="endDateOption.opened" datepicker-options="endDateOption.dateOptions" close-text="关闭" clear-text="清空"  current-text="今天" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" style="padding-left: 0;">
+                    <button class="btn btn-sm btn-primary" >搜索</button>
+                </div>
+            </div>
+        </form>
+        <div class="wrapper" style="padding-top: 0;">
+            <h5 class="" style="margin-top: 0;">趋势图</h5>
+            <div  ui-jq="plot" ui-options="
+              [
+                { data: {{lineChartYData}}, points: { show: true, radius: 6}, splines: { show: true, tension: 0.45, lineWidth: 2, fill: 0 } }
+              ],
+              {
+                colors: ['{{app.color.info}}'],
+                series: { shadowSize: 3 },
+                xaxis:{
+                  font: { color: '#666' },
+                  position: 'bottom',
+                  ticks: {{lineChartXData}}
+                },
+                yaxis:{ font: { color: '#666' } },
+                grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
+                tooltip: true,
+                tooltipOpts: { content: ' 收益 %y.2元',  defaultTheme: false, shifts: { x: 0, y: 20 } }
+              }
+            " style="height:240px" ui-refresh="{{a}}" >
+            </div>
+        </div>
+        <!--日统计表格-->
+        <div class="wrapper">
+            <h5 class="" style="margin-top: 0;padding-bottom: 10px;">详细数据</h5>
+            <div class="table-responsive table-bordered">
+                <table  cellpadding="0" cellspacing="0" border="0"
+                        class=" dataTable table table-striped b-t b-light table-condensed">
+                    <thead>
+                    <tr>
+                        <th sort-name ="countTime">日期</th>
+                        <th sort-name ="rechargeOrderMon">月票日收益</th>
+                        <th sort-name ="rechargeOrderNum">充值日收益</th>
+                        <th sort-name ="dayTotalMon">日收益</th>
+                        <th sort-name ="hisTotalNum">历史总收益</th>
+                        <th sort-name ="sumlimit">时间段总收益</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in pageResponse.rows">
+                        <td ng-bind="item.countTime| date:'yyyy/MM/dd'"></td>
+                        <td ng-bind="item.monthTicketMon"></td>
+                        <td ng-bind="item.rechargeOrderMon"></td>
+                        <td ng-bind="item.dayTotalMon"></td>
+                        <td ng-bind="item.hisTotalMon"></td>
+                        <td ng-bind="item.sumlimit"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <footer class="panel-footer">
+                <div class="box-body" table-pagination></div>
+            </footer>
+        </div>
+    </div>
+</div>

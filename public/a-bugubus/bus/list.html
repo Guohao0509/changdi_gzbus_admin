@@ -1,0 +1,101 @@
+﻿<div class="wrapper-md" ng-controller="BusListController">
+  	<div class="panel panel-default">
+    	<div class="panel-heading">
+      		<ul class="nav nav-pills pull-right">
+        		<li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="app.bus.add"><i class="fa fa-plus"></i>添加车辆</button></li>
+      		</ul>
+      		车辆列表
+    	</div>
+    	<form class="row wrapper" id="J_search_form">
+      		<div class="col-sm-5 m-b-xs">
+        		<!-- <button class="btn m-b-xs btn-sm btn-default btn-addon"  disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
+      		</div>
+      		<div class="col-sm-3">
+      		</div>
+      		<div class="col-sm-4">
+       		 	<div class="input-group">
+		          	<input type="text" class="input-sm form-control" name="keyword" placeholder="请输入车牌号/车辆ID/公司名" ng-model="search_context">
+		          	<span class="input-group-btn">
+		           	 	<button class="btn btn-sm btn-default" ng-click="pageRequest.getResponse()" type="button">查询</button>
+		          	</span>
+        		</div>
+      		</div>
+    	</form>
+	    <div class="table-responsive">
+	      	<table cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light">
+	        	<thead>
+			        <tr>
+			          	<!-- <th>
+			            	<label class="i-checks m-b-none">
+			              		<input type="checkbox" ng-click="selectAll()"><i></i>
+			            	</label>
+			          	</th> -->
+						<th sort-name ="CARID">车辆编号</th>
+						<th sort-name ="PLATE_NUM">车牌号码</th>
+						<th sort-name ="CARTYPE">车辆类型</th>
+						<th sort-name ="VIN">车架号</th>
+						<th sort-name ="IMEI">obd设备号</th>
+						<th sort-name ="COMPANY">所属公司</th>
+						<th sort-name ="MILESTANGE">续航里程</th>
+						<th>位置</th>
+						<th>obd状态</th>
+						<th>操作</th>
+			        </tr>
+		        </thead>
+	        	<tbody>
+			        <tr ng-repeat="item in pageResponse.carinfo">
+		         	 	<!-- <td>
+			            	<label class="i-checks m-b-none">
+			              	<input type="checkbox" ng-model="item.selected"><i></i>
+			            	</label>
+			          	</td> -->
+			          	<td ng-bind="item.carid"></td>
+			          	<td ng-bind="item.platenum"></td>
+			          	
+			          	<td>
+			            	<div ng-show="item.cartype=='0'">
+			              		<span class="label label-info">47座大巴</span>
+			            	</div>
+			            	<div ng-show="item.cartype=='1'">
+			              		<span class="label label-success">33座大巴</span>
+			            	</div>
+				            <div ng-show="item.cartype =='2'">
+				              	<span class="label label-warning">20座客车</span>
+				            </div>
+				            <div ng-show="item.cartype =='3'">
+				              	<span class="label label-danger">14座商务车</span>
+				            </div>
+			          	</td>
+			          	<td ng-bind="item.vin"></td>
+			          	<td ng-bind="item.imei"></td>
+			          	<td ng-bind="item.company"></td>
+			          	<td ng-bind="item.milesrange"></td>
+			          	<td>
+			            	<a ui-sref="app.bus.position({carPosition:item.currlon+'&'+item.currlat})"> 
+			              		<span class="label label-info">位置</span>
+			            	</a>
+			          	</td>
+			          	<td>
+			          		<span ng-if="item.obdstatus==1" class="label label-info">在线</span>
+			          		<span ng-if="item.obdstatus==0" class="label label-default">离线</span>
+			          		<span ng-if="item.obdstatus=='undefined'" class="label label-default">离线</span>
+			          	</td>
+			          	<td>
+			            	<a ui-sref="app.bus.edit({id:item.carid})" data-original-title="编辑">
+			            		<span class="label label-primary">编辑</span>
+			            	</a>
+			            	<a ng-click="delete(item)" data-original-title="删除">
+			            		<span class="label btn-danger">删除</span>
+			            	</a>
+			          	</td>
+			        </tr>
+	        	</tbody>
+	      	</table>
+	    </div>
+		<footer class="panel-footer">
+		  	<div class="box-body" table-pagination></div>
+		</footer>
+  	</div>
+
+</div>
+<div ng-repeat="item in items">{{item}}</div>

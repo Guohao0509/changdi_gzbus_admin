@@ -1,0 +1,72 @@
+<div class="wrapper-md" ng-controller="CouponListController">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <ul class="nav nav-pills pull-right">
+                <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="app.coupon.add"><i class="fa fa-plus"></i>发放优惠券</button></li>
+            </ul>
+            优惠券列表
+        </div>
+        <form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()">
+            <div class="col-sm-5 m-b-xs">
+                <!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
+            </div>
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <input type="text" class="input-sm form-control" name="keyword" placeholder="请输入用户名">
+                    <span class="input-group-btn">
+                        <button class="btn btn-sm btn-default">查询</button>
+                    </span>
+                </div>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed">
+                <thead>
+                    <tr>
+                        <!-- <th>
+                            <label class="i-checks m-b-none">
+                              <input type="checkbox" ng-click="selectAll()"><i></i>
+                            </label>
+                        </th> -->
+                        <th sort-name="BRCID">优惠券ID</th>
+                        <th sort-name="USERNAME">用户名</th>
+                        <th sort-name ="COMMPHONE">联系方式</th>
+                        <th sort-name="OVERDATE">优惠券截止时间</th>
+                        <th sort-name ="COUPON_MONEY">优惠金额(元)</th>
+                        <th sort-name ="BRCTYPE">券类型</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in pageResponse.coupons">
+                        <!-- <td>
+                            <label class="i-checks m-b-none">
+                              <input type="checkbox" ng-model="item.selected"><i></i>
+                            </label>
+                        </td> -->
+                        <td ng-bind="item.brcid"></td>
+                        <td ng-bind="item.username"></td>
+                        <td ng-bind="item.commPhone"></td>
+                        <td>
+                            {{item.overDate | date:'yyyy-MM-dd'}}
+                        </td>
+                        <td ng-bind="item.couponMoney"></td>
+                        <td>
+                            <span ng-if="item.brctype == 1">优惠卷</span>
+                        </td>
+                        <td>
+                            <a ng-click="deleteCoupon(item.brcid)">
+                                <span class="label label-danger">删除</span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="panel-footer">
+            <div class="box-body" table-pagination></div>
+        </footer>
+    </div>
+</div>

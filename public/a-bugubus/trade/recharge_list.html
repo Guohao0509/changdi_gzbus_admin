@@ -1,0 +1,97 @@
+<div class="wrapper-md" ng-controller="rechargeListController">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <!--<ul class="nav nav-pills pull-right">
+              <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="app.bus.add"><i class="fa fa-plus"></i>添加车票</button></li>
+            </ul>-->
+            充值列表
+        </div>
+        <form class="" id="J_recharge_form" ng-submit="pageRequest.getResponse()">
+            <div class="row wrapper form-horizontal">
+                <div class="col-sm-1">
+                    <label class="control-label f12">充值编号</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="input-sm form-control" name="pmrcorderid" placeholder="充值订单号" ng-model="pmrcorderid">
+                </div>
+                <div class="col-sm-1">
+                    <label class="control-label f12">开始日期</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="开始日期如2017-01-01" class="input-sm form-control" ng-click="rechargestartTime.open($event)" datepicker-popup="{{rechargestartTime.format}}" name="startTime" ng-model="startTime" is-open="rechargestartTime.opened" datepicker-options="rechargestartTime.dateOptions" close-text="关闭" clear-text="清空"  current-text="今天" />
+                </div>
+                <div class="col-sm-1">
+                    <label class="control-label f12">结束日期</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="结束日期如2017-01-01" class="input-sm form-control" ng-click="rechargeendTime.open($event)" datepicker-popup="{{rechargeendTime.format}}" name="endTime" ng-model="endTime" is-open="rechargeendTime.opened" datepicker-options="rechargeendTime.dateOptions" close-text="关闭" clear-text="清空"  current-text="今天" />
+                </div>
+            </div>
+            <div class="row wrapper form-horizontal" style="padding-top:0px;">
+                <div class="col-sm-1">
+                    <label class="control-label f12">用户编号</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="input-sm form-control" name="userid" placeholder="姓名/手机号/用户编号" ng-model="userName">
+                </div>
+
+            </div>
+            <div class="row wrapper form-horizontal" style="padding-top:0px;">
+                <div class="col-sm-5">
+                    <!-- <button class="btn btn-sm btn-default btn-addon"><i class="fa fa-trash-o"></i>批量删除</button> -->
+                </div>
+                <div class="col-sm-3">
+                </div>
+                <div class="col-sm-4  ">
+                    <button class="btn btn-sm btn-default pull-right m-l" ng-click="clearquery()">清除</button>
+                    <button class="btn btn-sm btn-primary pull-right">搜索</button>
+                </div>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table  cellpadding="0" cellspacing="0" border="0"
+                    class=" dataTable table table-striped b-t b-light table-condensed">
+                <thead>
+                <tr>
+                    <!-- <th>
+                        <label class="i-checks m-b-none">
+                            <input type="checkbox" ng-click="selectAll()"><i></i>
+                        </label>
+                    </th> -->
+                    <th sort-name ="pmrcorderid">充值订单编号</th>
+                    <th sort-name ="userName">支付人</th>
+                    <th sort-name ="phone">手机号</th>
+                    <th sort-name ="orderDesc">支付描述</th>
+                    <th sort-name ="createTime">创建时间</th>
+                    <th sort-name ="totalFee">支付金额</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in pageResponse.rows">
+                   <!--  <td>
+                        <label class="i-checks m-b-none">
+                            <input type="checkbox"  ng-model="item.selected"><i></i>
+                        </label>
+                    </td> -->
+                    <td ng-bind="item.pmrcorderid"></td>
+                    <td ng-bind="item.userName"></td>
+                    <td ng-bind="item.phone"></td>
+                    <td ng-bind="item.orderDesc"></td>
+                    <td>{{item.createTime | date:'yyyy/MM/dd HH:mm:ss'}}</td>
+                    <td ng-bind="item.totalFee"></td>
+                    <td>
+                        <a ng-click="openReachargeDetailModal(item.pmrcorderid)"
+                           data-original-title="编辑">
+                            <span class="label label-primary">详情</span>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="panel-footer">
+            <div class="box-body" table-pagination></div>
+        </footer>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+<div class="modal-header">
+    <h4 class="modal-title"></h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12 text-md">
+            <h5 style="margin-top:0px;" style="font-size: 16px" class="page-header">订单详细信息</h5>
+            <div class="row">
+                <label class="col-sm-4 text-md text-right">订单ID</label>
+                <div class="col-sm-8" ng-bind="detail.viewOrderid"></div>
+            </div>
+            <div class="line line-dashed b-b line-lg"></div>
+            <div class="row">
+                <label class="col-sm-4 text-md text-right">用户ID</label>
+                <div class="col-sm-8" ng-bind="detail.userid"></div>
+            </div>
+            <div class="line line-dashed b-b line-lg"></div>
+            <div class="row">
+                <label class="col-sm-4 text-md text-right">司机</label>
+                <div class="col-sm-8" ng-bind="detail.drivername"></div>
+            </div>
+            <div class="line line-dashed b-b line-lg"></div>
+            <div class="row">
+                <label class="col-sm-4 text-md text-right">班次ID</label>
+                <div class="col-sm-8" ng-bind="detail.bsid"></div>
+            </div>
+            <div class="line line-dashed b-b line-lg"></div>
+            <div class="row">
+                <label class="col-sm-4 text-md text-right">用户评分</label>
+                <div class="col-sm-8" ng-bind="detail.orderScore"></div>
+            </div>
+            <div class="line line-dashed b-b line-lg"></div>
+            <div class="row">
+                <label class="col-sm-4 text-md text-right">用户评价</label>
+                <div class="col-sm-8" ng-bind="detail.orderhie"></div>
+            </div>
+             <div class="line line-dashed b-b line-lg"></div>
+            <div class="row">
+                <label class="col-sm-4 text-md text-right">车票条形码</label>
+                <div ng-switch="detail.viewOrderStatus">
+                    <div ng-switch-when="1">
+                        <p>未付费</p>
+                    </div>
+                    <div ng-switch-when="2">
+                        <div class="col-sm-8" ng-if="detail.barcode">
+                            <canvas class="barcode-canvas" ng-model="detail.barcode" barcode style="width:250px;"></canvas>
+                        </div>
+                        <div ng-if="!detail.barcode">
+                            <p>车票已失效</p>
+                        </div>
+                    </div>
+                    <div ng-switch-when="3">
+                        <p>已使用</p>
+                    </div>
+                    <div ng-switch-when="4">
+                        <p>正在退款</p>
+                    </div>
+                    <div ng-switch-when="5">
+                        <p>已退款</p>
+                    </div>
+                    
+                </div>
+                <!-- <p class="col-sm-8 default" ng-if="!detail.barcode">车票已失效</p> -->
+                
+            </div>
+        </div>
+        <!-- <div class="col-md-6">
+            <h5 style="margin-top:0px;">资产信息</h5>
+            <form name="form" class="form-horizontal">
+                <div class="row">
+                    <label class="col-sm-4 text-xs">卡号</label>
+                    <div class="col-sm-8 text-dark" ng-bind="data.user.card"></div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">账户余额</label>
+                    <div class="col-sm-8" ng-bind="data.user.balance"></div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">消费金额</label>
+                    <div class="col-sm-8" ng-bind="data.user.talSpendind"></div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">优惠余额</label>
+                    <div class="col-sm-8" ng-bind="data.user.couponBalance"></div>
+                </div>
+            </form>
+        </div> -->
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary btn-sm" ng-click="ok()">关闭</button>
+</div>

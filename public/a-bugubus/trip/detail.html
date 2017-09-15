@@ -1,0 +1,45 @@
+<div class="modal-header">
+    <h4 class="modal-title"></h4>
+</div>
+<div class="modal-body">
+    <h5 style="margin-top:0px;">班次信息</h5>
+    <div class="table-responsive">
+        <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed">
+            <thead>
+                <tr>
+                    <th>班次序号
+                       <!--  <a ng-click="scheduleToggle()">
+                            <span class="label label-primary">新增</span>
+                        </a> -->
+                    </th>
+                    <th>班次名称</th>
+                    <th>司机ID</th>
+                    <th>司机</th>
+                    <th>车牌号</th>
+                    <th>线路名称</th>
+                    <th>发车时间</th>
+                    <!-- <th>操作</th> -->
+                </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in buslineSchedules">
+                <td ng-bind="item.bsid"></td>
+                <td ng-bind="item.bsname"></td>
+                <td  ng-bind="item.driverid"></td>
+                <td  ng-bind="item.drivername"></td>
+                <td  ng-bind="item.platenum"></td>
+                <td  ng-bind="item.linename"></td>
+                <td  ng-bind="item.departtime"></td>
+                <!-- <td>
+                    <a ng-click="deleteSchedule(item)">
+                      <span class="label btn-danger">删除</span>
+                    </a>
+                </td> -->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary btn-sm" ng-click="ok()">关闭</button>
+</div>

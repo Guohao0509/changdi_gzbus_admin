@@ -1,0 +1,69 @@
+﻿<div class="wrapper-md" ng-controller="RouteListController">
+    <div class="panel panel-default">
+		<div class="panel-heading">
+			<ul class="nav nav-pills pull-right">
+			  	<li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="layout.route_add"><i class="fa fa-plus"></i>添加线路</button></li>
+			</ul>
+			线路列表
+		</div>
+    	<form class="row wrapper" id="J_search_form">
+      		<div class="col-sm-5 m-b-xs">
+            		<!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" type="button" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
+      		</div>
+        	<div class="col-sm-3">
+        	</div>
+        	<div class="col-sm-4">
+          		<div class="input-group">
+            		<input type="text" class="input-sm form-control" name="keyword" placeholder="线路ID/出发地/目的地" ng-model="search_context">
+            		<span class="input-group-btn">
+	              		<button class="btn btn-sm btn-default"  ng-click="pageRequest.getResponse()" >查询</button>
+	            	</span>
+          		</div>
+        	</div>
+      </form>
+      <div class="table-responsive">
+        	<table cellpadding="0" cellspacing="0" border="0" class="dataTable table table-striped b-t b-light">
+          		<thead>
+          			<tr>
+            			<!-- <th>
+		              		<label class="i-checks m-b-none">
+		                		<input type="checkbox" ng-click="selectAll()"><i></i>
+		              		</label>
+            			</th> -->
+            			<th sort-name="LINENAME">线路名称</th>
+			            <th sort-name ="DEPARTADDR">起点</th>
+			            <th sort-name ="DEPARTADDR">终点</th>
+			            <th sort-name ="LINEID">线路ID</th>
+			            <th sort-name ="DRIVETIME">时间(min)</th>
+			            <th>操作</th>
+          			</tr>
+          		</thead>
+          		<tbody>
+          			<tr ng-repeat="item in pageResponse.buslines">
+            			<!-- <td>
+              				<label class="i-checks m-b-none">
+                				<input type="checkbox" ng-model="item.selected"><i></i>
+          					</label>
+            			</td> -->
+            			<td ng-bind="item.linename"></td>
+			            <td ng-bind="item.departaddr"></td>
+			            <td ng-bind="item.arriveaddr"></td>
+            			<td ng-bind="item.lineid"></td>
+            			<td ng-bind="item.drivetime"></td>
+            			<td>
+			              	<a ui-sref="layout.route_edit({id:item.lineid})" data-original-title="编辑">
+			              		<span class="label label-primary">编辑</span>
+			              	</a>	
+              				<a ng-click="delete(item)" data-original-title="删除">
+              					<span class="label btn-danger">删除</span>
+              				</a>
+            			</td>
+          			</tr>
+          		</tbody>
+        	</table>
+      	</div>
+      	<footer class="panel-footer">
+        	<div class="box-body" table-pagination></div>
+      	</footer>
+    </div>
+</div>

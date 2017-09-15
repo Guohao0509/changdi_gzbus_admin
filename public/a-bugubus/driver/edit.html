@@ -1,0 +1,162 @@
+<div class="wrapper-md" ng-controller="DriverEditController">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="3000" close="closeAlert($index)" >{{alert.msg}}</alert>
+    <div class="panel panel-default">
+        <div class="panel-heading" ng-show="!editMode">
+            添加司机
+        </div>
+        <div class="panel-heading" ng-show="editMode">
+            <ul class="nav nav-pills pull-right">
+                <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="app.driver.add"><i class="fa fa-plus"></i>添加司机</button></li>
+            </ul>
+            编辑司机
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal form-validation" name="form">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">姓名<span class="text-danger text-md ">*</span></label>
+                    <div class="col-sm-10">
+                        <input type="text"  class="form-control"
+                               name="name"
+                               ng-model="driver.drivername"
+                               ng-pattern="/^[\u4e00-\u9fa5 ]{2,30}$/"
+                               placeholder="中文，不超过20个汉字"
+                               maxlength="20"
+                               ng-required="true"
+                                >
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">性别<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="sex" ng-model="driver.sex" value="男" ng-checked="driver.sex=='男'||driver.sex==undefined">
+                                <i></i>
+                                男
+                            </label>
+                        </div>
+                        <div class="radio inline m-l">
+                            <label class="i-checks">
+                                <input type="radio" name="sex" ng-model="driver.sex" value="女" ng-checked="driver.sex=='女'">
+                                <i></i>
+                                女
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">驾照照片</label>
+                    <div class="col-sm-10">
+                        <input ui-jq="filestyle" type="file" data-icon="false" data-classButton="btn btn-default" data-classInput="form-control inline v-middle input-s">
+                    </div>
+                </div> -->
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group" ng-show="false">
+                    <label class="col-sm-2 control-label">出生年月<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <div class="input-group w-md">
+                            <input type="text" class="form-control"
+                                   name="birthdayTest"
+                                   datepicker-popup
+                                   ng-model="dt" is-open="opened"
+                                   current-text="今天"
+                                   clear-text="清除"
+                                   close-text="关闭"
+                                    />
+                              <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                              </span>
+                        </div>
+                        <div class="">
+                            <input type="hidden" name="birthday" ng-model="driver.birthday" ng-pattern="/^(\d{4})-(\d{2})-(\d{2})$/">
+                            <span ng-show="!form.birthdayTest.$pristine">请输入如 2001-01-01 格式的日期&nbsp;&nbsp;&nbsp;当前值:{{driver.birthday}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">登录密码<span class="text-danger text-md" ng-show="!editMode">*</span></label></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               ng-model="driver.loginpwd"
+                               ng-pattern="/^[0-9a-zA-Z]{6,18}$/"
+                               placeholder="字母和数字的组合，添加必填，修改时为空表示密码不修改，长度为6-18位"
+                               ng-required="!editMode">
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">驾龄<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control"
+                               ng-model="driver.driveage"
+                               placeholder="纯数字"
+                               ng-pattern="/^[0-9]{1,2}$/"
+                               ng-required="true">
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">驾驶证号<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               ng-model="driver.licenceno"
+                               placeholder="纯数字"
+                               ng-pattern="/^[0-9A-Z]{1,19}$/"
+                               ng-required="true">
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">所在城市<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               ng-model="driver.city"
+                               ng-pattern="/^[\u4e00-\u9fa5 ]{1,30}$/"
+                               ng-required="true">
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">所属公司<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               ng-model="driver.company"
+                               ng-pattern="/^[\u4e00-\u9fa5 ]{2,30}$/"
+                               placeholder="中文，不超过30个汉字"
+                               maxlength="30"
+                               ng-required="true">
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">手机<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               ng-model="driver.phone"
+                               ng-pattern="/^1[34578]\d{9}$/"
+                               placeholder="格式如 13412345678"
+                               maxlength="11"
+                               ng-required="true">
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">备注</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button type="reset" ng-show="!editMode" class="btn btn-default">清空</button>
+                        <button type="button" ng-show="editMode" class="btn btn-danger" ng-click="delete(driver)">删除</button>
+                        <button type="submit" ng-click="submit()" ng-disabled="form.$invalid" class="btn btn-primary m-l">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="panel panel-default text-sm">
+    <div class="panel-heading text-center">
+        <span class="prev-month" ng-click="toPrevMonth()"><i class="glyphicon glyphicon-chevron-left"></i></span>
+        <span class="calendar-title">{{titleStr}}</span>
+        <span class="next-month" ng-click="toNextMonth()"><i class="glyphicon glyphicon-chevron-right"></i></span>
+    </div>
+    <div class="panel-body">
+        <table id="calendarTable" class="calendar-table">
+            <thead>
+                <tr>
+                    <th>日</th>
+                    <th>一</th>
+                    <th>二</th>
+                    <th>三</th>
+                    <th>四</th>
+                    <th>五</th>
+                    <th>六</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="tr in dateArr">
+                    <td ng-repeat="date in tr" ng-click="click(date)"
+                        class="{{date.className}} {{date.classNameChanged}} {{date.currentMonthClass}}">{{date.date | date:'d'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

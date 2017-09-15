@@ -1,0 +1,76 @@
+<div class="wrapper-md" ng-controller="sourceListController">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <ul class="nav nav-pills pull-right">
+                        <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="app.source.add"><i class="fa fa-plus"></i>添加票据来源</button></li>
+                    </ul>
+                    票据来源列表
+                </div>
+                <form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()">
+                    <div class="col-sm-5 m-b-xs">
+                       <!--  <button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
+                    </div>
+                    <div class="col-sm-3">
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="input-group">
+                            <!-- <input type="text" class="input-sm form-control" name="keyword" placeholder="输入订单相关信息"> -->
+                            <span class="input-group-btn">
+                                <!-- <button class="btn btn-sm btn-default">查询</button> -->
+                            </span>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed">
+                        <thead>
+                            <tr>
+                                <!-- <th>
+                                    <label class="i-checks m-b-none">
+                                        <input type="checkbox" ng-click="selectAll()"><i></i>
+                                    </label>
+                                </th> -->
+                                <th sort-name ="TICKET_SOURCE_ID">来源ID</th>
+                                <th sort-name ="TICKETSOURCE">来源</th>
+                                <th sort-name = "NEED_SOURCE_ID">是否需要来源ID</th>
+                                <th sort-name = "SYS_USER_ID">门店账号</th>
+                                <th sort-name = "SOURCE_PHONE">客服电话</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in pageResponse.sources">
+                                <!-- <td>
+                                    <label class="i-checks m-b-none">
+                                        <input type="checkbox"  ng-model="item.selected"><i></i>
+                                    </label>
+                                </td> -->
+                                <td ng-bind="item.ticketSourceId"></td>
+                                <td ng-bind="item.ticketSource"></td>
+                                <td>
+                                    <span ng-if="item.needSourceId=='1'">是</span>
+                                    <span ng-if="item.needSourceId=='0'">否</span>
+                                </td>
+                                <td ng-bind="item.userName"></td>
+                                <td ng-bind="item.sourcePhone"></td>
+                                 <td>
+                                    <a ui-sref="app.source.edit({id:item.ticketSourceId})">
+                                        <span class="label label-primary">编辑</span>
+                                    </a>
+                                    <a ng-click="delete(item.ticketSourceId, item.sysUserId)" data-original-title="删除">
+                                        <span class="label btn-danger">删除</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <footer class="panel-footer">
+                    <div class="box-body" table-pagination></div>
+                </footer>
+            </div>
+        </div>
+   </div>
+</div>

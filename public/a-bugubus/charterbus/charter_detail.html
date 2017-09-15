@@ -1,0 +1,69 @@
+<div class="modal-header">
+    <h4 class="modal-title"></h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-6">
+            <h5 style="margin-top:0px;">用户信息</h5>
+            <div class="row">
+                <label class="col-sm-4 text-xs">用户昵称</label>
+                <div class="col-sm-8" ng-bind="data.commName"></div>
+            </div>
+            <div class="row">
+                <label class="col-sm-4 text-xs">联系方式</label>
+                <div class="col-sm-8" ng-bind="data.commMobile"></div>
+            </div>
+            <div class="row">
+                <label class="col-sm-4 text-xs">出发地点</label>
+                <div class="col-sm-8" ng-bind="data.startLocation"></div>
+            </div>
+            <div class="row">
+                <label class="col-sm-4 text-xs">目的地</label>
+                <div class="col-sm-8" ng-bind="data.endLocation"></div>
+            </div>
+            <div class="row">
+            <label class="col-sm-4 text-xs">出发时间</label>
+            <div class="col-sm-8">{{data.charterStartTime| date:'yyyy-MM-dd HH:mm'}}</div>
+            </div>
+            <div class="row">
+            <label class="col-sm-4 text-xs">结束时间</label>
+            <div class="col-sm-8">{{data.charterEndTime| date:'yyyy-MM-dd HH:mm'}}</div>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <h5 style="margin-top:0px;"></h5>
+            <form name="form" class="form-horizontal">
+                <div class="row">
+                    <label class="col-sm-4 text-xs">消费金额</label>
+                    <div class="col-sm-8 text-dark" ng-bind="data.totalfee"></div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">是否代驾</label>
+                    <div class="col-sm-8" >
+                        <span ng-bind="userdetailneedinfo[data.needInfo]"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-4 text-xs">包车类型</label>
+                    <div class="col-sm-8">
+                        <span ng-show="data.charterType==1">单程</span>
+                        <span ng-show="data.charterType==2">往返</span>
+                        <span ng-show="data.charterType==3">包天</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 text-xs">乘坐人数</label>
+                    <div class="col-sm-8" ng-bind="data.charterCount"></div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary btn-sm" ng-click="ok()">关闭</button>
+</div>

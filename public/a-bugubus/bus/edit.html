@@ -1,0 +1,140 @@
+<div class="wrapper-md" ng-controller="BusEditController">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="3000" close="closeAlert($index)" >{{alert.msg}}</alert>
+    <div class="panel panel-default">
+        <div class="panel-heading" ng-show="!editMode">
+            添加车辆
+        </div>
+        <div class="panel-heading" ng-show="editMode">
+            <ul class="nav nav-pills pull-right">
+                <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="app.driver.add"><i class="fa fa-plus"></i>添加司机</button></li>
+            </ul>
+            编辑车辆
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal form-validation" name="form">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">车牌号<span class="text-danger text-md ">*</span></label>
+                    <div class="col-sm-10">
+                        <input type="text"  class="form-control"
+                               name="name"
+                               ng-model="bus.platenum"
+                               placeholder="车牌号 如 鄂A88888"
+                               ng-pattern="/^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$/"
+                               maxlength="20"
+                               ng-required="true"
+                                >
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">类型<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="type" ng-model="bus.cartype" value="0" ng-checked="bus.cartype=='0'||bus.cartype==undefined" ng-required="true" >
+                                <i></i>
+                                47座客车
+                            </label>
+                        </div>
+
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="type" ng-model="bus.cartype" value="1" ng-checked="bus.cartype=='1'" >
+                                <i></i>
+                                33座大巴
+                            </label>
+                        </div>
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="type" ng-model="bus.cartype" value="2" ng-checked="bus.cartype=='2'" >
+                                <i></i>
+                                20座客车
+                            </label>
+                        </div>
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="radio" name="type" ng-model="bus.cartype" value="3" ng-checked="bus.cartype=='3'" >
+                                <i></i>
+                                14座商务车
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">车架号<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               ng-model="bus.vin"
+                               placeholder="汽车的发动机号"
+                               ng-pattern="/^[0-9a-zA-Z]{1,30}$/"
+                               maxlength="30"
+                               ng-required="true">
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">obd设备号<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               ng-model="bus.imei"
+                               placeholder="obd设备号"
+                               ng-pattern="/^[0-9a-zA-Z]{1,25}$/"
+                               maxlength="25"
+                               ng-required="true">
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">所属公司<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               ng-model="bus.company"
+                               ng-pattern="/^[\u4e00-\u9fa5]{2,30}$/"
+                               placeholder="中文，不超过30个汉字"
+                               maxlength="30"
+                               ng-required="true">
+                    </div>
+                </div>
+                <!-- <div class="line line-dashed b-b line-lg pull-in"></div> -->
+                <!-- <div class="form-group">
+                    <label class="col-sm-2 control-label">座位数<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control"
+                               ng-model="bus.seatnum"
+                               placeholder="格式纯数字"
+                               maxlength="11"
+                               ng-required="true">
+                    </div>
+                </div> -->
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">续航里程<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control"
+                               ng-model="bus.milesrange"
+                               placeholder="格式纯数字"
+                               maxlength="4"
+                               ng-min="1"
+                               ng-required="true">
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">备注</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="bus.remark" class="form-control">
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button type="reset" ng-show="!editMode" class="btn btn-default">清空</button>
+                        <button type="button" ng-show="editMode" ng-click="delete(bus)" class="btn btn-danger">删除</button>
+                        <button type="submit" ng-click="submit()" ng-disabled="form.$invalid||submiting" class="btn btn-primary m-l">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

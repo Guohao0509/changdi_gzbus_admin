@@ -1,0 +1,29 @@
+<div class="row form-inline" style="padding: 3px 15px 0px 15px">
+    <div class="form-group">
+        <div  style="float: left; line-height: 34px;padding-right: 10px;"> 每页</div>
+        <ui-select style="float: left;min-width:35px;" ng-model="pageRequest.pageSize" ng-change="pageRequest.getResponse()"  theme='bootstrap'>
+            <ui-select-match>{{$select.selected.text}}</ui-select-match>
+            <ui-select-choices repeat="item.value as item  in (pageSizeList | filter: $select.search)">
+                <div ng-bind="item.text"></div>
+            </ui-select-choices>
+        </ui-select>
+        <div style="float: left; line-height: 35px;padding:0px 10px;">  条记录 共<span ng-bind="pageResponse.totalnum"></span>条</div>
+    </div>
+    <div class="form-group pull-right" style="padding-top:2px;">
+        <pagination
+                class="pagination-sm"
+                boundary-links="true"
+                first-text="首页"
+                last-text="末页"
+                previous-text="上一页"
+                next-text="下一页"
+                total-items="pageResponse.totalnum"
+                ng-model="pageRequest.pageNum"
+                max-size="5"
+                ng-change="pageRequest.getResponse()"
+                num-pages="pageResponse.pages"
+                items-per-page="pageRequest.pageSize"
+                boundary-link-numbers="true">
+        </pagination>
+    </div>
+</div>

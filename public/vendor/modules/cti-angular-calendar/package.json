@@ -1,0 +1,83 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cti-angular-calendar",
+        "scope": null,
+        "escapedName": "cti-angular-calendar",
+        "name": "cti-angular-calendar",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\Users\\27748\\Desktop\\bus-admin"
+    ]
+  ],
+  "_cnpm_publish_time": 1437394852597,
+  "_from": "cti-angular-calendar@latest",
+  "_hasShrinkwrap": false,
+  "_id": "cti-angular-calendar@1.0.2",
+  "_inCache": true,
+  "_location": "/cti-angular-calendar",
+  "_nodeVersion": "0.12.0",
+  "_npmUser": {
+    "name": "ugolek",
+    "email": "mr.ugole4ek@mail.ru"
+  },
+  "_npmVersion": "2.5.1",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cti-angular-calendar",
+    "scope": null,
+    "escapedName": "cti-angular-calendar",
+    "name": "cti-angular-calendar",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npm.taobao.org/cti-angular-calendar/download/cti-angular-calendar-1.0.2.tgz",
+  "_shasum": "6c8530d5f8056d50c816900364907f3bd5715279",
+  "_shrinkwrap": null,
+  "_spec": "cti-angular-calendar",
+  "_where": "C:\\Users\\27748\\Desktop\\bus-admin",
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/ugolek/AngularJS-ResponsiveCalendar/issues"
+  },
+  "dependencies": {},
+  "description": "A pure AngularJS responsive calendar directive",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "6c8530d5f8056d50c816900364907f3bd5715279",
+    "size": 12211,
+    "noattachment": false,
+    "tarball": "http://registry.npm.taobao.org/cti-angular-calendar/download/cti-angular-calendar-1.0.2.tgz"
+  },
+  "gitHead": "1c99ab6cb7c441f9ba1d40c01d127f527d37f73a",
+  "homepage": "https://github.com/ugolek/AngularJS-ResponsiveCalendar",
+  "license": "ISC",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "ugolek",
+      "email": "mr.ugole4ek@mail.ru"
+    }
+  ],
+  "name": "cti-angular-calendar",
+  "optionalDependencies": {},
+  "publish_time": 1437394852597,
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ugolek/AngularJS-ResponsiveCalendar.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.2"
+}

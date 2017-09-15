@@ -1,0 +1,74 @@
+<div class="wrapper-md" ng-controller="addTicketSourceController">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			添加来源
+		</div>
+		<div class="panel-body">
+			<form class="form-horizontal form-validation" name="form">
+				<div class="form-group">
+					<label class="col-sm-2 control-label">来源<span class="text-danger text-md ">*</span></label></label>
+					<div class="col-sm-10">
+						<input type="text"  class="form-control"
+							   name="offline"
+							   ng-model="source.ticketSource"
+							   ng-required="true"
+							   maxlength="30" 
+							   placeholder="请输入来源"
+							   >
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">
+						是否需要来源ID
+					</label>
+
+					<div class="col-sm-1">
+						<div class="radio inline">
+							<label class="i-checks">
+								<input type="checkbox" name="product" ng-model="source.needSourceId">
+								<i></i>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">门店账号<span class="text-danger text-md">*</span></label></label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							   ng-model="source.userName"
+							   ng-pattern="/^[0-9a-zA-z]{6,18}$/"
+							   placeholder="6-18位字母和数字的组合"
+							   ng-required="true">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">登录密码<span class="text-danger text-md">*</span></label></label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							   ng-model="sourcePwd.passWord"
+							   ng-pattern="/^[0-9a-zA-z]{6,18}$/"
+							   placeholder="6-18位字母和数字的组合,修改时为空表示不修改"
+							   ng-required = "!editMode"
+							   ">
+					</div>
+				</div>
+				<div class="form-group">
+				  <label class="col-sm-2 control-label">客服电话<span class="text-danger text-md">*</span></label></label>
+					  <div class="col-sm-10">
+						  <input type="text" class="form-control"
+								 ng-model="source.sourcePhone"
+								 ng-pattern="/^[0-9\&#45;]{1,18}$/"
+								 placeholder='请输入客服电话(数字和 "-" 的组合)'
+								 ng-required="true">
+					  </div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2" style="float: right;margin-right: 15px;">
+						<button type="reset" class="btn btn-default">清空</button>
+						<button type="submit" ng-click="submit()" ng-disabled="form.$invalid" class="btn btn-primary m-l">提交</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

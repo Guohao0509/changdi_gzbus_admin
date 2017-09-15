@@ -1,0 +1,73 @@
+<div class="wrapper-md" ng-controller="userListController">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            用户列表
+        </div>
+        <form name="userform" class="" id="J_reg_form" ng-submit="pageRequest.getResponse()">
+            <div class="row wrapper form-horizontal">
+                <div class="col-sm-1">
+                    <label class="control-label f12">用户编号</label>
+                </div>
+                <div class="col-sm-3" style="margin-left: -30px;">
+                    <input type="text" class="input-sm form-control" name="userid" placeholder="姓名/手机号/用户编号" ng-model="userid">
+                </div>
+                <div class="col-sm-1">
+                    <label class="control-label f12">注册时间</label>
+                </div>
+                <div class="col-sm-3" style="margin-left: -30px;">
+                    <input type="text" placeholder="注册时间如2017-01-01" class="input-sm form-control" ng-click="useregtime.open($event)" datepicker-popup="{{useregtime.format}}" name="regDate" ng-model="regDate" is-open="useregtime.opened" datepicker-options="useregtime.dateOptions" close-text="关闭" clear-text="清空"  current-text="今天" />
+                </div>
+                <div class="col-sm-4" style="margin-left: 30px;">
+                    <button class="btn btn-sm btn-default pull-right m-l" ng-click="restData()" id="restData">清除</button>
+                    <button class="btn btn-sm btn-primary pull-right">搜索</button>
+                </div>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed">
+                <thead>
+	                <tr>
+	                    <!-- <th>
+	                        <label class="i-checks m-b-none">
+	                            <input type="checkbox" ng-click="selectAll()"><i></i>
+	                        </label>
+	                    </th> -->
+	                    <th sort-name ="userid">用户ID</th>
+	                    <th sort-name ="name">用户名</th>
+	                    <th sort-name ="phone">联系方式</th>
+	                    <th sort-name ="sex">性别</th>
+	                    <!-- <th sort-name ="userStatus">状态</th>
+	                    <th sort-name ="balance">账户余额</th> -->
+	                    <th sort-name ="regDate">注册时间</th>
+	                    <th>操作</th>
+	                </tr>
+                </thead>
+                <tbody>
+	                <tr ng-repeat="item in pageResponse.rows">
+	                    <!-- <td>
+	                        <label class="i-checks m-b-none">
+	                            <input type="checkbox"  ng-model="item.selected"><i></i>
+	                        </label>
+	                    </td> -->
+	                    <td ng-bind="item.userid"></td>
+	                    <td ng-bind="item.name"></td>
+	                    <td ng-bind="item.phone"></td>
+	                    <td>
+	                        <span ng-show="item.sex=='0'" >男</span>
+	                        <span ng-show="item.sex=='1'">女</span>
+	                    </td>
+	                    <td>{{item.regDate | date:'yyyy/MM/dd HH:mm:ss'}}</td>
+	                    <td>
+	                        <a ng-click="openUserDetailModal(item.userid)" data-original-title="编辑">
+	                            <span class="label label-primary">详情</span>
+	                        </a>
+	                    </td>
+	                </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="panel-footer">
+            <div class="box-body" table-pagination></div>
+        </footer>
+    </div>
+</div>
