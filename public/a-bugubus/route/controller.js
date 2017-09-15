@@ -302,6 +302,12 @@ app.controller('RouteEditController',function($compile,$rootScope,$scope,$http,$
     }
     $scope.submit = function(saveMode){
         var len = $scope.buslineStations.length;
+        for(var i = 1; i < $scope.buslineStations.length; i++){
+            if($scope.buslineStations[i].drivingTime == 0){
+                layer.msg('用时不能为0分钟');
+                return
+            }
+        }
         if(len>1){
             var stations = [];
             for(var i=0;i<len;i++){
