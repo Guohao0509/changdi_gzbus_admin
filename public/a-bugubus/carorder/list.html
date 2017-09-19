@@ -143,10 +143,10 @@
 							<a ng-click="openDetailModel(item)">
 							  	<span class="label btn-info">详情</span>
 							</a>
-							<a ng-if="item.viewOrderStatus == 2" ng-click="applyRefund(item)">
+							<a ng-if="item.viewOrderStatus == 2 || (item.viewOrderStatus == 4 && item.refundTime)" ng-click="applyRefund(item)">
 							  	<span class="label btn-danger">退款</span>
 							</a>
-							<a ng-if="item.viewOrderStatus != 2" style="cursor: default;">
+							<a ng-if="item.viewOrderStatus != 2 && !(item.viewOrderStatus == 4 && item.refundTime)" style="cursor: default;">
 							  	<span class="label label-default">退款</span>
 							</a>
 						</td>
