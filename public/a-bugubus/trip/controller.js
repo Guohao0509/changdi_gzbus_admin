@@ -20,14 +20,14 @@ app.controller('TripListController',['$scope', '$modal','$state','$http','$myHtt
         });
     }
     //打开产品详情，查看排班
-	$scope.openDetailModal = function(lineid){
+	$scope.openDetailModal = function(productid, productType){
         var TripModel = $modal.open({
             templateUrl: 'a-bugubus/trip/detail.html',
             controller: 'tripDetailModalController',
-            size: 'lg',
+            size: productType==0?'lg':'llg',
             resolve: {
-                lineid: function () {
-                    return lineid;
+                productid: function () {
+                    return productid;
                 }
             }
         });
@@ -179,7 +179,6 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
     //保存被选择的线路
     $scope.selectRoute = function(item) {
         //被选择的线路
-        
         if(selectLineType == 'goLine') {
             if($scope.goLine&&$scope.goLine.lineid == item.lineid){
                 $scope.routeEditMode = false;
@@ -416,12 +415,36 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
         }
     }
 }])
-app.controller('tripDetailModalController', ['$scope', '$modalInstance', 'lineid','$myHttpService',function($scope, $TripModel , lineid,$myHttpService) {
+app.controller('tripDetailModalController', ['$scope', '$modalInstance', 'productid','$myHttpService',function($scope, $TripModel , productid,$myHttpService) {
     $scope.ok = function () {
         $TripModel.close();
     };
-    $myHttpService.post("api/product/queryBuslineScheduleByLineid",{lineid: lineid},function(data){
-        $scope.buslineSchedules = data.buslineSchedules;
+    $scope.goLineBs = [];
+    $scope.backLineBs = [];
+    $myHttpService.post('api/product/queryProduct',{productid: productid},function(data){
+        console.log(data);
+        if(data.productinfo.productType == 0) {
+            $scope.backLineType = true;
+            $scope.backLineType = false;
+        }else if(data.productinfo.productType == 1) {
+           $scope.goLineType = true;
+           $scope.backLineType = true;
+        }
+        //产品相关信息
+        if(data.productinfo.productType == 0){
+            angular.forEach(data.productinfo.proSchedules, function(element, index) {
+                $scope.goLineBs.push(element.busSchedule);
+                // statements
+            });
+        }else if(data.productinfo.productType == 1){
+            angular.forEach(data.productinfo.proSchedules, function(element, index) {
+                $scope.goLineBs.push(element.busSchedule);
+                $scope.backLineBs.push(element.busBackSchedule);
+                // statements
+            });
+        }
+    },function(){
+         $scope.submiting = false;
     });
 }]);
 app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpService','$stateParams','$state', function($scope,$modal,$http,$myHttpService,$stateParams,$state) {
@@ -519,11 +542,16 @@ app.controller('addDailScheduleController', ['$scope', '$modalInstance', 'depart
     //加载线路表
     $scope.loadTableService = function() {
         var options = {
-                searchFormId:"J_search_form",
-                listUrl:"api/buslineSchedule/queryBuslineScheduleByKeyword.htm"
+            searchFormId:"J_search_form",
+            listUrl:"api/buslineSchedule/queryBuslineScheduleByKeyword.htm",
+            callback: function(scope,data){
+                console.log(data);
+            }
         };
-        $tableListService.init($scope, options);
-        $tableListService.get();
+        setTimeout(function(){
+            $tableListService.init($scope, options);
+            $tableListService.get();
+        },0)
     }
     //切换是否显示线路表
     $scope.selectRouteToggle = function(lineType){

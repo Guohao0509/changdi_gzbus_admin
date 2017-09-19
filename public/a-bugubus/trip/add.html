@@ -211,12 +211,11 @@
 
 
 
-             <div class="panel b-a">
+            <div class="panel b-a">
                 <div class="panel-heading b-b b-light">
                     选择排班
                     <span class="text-danger text-md ">*</span>
                 </div>
-
                 <div class="panel-body text-xs" ng-if="!missParam">
                     <div class="row">
                         <div ng-class="{true: 'col-sm-6', false: 'col-sm-12'}[backLineType]" class="table-responsive" style="padding: 0;">
@@ -266,7 +265,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="8" style="text-align: center; border-bottom: 1px solid #EAEFF0;">
-                                            <a href class="label label-success" ng-click="bindSchedule('goLineBs')">
+                                            <a href class="label label-success text-xs" ng-click="bindSchedule('goLineBs')">
                                             <i class="fa fa-plus"></i>
                                             绑定排班</a>
                                         </td>
@@ -305,11 +304,11 @@
                                         <tr ng-repeat="item in backLineBs">
                                             <!-- <td>
                                                 <label class="i-checks m-b-none">
-                                                    <input type="radio" name="selectRoute" ng-click="selectSchedule(item)"><i></i>
+                                                    <input type="radio" name="" ng-click="selectSchedule(item)"><i></i>
                                                 </label>
                                             </td> -->
                                             <!-- <td ng-bind="item.bsid"></td> -->
-                                            <td ng-bind="item.bsname"></td>
+                                            <td ng-bind="item.bsname" style="border-left: 1px solid #EAEFF0"></td>
                                             <!-- <td  ng-bind="item.driverid"></td> -->
                                             <td  ng-bind="item.drivername"></td>
                                             <td  ng-bind="item.platenum"></td>
@@ -330,7 +329,7 @@
                                         </tr>
                                         <tr>
                                             <td colspan="8" style="text-align: center;border-bottom: 1px solid #EAEFF0">
-                                                <a href class="label label-info" ng-click="bindSchedule('backLineBs')"><i class="fa fa-plus"></i>绑定排班</a>
+                                                <a href class="label label-info text-xs" ng-click="bindSchedule('backLineBs')"><i class="fa fa-plus"></i>绑定排班</a>
                                             </td>
                                         </tr>
                                     </tbody>

@@ -28,6 +28,21 @@
                 </li>
             </ul> -->
         <!-- </div> -->
+        <form class="row wrapper" id="J_search_form">
+            <div class="col-sm-5 m-b-xs">
+                <!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
+            </div>
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <input type="text" class="input-sm form-control" name="keyword" placeholder="请输入线路名称" ng-model="search_context">
+                    <span class="input-group-btn">
+                        <button class="btn btn-sm btn-default" ng-click="pageRequest.getResponse()" type="button">查询</button>
+                    </span>
+                </div>
+            </div>
+        </form>
         <div class="table-responsive" style="overflow: hidden">
             <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed text-xs">
                 <thead>
@@ -43,6 +58,7 @@
                     <th>用户须知</th>
                     <th>去程线路</th>
                     <th>返程线路</th>
+                    <th>查看排班详情</th>
                     <th>推荐图片</th>
                     <th>推荐标题</th>
                     <th sort-name = "ISPUSH">推荐行程(最多只有五个)</th>
@@ -76,6 +92,11 @@
                         <!-- <a ng-show="item.backlineid" ng-click="openDetailModal(item.backlineid)"> -->
                             <span>{{item.backlinename}}</span>
                         <!-- </a> -->
+                    </td>
+                    <td>
+                        <a ng-click="openDetailModal(item.productid,item.productType)">
+                            <span class="label label-info">查看</span>
+                        </a>
                     </td>
                     <td>
                         <a ng-click="openTripImageModal(item.photoPath)">

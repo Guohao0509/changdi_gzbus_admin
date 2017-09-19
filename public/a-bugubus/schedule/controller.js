@@ -175,9 +175,13 @@ app.controller('ScheduleListController',function($rootScope,$scope,$http,$state,
     //搜索分页选项
     var options = {
         searchFormId:"J_search_form",
-        listUrl:"api/buslineSchedule/queryBuslineScheduleByKeyword.htm"
+        listUrl:"api/buslineSchedule/queryBuslineScheduleByKeyword.htm",
+        callback: function(scope,data){
+            console.log(data);
+        }
     };
     $tableListService.init($scope, options);
+
     $tableListService.get();
     $scope.delete=function(item){
         layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){

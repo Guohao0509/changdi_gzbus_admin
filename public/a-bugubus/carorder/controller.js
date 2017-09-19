@@ -99,6 +99,15 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
                     reqParam.rechargeid = item.rechargeid;
                 }
                 $myHttpService.post('api/vieworder/applyRefund', reqParam, function(data) {
+                    console.log(data)
+                    if(data.counponUse){
+                        if(!data.couponRefund){
+                            layer.alert('退款失败');
+                        }
+                    }else{
+                        layer.alert('正在退款中，请耐心等待');
+                    }
+                    $state.go('app.carorder.list',{},{reload: true});
                 })
             }else if(item.viewOrderStatus == 2&&item.ticketSource !='线上'){
                 var reqParam = {

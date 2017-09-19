@@ -8,17 +8,17 @@
                     </ul>
                     票据来源列表
                 </div>
-                <form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()">
+                <form class="row wrapper" id="J_search_form">
                     <div class="col-sm-5 m-b-xs">
-                       <!--  <button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
+                        <!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
                     </div>
                     <div class="col-sm-3">
                     </div>
                     <div class="col-sm-4">
                         <div class="input-group">
-                            <!-- <input type="text" class="input-sm form-control" name="keyword" placeholder="输入订单相关信息"> -->
+                            <input type="text" class="input-sm form-control" name="keyword" placeholder="请输入来源名称" ng-model="search_context">
                             <span class="input-group-btn">
-                                <!-- <button class="btn btn-sm btn-default">查询</button> -->
+                                <button class="btn btn-sm btn-default" ng-click="pageRequest.getResponse()" type="button">查询</button>
                             </span>
                         </div>
                     </div>
