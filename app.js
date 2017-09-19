@@ -96,3 +96,9 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+// 设置端口号 3000
+app.set('port', process.env.PORT || '3000');
+// 监听端口 app.get() 获取设置值
+app.listen(app.get('port'), function() {
+  console.log('HaHa.... Start at the port: ' + app.get('port'));
+});
