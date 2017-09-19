@@ -71,7 +71,7 @@ app
         var basePath = "a-bugubus/";
         //使用$urlRouterProvider来指定默认路由，默认路径必须通过系统自带的路由服务组件，系统路由不支持路由嵌套
         $urlRouterProvider
-            .otherwise('/app/carorder/list');
+            .otherwise('/auth/login');
         //使用ui-router组件来进行路由
         $stateProvider
             .state('error',{
