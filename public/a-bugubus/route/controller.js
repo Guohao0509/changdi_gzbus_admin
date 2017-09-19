@@ -43,7 +43,7 @@ app.controller('RouteEditController',function($compile,$rootScope,$scope,$http,$
             linename:"",
             runstatus:0,
             linetype:0,
-            region:"贵州",
+            region:"贵阳",
             stationnum:0,
             //drivetime:'',
             //drivedistance:''
