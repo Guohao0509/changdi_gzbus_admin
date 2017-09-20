@@ -52,13 +52,13 @@
                                 </a>
                             </th>
                             <!-- <th>产品ID</th> -->
-                            <th>班次类型</th>
+                            <th style="border-right: 1px solid #EAEFF0">班次类型</th>
                             <!-- <th>司机</th>
                             <th>车辆</th> -->
                             <th>去程排班</th>
                             <th>出发时间(去程)</th>
                             <th>车辆(去程)</th>
-                            <th>司机(去程)</th>
+                            <th style="border-right: 1px solid #EAEFF0">司机(去程)</th>
                             <th>返程排班</th>
                             <th>出发时间(返程)</th>
                             <th>车辆(返程)</th>
@@ -70,14 +70,14 @@
                         <tr ng-repeat="item in dateSchedules track by $index">
                             <td>{{$index+1}}</td>
                             <!-- <td ng-bind="item.productid"></td> -->
-                            <td>
+                            <td style="border-right: 1px solid #EAEFF0">
                                 <span ng-if="item.productType == 0">单程</span>
                                 <span ng-if="item.productType == 1">往返</span>
                             </td>
                             <td ng-bind="item.gobsname"></td>
                             <td ng-bind="item.departtime"></td>
                             <td ng-bind="item.platenum"></td>
-                            <td ng-bind="item.drivername"></td>
+                            <td ng-bind="item.drivername" style="border-right: 1px solid #EAEFF0"></td>
 
                             <td ng-bind="item.backbsname"></td>
                             <td ng-bind="item.backDeparttime"></td>

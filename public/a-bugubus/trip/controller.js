@@ -325,6 +325,11 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
         	reqParam.isPush = 'false';
         }else {
             reqParam.isPush = 'true';
+            if(!$scope.product.photoPath){
+                layer.msg('请添加推荐图片');
+                $scope.submiting = false;
+                return;
+            }
         }
         if($scope.backLineType) {
             reqParam.backlineid = $scope.backLine.lineid;
@@ -347,6 +352,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
             }
         }
         reqParam.bsids = bsids;
+        console.log(reqParam)
         $myHttpService.post(tripApi,reqParam,function(data){
             //成功回调
             // var reqParam = {
@@ -518,7 +524,7 @@ app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpServ
         var AddDailScheduleModal = $modal.open({
             templateUrl: 'a-bugubus/trip/adddailyschedule.html',
             controller: 'addDailScheduleController',
-            size: 'lg',
+            size: 'llg',
             resolve: {
                 departDate: function () {
                     return $scope.departDate;
@@ -535,11 +541,18 @@ app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpServ
 app.controller('addDailScheduleController', ['$scope', '$modalInstance', 'departDate','$myHttpService','$tableListService','$state',function($scope, $AddDailScheduleModal, departDate,$myHttpService,$tableListService,$state) {
     $scope.dailySchedule = {};
     $scope.dailySchedule.departDate = departDate;
+    $scope.routeEditMode = false;
     $scope.close = function () {
         $AddDailScheduleModal.close();
     };
     var selectLineType = null;
     //加载线路表
+    var options = {
+        searchFormId:"J_search_form",
+        listUrl:"api/buslineSchedule/queryBuslineScheduleByKeyword.htm",
+    };
+    $tableListService.init($scope, options);
+    $tableListService.get();
     $scope.loadTableService = function() {
         var options = {
             searchFormId:"J_search_form",
@@ -548,10 +561,8 @@ app.controller('addDailScheduleController', ['$scope', '$modalInstance', 'depart
                 console.log(data);
             }
         };
-        setTimeout(function(){
-            $tableListService.init($scope, options);
-            $tableListService.get();
-        },0)
+        $tableListService.init($scope, options);
+        $tableListService.get();
     }
     //切换是否显示线路表
     $scope.selectRouteToggle = function(lineType){
