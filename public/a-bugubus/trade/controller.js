@@ -4,7 +4,7 @@
  * @version 1.0.0
  * @descriptions 查询用户已经购买的车票
  */
-app.controller('ticketListController',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$myHttpService,$tableListService,$modal){
+app.controller('ticketListController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$myHttpService','$tableListService','$modal',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$myHttpService,$tableListService,$modal){
     //全选
     var selected = false;
     $scope.selectAll = function(){
@@ -99,7 +99,7 @@ app.controller('ticketListController',function($rootScope,$scope,$http,$state,$l
         });
     }
 
-});
+}]);
 /**
  * 车票详情弹窗控制器
  */
@@ -107,7 +107,6 @@ app.controller('TicketDetailModalController', ['$scope', '$modalInstance', 'tick
     //发起车票ID的查询请求
     $myHttpService.post("api/ticket/queryTicketInfoByTicketId",{ticketid:ticketId},function(data){
         $scope.data = data;
-        console.log( $scope.data);
     });
     //车票详情
     $scope.ok = function () {
@@ -118,7 +117,7 @@ app.controller('TicketDetailModalController', ['$scope', '$modalInstance', 'tick
 /**
  * 查询充值信息
  */
-app.controller('rechargeListController',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$myHttpService,$tableListService,$modal){
+app.controller('rechargeListController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$myHttpService','$tableListService','$modal',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$myHttpService,$tableListService,$modal){
     /*全选*/
     var select = false;
     $scope.selectAll = function(){
@@ -207,15 +206,15 @@ app.controller('rechargeListController',function($rootScope,$scope,$http,$state,
             }
         });
     }
-});
+}]);
     //充值查询控制器
-    app.controller('ReachargeDetailModalController', ['$scope', '$modalInstance', 'pmrcorderid','$myHttpService',function($scope, $Reacharmodal, pmrcorderid,$myHttpService) {
-        //发起充值ID的查询请求
-        $myHttpService.post("api/rechargeOrder/queryRechargeOrderInfoByPmrcorderid",{pmrcorderid:pmrcorderid},function(data){
-            $scope.data = data;
-        });
-        //充值详情
-        $scope.ok = function () {
-            $Reacharmodal.close();
-        };
-    }]);
+app.controller('ReachargeDetailModalController', ['$scope', '$modalInstance', 'pmrcorderid','$myHttpService',function($scope, $Reacharmodal, pmrcorderid,$myHttpService) {
+    //发起充值ID的查询请求
+    $myHttpService.post("api/rechargeOrder/queryRechargeOrderInfoByPmrcorderid",{pmrcorderid:pmrcorderid},function(data){
+        $scope.data = data;
+    });
+    //充值详情
+    $scope.ok = function () {
+        $Reacharmodal.close();
+    };
+}]);

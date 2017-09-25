@@ -4,7 +4,7 @@
  * @version 1.0.0
  * @descriptions 针对排班管理的控制器
  */
-app.controller('BusEditController',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$myHttpService,$timeout){
+app.controller('BusEditController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$myHttpService','$timeout',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$myHttpService,$timeout){
     $scope.editMode = !!$stateParams.id;//检测有没有ID，判断当前是添加还是编辑，共用一套模板
     if($scope.editMode){//编辑模式
         $scope.bus = {
@@ -68,11 +68,11 @@ app.controller('BusEditController',function($rootScope,$scope,$http,$state,$loca
 
     }
 
-});
+}]);
 /**
  * 线路列表控制器
  */
-app.controller('BusListController',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
+app.controller('BusListController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$filter','$tableListService','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
     //全选
     var selected = false;
     $scope.selectAll = function(){
@@ -101,8 +101,8 @@ app.controller('BusListController',function($rootScope,$scope,$http,$state,$loca
     }
     $tableListService.init($scope, options);
     $tableListService.get();
-});
-app.controller('BusPositionController', function($scope, $rootScope,$stateParams) {
+}]);
+app.controller('BusPositionController', ['$scope','$rootScope','$stateParams',function($scope, $rootScope,$stateParams) {
     //根据车辆的id获取位置信息，先判断obd状态，如果obd状态为不正常，先唤醒obd，在获取位置信息
     var carPosition = $stateParams.carPosition;
     var map = new AMap.Map('J_map_canvas', {
@@ -114,4 +114,4 @@ app.controller('BusPositionController', function($scope, $rootScope,$stateParams
         position: carPosition.split('&'),
     });
     marker.setMap(map);
-})
+}])

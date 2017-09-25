@@ -81,7 +81,6 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
         tripApi += 'updateProduct';
 
         $myHttpService.post('api/product/queryProduct',{productid:$stateParams.id},function(data){
-            console.log(data);
             //成功回调
             //判断是单程还是往返类型，初始化页面
             if(data.productinfo.productType == 0) {
@@ -352,7 +351,6 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
             }
         }
         reqParam.bsids = bsids;
-        console.log(reqParam)
         $myHttpService.post(tripApi,reqParam,function(data){
             //成功回调
             // var reqParam = {
@@ -428,7 +426,6 @@ app.controller('tripDetailModalController', ['$scope', '$modalInstance', 'produc
     $scope.goLineBs = [];
     $scope.backLineBs = [];
     $myHttpService.post('api/product/queryProduct',{productid: productid},function(data){
-        console.log(data);
         if(data.productinfo.productType == 0) {
             $scope.backLineType = true;
             $scope.backLineType = false;
@@ -492,7 +489,6 @@ app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpServ
     $scope.loadScheduleTable = function(date,callback) {
         $myHttpService.post('api/product/queryProductBusScheduleDetails',{departDate:date},function(data){
             callback&&callback(data);
-            console.log(data);
         },function() {
 
         })
@@ -558,7 +554,6 @@ app.controller('addDailScheduleController', ['$scope', '$modalInstance', 'depart
             searchFormId:"J_search_form",
             listUrl:"api/buslineSchedule/queryBuslineScheduleByKeyword.htm",
             callback: function(scope,data){
-                console.log(data);
             }
         };
         $tableListService.init($scope, options);

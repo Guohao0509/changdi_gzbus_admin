@@ -7,7 +7,7 @@
 /**
  * 司机列表控制器
  */
-app.controller('DriverListController',function($rootScope,$scope,$http,$state,$localStorage,$tableListService,$myHttpService){
+app.controller('DriverListController',['$rootScope','$scope','$http','$state','$localStorage','$tableListService','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$tableListService,$myHttpService){
     //全选
     // var selected = false;
     // $scope.selectAll = function(){
@@ -32,12 +32,12 @@ app.controller('DriverListController',function($rootScope,$scope,$http,$state,$l
             layer.close(index);
         });
     }
-});
+}]);
 
 /**
  * 司机编辑控制器
  */
-app.controller('DriverEditController',function($rootScope,$scope,$myHttpService,$state,$localStorage,$stateParams,$filter,md5,$timeout){
+app.controller('DriverEditController',['$rootScope','$scope','$myHttpService','$state','$localStorage','$stateParams','$filter','md5','$timeout',function($rootScope,$scope,$myHttpService,$state,$localStorage,$stateParams,$filter,md5,$timeout){
     $scope.editMode = !!$stateParams.id;//检测有没有ID，判断当前是添加还是编辑，共用一套模板
     if($scope.editMode){//编辑模式
         $scope.driver = {
@@ -122,4 +122,4 @@ app.controller('DriverEditController',function($rootScope,$scope,$myHttpService,
         class: 'datepicker'
     };
     $scope.dt = '';
-});
+}]);

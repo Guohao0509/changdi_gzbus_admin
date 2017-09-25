@@ -3,7 +3,7 @@
  * 关于用户管理列表控制器
  */
 
-app.controller('userListController',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$myHttpService,$tableListService,$modal){
+app.controller('userListController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$myHttpService','$tableListService','$modal',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$myHttpService,$tableListService,$modal){
     //全选
     // var selected = false;
     // $scope.selectAll = function(){
@@ -73,7 +73,7 @@ app.controller('userListController',function($rootScope,$scope,$http,$state,$loc
             }
         });
     }
-});
+}]);
 /**
  * 用户详情弹窗控制器
  */

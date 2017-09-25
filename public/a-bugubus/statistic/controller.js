@@ -5,7 +5,7 @@
  * @description 统计相关的控制器，收益统计，用户统计
  */
 
-app.controller('StatisticController',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
+app.controller('StatisticController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$filter','$tableListService','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
     $scope.d = [ [1,6.5],[2,6.5],[3,7],[4,8],[5,7.5],[6,7],[7,6.8],[8,7],[9,7.2],[10,7],[11,6.8],[12,7] ];
     function getDateByDays(days,date){
         if(days==undefined){
@@ -82,16 +82,15 @@ app.controller('StatisticController',function($rootScope,$scope,$http,$state,$lo
 
     //请求列表数据和表格数据 定义插件重绘的标志；
     $scope.queryStatitstic = function(){
-        console.log({
-            startDate:$scope.startDate instanceof Date?$filter('date')($scope.startDate,'yyyy-MM-dd'):$scope.startDate,
-            endDate:$scope.endDate instanceof Date?$filter('date')($scope.endDate,'yyyy-MM-dd'):$scope.endDate
-        })
+        // console.log({
+        //     startDate:$scope.startDate instanceof Date?$filter('date')($scope.startDate,'yyyy-MM-dd'):$scope.startDate,
+        //     endDate:$scope.endDate instanceof Date?$filter('date')($scope.endDate,'yyyy-MM-dd'):$scope.endDate
+        // })
         $myHttpService.post("api/trade/getDayStatisticsDate",{
             startDate:$scope.startDate instanceof Date?$filter('date')($scope.startDate,'yyyy-MM-dd'):$scope.startDate,
             endDate:$scope.endDate instanceof Date?$filter('date')($scope.endDate,'yyyy-MM-dd'):$scope.endDate
         },function(data){
             //处理x轴,y轴数据
-            console.log(data);
             var x = [],y=[];
             for(var i=0;i< data.rows.length;i++){
                 y.push([i, data.rows[i].totalMon]);
@@ -113,4 +112,4 @@ app.controller('StatisticController',function($rootScope,$scope,$http,$state,$lo
         $scope.pageRequest.getResponse();
     }
     $scope.queryStatitstic();
-});
+}]);

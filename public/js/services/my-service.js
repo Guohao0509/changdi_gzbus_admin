@@ -109,6 +109,10 @@ angular.module('app.service',[])
                 }
                 var requestData = $("#" + options.searchFormId).serialize();
                 var offset = ($scopeLocal.pageRequest.pageNum-1)*$scopeLocal.pageRequest.pageSize;
+                if(option.size){
+                    $scopeLocal.pageRequest.pageSize = option.size;
+                    console.log($scopeLocal.pageRequest.pageSize);
+                }
                 var url = options.listUrl + "?" + requestData + "&offset=" + offset + "&pagesize=" + $scopeLocal.pageRequest.pageSize;
                 if(angular.isDefined($scopeLocal.pageRequest.orderBy)&&$scopeLocal.pageRequest.orderBy!=""){
                     url+="&orderby="+$scopeLocal.pageRequest.orderBy;

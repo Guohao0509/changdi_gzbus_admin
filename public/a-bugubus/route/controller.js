@@ -4,7 +4,7 @@
  * @version 1.0.0
  * @descriptions 线路管理的控制器
  */
-app.controller('RouteEditController',function($compile,$rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$myHttpService){
+app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','$state','$localStorage','$stateParams','$filter','$myHttpService',function($compile,$rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$myHttpService){
     $scope.editMode = !!$stateParams.id;
     $scope.address = {};
     var $sortable = $("#J_sortable").sortable();
@@ -103,7 +103,7 @@ app.controller('RouteEditController',function($compile,$rootScope,$scope,$http,$
                 AMap.event.addListener(placeSearch, "markerClick", function(e){
                     $scope.address.gdPosition = [
                         {
-                            formattedAddress: e.data.name+e.data.address,
+                            formattedAddress: e.data.name,
                             location: e.data.location
                         }
                     ]
@@ -359,11 +359,11 @@ app.controller('RouteEditController',function($compile,$rootScope,$scope,$http,$
             layer.alert("一条线路必须有一个起点和终点");
         }
     }
-});
+}]);
 /**
  * 线路列表控制器
  */
-app.controller('RouteListController',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
+app.controller('RouteListController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$filter','$tableListService','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
     //全选
     // var selected = false;
     // $scope.selectAll = function(){
@@ -417,14 +417,14 @@ app.controller('RouteListController',function($rootScope,$scope,$http,$state,$lo
     }
     $tableListService.init($scope, options);
     $tableListService.get();
-});
+}]);
 /**
 
  * 线路列表控制器
 
  */
 
-app.controller('RouteCreateListController',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
+app.controller('RouteCreateListController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$filter','$tableListService','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
     //全选
     var selected = false;
     $scope.selectAll = function(){
@@ -440,4 +440,4 @@ app.controller('RouteCreateListController',function($rootScope,$scope,$http,$sta
     $tableListService.init($scope, options);
     $tableListService.get();
 
-});
+}]);

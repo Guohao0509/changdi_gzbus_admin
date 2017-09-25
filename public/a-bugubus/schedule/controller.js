@@ -4,7 +4,7 @@
  * @version 1.0.0
  * @descriptions 针对排班管理的控制器
  */
-app.controller('ScheduleEditController',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
+app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$filter','$tableListService','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
     $scope.editMode = !!$stateParams.id;//检测有没有ID，判断当前是添加还是编辑，共用一套模板
 
     if($scope.editMode){
@@ -161,9 +161,9 @@ app.controller('ScheduleEditController',function($rootScope,$scope,$http,$state,
         }
 
     }
-});
+}]);
 
-app.controller('ScheduleListController',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
+app.controller('ScheduleListController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$filter','$tableListService','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
     //全选
     var selected = false;
     $scope.selectAll = function(){
@@ -177,7 +177,6 @@ app.controller('ScheduleListController',function($rootScope,$scope,$http,$state,
         searchFormId:"J_search_form",
         listUrl:"api/buslineSchedule/queryBuslineScheduleByKeyword.htm",
         callback: function(scope,data){
-            console.log(data);
         }
     };
     $tableListService.init($scope, options);
@@ -194,4 +193,4 @@ app.controller('ScheduleListController',function($rootScope,$scope,$http,$state,
         });
 
     }
-});
+}]);

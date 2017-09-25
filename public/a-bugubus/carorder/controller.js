@@ -28,7 +28,7 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
     }
     var options = {
         searchFormId:"J_search_form",
-        listUrl:"api/vieworder/queryViewOrderListByKeyword",
+        listUrl:"api/vieworder/queryViewOrderListByKeyword", 
         callback: function($scope,data){
             $scope.totalCount = data.totalnum;
             angular.forEach(data.viewOrders,function(item, index){
@@ -159,11 +159,19 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
     var options={
         searchFormId:'J_search_form',
         listUrl:'api/vieworder/ticketsource/queryTicketSourceListByKeyword',
+        size: '9999',
         multiTable: 'ticketSourceList',
         callback: function(){
             if(localStorage.getItem('guilvbus_h_p')!='undefined'&&localStorage.getItem('guilvbus_t_s')!='undefined'){
                 $scope.carorder.havePower = localStorage.getItem('guilvbus_h_p')=='0'?false:true;
-                $scope.carorder.offline = localStorage.getItem('guilvbus_t_s');
+                
+                $scope.ticketSourceName = localStorage.getItem('guilvbus_t_s')
+                
+                angular.forEach($scope.ticketSourceList.sources,function(item, index){
+                    if(localStorage.getItem('guilvbus_t_s') == item.ticketSource){
+                        $scope.carorder.offline = item.ticketSourceId;
+                    }
+                })
             }else{
                 $scope.carorder.havePower = true;
                 $scope.carorder.offline = 0;
@@ -185,6 +193,7 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
     };
     $tableListService.init($scope, options);
     $tableListService.get();
+    console.log($scope)
     
     $scope.selectedDate = function(departDate) {
         departDate = new Date(departDate);
@@ -197,6 +206,7 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
         })
     }
     $scope.showSourceid = function(){
+        
         angular.forEach($scope.ticketSourceList.sources, function(data){
             var needSourceId;
             if(data.needSourceId == '0'){
@@ -272,6 +282,14 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
         }
         if($scope.carorder.sourceid){
             reqParam.sourceid = $scope.carorder.sourceid;
+        }
+        console.log(reqParam)
+        if($scope.carorder.havePower){
+            angular.forEach($scope.ticketSourceList.sources,function(item, index){
+                if($scope.carorder.offline == item.ticketSource){
+                    reqParam.ticketSource = item.ticketSourceId;
+                }
+            })
         }
         $myHttpService.post('api/vieworder/insertViewOrder',reqParam, function(data){
             layer.msg("添加成功！",{offset: '100px'});

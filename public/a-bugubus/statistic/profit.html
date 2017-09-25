@@ -15,7 +15,7 @@
                 <div class="col-sm-3">
                     <div class="padder-lr-10">
                         <span class="text-xs">近七天收益(元)</span>
-                        <div class="h1 text-dark"ng-bind="statisticData.beWeekMon" >-</div>
+                        <div class="h1 text-dark" ng-bind="statisticData.beWeekMon">-</div>
                         <span class="text-xs">比上周 <span ng-class="{true:'text-danger',false:'text-success'}[statisticData.ltWeekPro>=0]"  ng-bind="(statisticData.ltWeekPro>=0?'+ ':'- ')+statisticData.ltWeekPro*100+'%'">-</span></span>
                     </div>
                 </div>

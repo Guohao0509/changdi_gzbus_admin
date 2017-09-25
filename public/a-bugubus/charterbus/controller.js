@@ -2,7 +2,7 @@
  * Created by 静静 on 2017/4/12.
  * 包车管理
  */
-app.controller('Charterbus',function($scope,$myHttpService,$modal,$tableListService,$state){
+app.controller('Charterbus',['$scope','$myHttpService','$modal','$tableListService','$state',function($scope,$myHttpService,$modal,$tableListService,$state){
     /*关于全选*/
     var selected = false;
     $scope.selectAll = function(){
@@ -138,7 +138,7 @@ app.controller('Charterbus',function($scope,$myHttpService,$modal,$tableListServ
         });
     };
 
-});
+}]);
 
 /*包车的用户详情窗口*/
 app.controller('charterdetail',['$scope', '$modalInstance', 'charterid','$myHttpService',function($scope, $chartermodel,charterid,$myHttpService){
@@ -159,7 +159,7 @@ app.controller('charterdetail',['$scope', '$modalInstance', 'charterid','$myHttp
 }]);
 
 /*包车编辑控制器*/
-app.controller('charterbusEditController',function($scope,$myHttpService,$stateParams,$filter,$state){
+app.controller('charterbusEditController',['$scope','$myHttpService','$stateParams','$filter','$state',function($scope,$myHttpService,$stateParams,$filter,$state){
     $scope.editMode = !!$stateParams.charterid;//检测有没有ID，判断当前是添加还是编辑，共用一套模板
     if($scope.editMode) {//编辑模式
         $scope.charter = {
@@ -217,4 +217,4 @@ app.controller('charterbusEditController',function($scope,$myHttpService,$stateP
             layer.close(index);
         });
     }
-});
+}]);

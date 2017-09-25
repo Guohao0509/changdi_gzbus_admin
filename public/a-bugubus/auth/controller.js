@@ -5,7 +5,7 @@
  * @descriptions 登录授权控制器
  */
 //用户登录拦截器，如果用户登录，则跳转到主页，通常在第一次进入其他页面时调用
-app.controller('LoadingController',function($rootScope,$scope,$http,$state,$localStorage,$myHttpService){
+app.controller('LoadingController',['$rootScope','$scope','$http','$state','$localStorage','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$myHttpService){
     $myHttpService.get("auth/check",{},function(data){
         if(data==null){
             $state.go('auth.login')
@@ -14,9 +14,9 @@ app.controller('LoadingController',function($rootScope,$scope,$http,$state,$loca
             $state.go('app.carorder.list');
         }
     });
-});
+}]);
 //登录页面控制器,完成用户登录授权，并加载用户信息到本地数据库
-app.controller('LoginController',function($rootScope,$scope,$state,$http,$resource,Base64,$localStorage,$myHttpService,md5){
+app.controller('LoginController',['$rootScope','$scope','$state','$http','$resource','Base64','$localStorage','$myHttpService','md5',function($rootScope,$scope,$state,$http,$resource,Base64,$localStorage,$myHttpService,md5){
     $scope.login = function(){
         var user = {
             username:$scope.user.username,
@@ -37,7 +37,7 @@ app.controller('LoginController',function($rootScope,$scope,$state,$http,$resour
             }
         });
     }
-});
+}]);
 app.factory('Base64',function(){
     var keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
     return {

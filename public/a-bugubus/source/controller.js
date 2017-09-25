@@ -11,7 +11,6 @@ app.controller('sourceListController', ['$scope','$http','$myHttpService','$tabl
 				ticketSourceId: ticketSourceId,
                 sysUserId: sysUserId
 			}
-            console.log(reqParam)
             $myHttpService.post("api/ticketsource/deleteTicketSource",reqParam,function(){
                 layer.msg("删除成功！",{offset: '100px'})
                 $state.go("app.source.list",{},{reload: true});
@@ -31,7 +30,6 @@ app.controller('addTicketSourceController', ['$scope','$myHttpService', '$state'
         };
         //获取司机内容
         $myHttpService.post("api/ticketsource/queryTicketSource",reqParam,function(data){
-        	console.log(data);
         	$scope.source = {
         		ticketSource: data.ticketSource.ticketSource,
         		userName: data.ticketSource.userName,
@@ -58,7 +56,6 @@ app.controller('addTicketSourceController', ['$scope','$myHttpService', '$state'
 		}else{
 			reqParam.passWord = md5.createHash($scope.sourcePwd.passWord)
 		}
-		console.log(reqParam)
 		if(!$scope.source.needSourceId || $scope.source.needSourceId == 'false'){
 			reqParam.needSourceId = '0';
 		}else if($scope.source.needSourceId || $scope.source.needSourceId == 'true'){
@@ -66,7 +63,6 @@ app.controller('addTicketSourceController', ['$scope','$myHttpService', '$state'
 		}
 		if($scope.editMode){
             reqParam.ticketSourceId = $stateParams.id;
-            console.log(reqParam)
             $myHttpService.post('api/ticketsource/updateTicketSource', reqParam, function(data){
                 layer.msg(data.msg,{offset: '100px'});
                 $state.go('app.source.list',{},{reload: true});
