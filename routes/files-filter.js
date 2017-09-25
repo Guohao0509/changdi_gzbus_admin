@@ -121,7 +121,11 @@ router.post('/excel', function(req, res) {
 		pagesize: req.body.totalnum
 	}
 	if(req.body.ticketsource){
-		reqParam.ticketSource = req.body.ticketsource;
+		if(body.ticketsource == '线上'){
+			reqParam.ticketSource = encodeURI(req.body.ticketsource)
+		}else{
+			reqParam.ticketSource = req.body.ticketsource;
+		}
 	}else{
 		reqParam.ticketSource = '';
 	}
