@@ -101,8 +101,9 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
         var reqParam = {
             totalnum: $scope.totalCount,
             viewOrderStatus: $scope.orderList.viewOrderStatu,
-            ticketsource: $scope.orderList.ticketSource
+            ticketsource: $scope.carorder.tmpOfflineId
         }
+        console.log(reqParam)
         $http.post(url,reqParam).success(function(data){
             window.location.href = data.path;
         }).error(function(e){

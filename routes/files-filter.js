@@ -131,7 +131,7 @@ router.post('/excel', function(req, res) {
 		reqParam.viewOrderStatus = '0';
 	}
 	var url = host + api + '?ticketSource='+reqParam.ticketSource+'&viewOrderStatus='+reqParam.viewOrderStatus+'&offset=0'+'&pagesize='+reqParam.pagesize;
-
+	console.log(url)
 	request.post(url).send({}).end(function(error,response){
 		if(response.body.code !=0){
 			res.send({"code":"-1","data":"下载失败"});
