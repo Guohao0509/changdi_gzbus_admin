@@ -7,8 +7,6 @@ var filter = function(req,res,next){
     '/api/vieworder/ticketsource',
     '/api/vieworder/product'
   ];
-  console.log('req.query.ticketSource',req.session.user.ticketSource)
-  console.log('req.query.ticketSourceId',req.session.user.ticketSourceId)
   if(req.session.user==undefined){
     res.send({"code":401,"data":"权限不足，用户未登录"})
     res.end();
