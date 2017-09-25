@@ -29,7 +29,8 @@ app
                         $rootScope.session_user = data;
                         if(data.havePower=='0'){
                             localStorage.setItem('guilvbus_h_p',data.havePower);
-                            localStorage.setItem('guilvbus_t_s',data.ticketSource);
+                            localStorage.setItem('guilvbus_t_s',data.ticketSourceId);
+                            localStorage.setItem('guilvbus_t_s_n', data.ticketSource);
                             $rootScope.havePower_user = false;
                             $rootScope.ticketSource_user = data.ticketSource;
                         }else{
@@ -50,6 +51,7 @@ app
                 $state.go('auth.login');
                 localStorage.removeItem('guilvbus_h_p');
                 localStorage.removeItem('guilvbus_t_s');
+                localStorage.removeItem('guilvbus_t_s_n');
             });
         }
         // $(function(){

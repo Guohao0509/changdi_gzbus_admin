@@ -30,7 +30,8 @@ app.controller('LoginController',['$rootScope','$scope','$state','$http','$resou
                 // $rootScope.havePower_user = data.havePower;
                 // $rootScope.ticketSource_user = data.ticketSource;
                 localStorage.setItem('guilvbus_h_p',data.havePower);
-                localStorage.setItem('guilvbus_t_s',data.ticketSource);
+                localStorage.setItem('guilvbus_t_s',data.ticketSourceId);
+                localStorage.setItem('guilvbus_t_s_n',data.ticketSource);
                 $state.go('app.carorder.list');
             }else{
                 $scope.authError = "用户名或密码错误";

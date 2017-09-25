@@ -11,7 +11,53 @@
 app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableListService','$myHttpService','$modal','$state',function($rootScope,$scope,$http,$tableListService,$myHttpService,$modal,$state){
     $scope.orderList = {};
     $scope.carorder = {};
-    
+    var options = {
+        searchFormId:'J_search_form',
+        listUrl:'api/vieworder/ticketsource/queryTicketSourceListByKeyword',
+        size: '9999',
+        multiTable: 'ticketSourceList',
+        callback: function(scope, data){
+            console.log(scope)
+            console.log(data)
+            data.sources.unshift({
+                ticketSource: "线上",
+                ticketSourceId: "线上"
+            })
+            data.sources.unshift({
+                ticketSource: "全部",
+                ticketSourceId: null
+            })
+            // if(localStorage.getItem('guilvbus_h_p')!='undefined'&&localStorage.getItem('guilvbus_t_s')!='undefined'){
+            //     $scope.carorder.havePower = localStorage.getItem('guilvbus_h_p')=='0'?false:true;
+                
+            //     $scope.ticketSourceName = localStorage.getItem('guilvbus_t_s')
+                
+            //     angular.forEach($scope.ticketSourceList.sources,function(item, index){
+            //         if(localStorage.getItem('guilvbus_t_s') == item.ticketSource){
+            //             $scope.carorder.offline = item.ticketSourceId;
+            //         }
+            //     })
+            // }else{
+            //     $scope.carorder.havePower = true;
+            //     $scope.carorder.offline = 0;
+            // }
+            // if($scope.ticketSourceList){
+            //     angular.forEach($scope.ticketSourceList.sources, function(data){
+            //         var needSourceId;
+            //         if(data.needSourceId == '0'){
+            //             needSourceId = false;
+            //         }else if(data.needSourceId == '1'){
+            //             needSourceId = true;
+            //         }
+            //         if(data.ticketSource == $scope.carorder.offline){
+            //             $scope.carorder.needSourceId = needSourceId;
+            //         }
+            //     });
+            // }
+        }
+    };
+    $tableListService.init($scope, options);
+    $tableListService.get();
     // console.log($rootScope.session_user.havePower)
     // if($rootScope.session_user.havePower == 0&&$rootScope.session_user.ticketSource){
     //    $scope.orderList.ticketSource = $rootScope.session_user.ticketSource;
@@ -22,6 +68,7 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
         // $scope.orderList.ticketSource = $rootScope.ticketSource_user;
         $rootScope.havePower_user = $scope.orderList.havePower;
         $('#ticketSource').val(localStorage.getItem('guilvbus_t_s'));
+        $scope.carorder.tmpOfflineId = localStorage.getItem('guilvbus_t_s');
     }else{
         $scope.orderList.havePower = true;
         $rootScope.havePower_user = true;
@@ -60,6 +107,14 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
             window.location.href = data.path;
         }).error(function(e){
             
+        });
+    }
+    $scope.showSourceid = function(){
+        
+        angular.forEach($scope.ticketSourceList.sources, function(data){
+            if(data.ticketSource == $scope.carorder.offline){
+                $scope.carorder.tmpOfflineId = data.ticketSourceId;
+            }
         });
     }
     $scope.openCarorderImageModal = function(images){
@@ -165,10 +220,10 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
             if(localStorage.getItem('guilvbus_h_p')!='undefined'&&localStorage.getItem('guilvbus_t_s')!='undefined'){
                 $scope.carorder.havePower = localStorage.getItem('guilvbus_h_p')=='0'?false:true;
                 
-                $scope.ticketSourceName = localStorage.getItem('guilvbus_t_s')
+                $scope.ticketSourceName = localStorage.getItem('guilvbus_t_s_n')
                 
                 angular.forEach($scope.ticketSourceList.sources,function(item, index){
-                    if(localStorage.getItem('guilvbus_t_s') == item.ticketSource){
+                    if(localStorage.getItem('guilvbus_t_s') == item.ticketSourceId){
                         $scope.carorder.offline = item.ticketSourceId;
                     }
                 })
@@ -193,7 +248,6 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
     };
     $tableListService.init($scope, options);
     $tableListService.get();
-    console.log($scope)
     
     $scope.selectedDate = function(departDate) {
         departDate = new Date(departDate);

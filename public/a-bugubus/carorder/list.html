@@ -25,11 +25,22 @@
 	        	</div>
 	      	</div> -->
             <div class="row wrapper form-horizontal">
+
+
+				
+
+
+
                 <div class="col-sm-1" ng-show="orderList.havePower">
                     <label class="control-label f12">票据来源</label>
                 </div>
                 <div class="col-sm-3" ng-show="orderList.havePower">
-                    <input id="ticketSource" type="text" class="input-sm form-control"  name="ticketSource" placeholder="请输入票据来源" ng-model="orderList.ticketSource">
+                    <!-- <input id="ticketSource" type="text" class="input-sm form-control"  name="ticketSource" placeholder="请输入票据来源" ng-model="orderList.ticketSource"> -->
+                    <input id="ticketSource" type="text" name="ticketSource" ng-model="carorder.tmpOfflineId" style="display: none;">
+                    <select class="form-control" ng-init="carorder.offline = '0'" ng-model="carorder.offline" ng-required="true" ng-change="showSourceid()">
+	                    <option value="0" style="display: none;">请选择</option>
+	                    <option ng-repeat="item in ticketSourceList.sources" value="{{item.ticketSource}}">{{item.ticketSource}}</option>
+	                </select>
                 </div>
                 <div class="col-sm-1">
                     <label class="control-label f12">支付状态</label>

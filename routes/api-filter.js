@@ -7,6 +7,8 @@ var filter = function(req,res,next){
     '/api/vieworder/ticketsource',
     '/api/vieworder/product'
   ];
+  console.log('req.query.ticketSource',req.session.user.ticketSource)
+  console.log('req.query.ticketSourceId',req.session.user.ticketSourceId)
   if(req.session.user==undefined){
     res.send({"code":401,"data":"权限不足，用户未登录"})
     res.end();
@@ -14,7 +16,7 @@ var filter = function(req,res,next){
     //获取完整目录名
       res.send({"code": 403,"data":"您没有权限访问此模块"});
       res.end();
-  }else if(req.session.user.havePower == 0&&urlArr[2] == 'vieworder'&&urlArr[3].indexOf('queryViewOrderListByKeyword')>-1&&req.query.ticketSource!= req.session.user.ticketSource){
+  }else if(req.session.user.havePower == 0&&urlArr[2] == 'vieworder'&&urlArr[3].indexOf('queryViewOrderListByKeyword')>-1&&req.query.ticketSource!= req.session.user.ticketSourceId){
       res.send({"code": 403,"data":"您没有权限访问此模块"});
       res.end();
   }else{
