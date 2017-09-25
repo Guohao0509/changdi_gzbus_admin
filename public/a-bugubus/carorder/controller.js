@@ -103,6 +103,9 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
             viewOrderStatus: $scope.orderList.viewOrderStatu,
             ticketsource: $scope.carorder.tmpOfflineId
         }
+        if($scope.carorder.tmpOfflineId == '线上'){
+            reqParam.ticketsource = encodeURI('线上')
+        }
         console.log(reqParam)
         $http.post(url,reqParam).success(function(data){
             window.location.href = data.path;
