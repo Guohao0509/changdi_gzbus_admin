@@ -35,7 +35,7 @@
                                 <th sort-name ="TICKET_SOURCE_ID">来源ID</th>
                                 <th sort-name ="TICKETSOURCE">来源</th>
                                 <th sort-name = "NEED_SOURCE_ID">是否需要来源ID</th>
-                                <th sort-name = "SYS_USER_ID">门店账号</th>
+                                <th sort-name = "SOURCE_USER">门店账号</th>
                                 <th sort-name = "SOURCE_PHONE">客服电话</th>
                                 <th>操作</th>
                             </tr>
@@ -53,13 +53,13 @@
                                     <span ng-if="item.needSourceId=='1'">是</span>
                                     <span ng-if="item.needSourceId=='0'">否</span>
                                 </td>
-                                <td ng-bind="item.userName"></td>
+                                <td ng-bind="item.sourceUser"></td>
                                 <td ng-bind="item.sourcePhone"></td>
                                  <td>
                                     <a ui-sref="app.source.edit({id:item.ticketSourceId})">
                                         <span class="label label-primary">编辑</span>
                                     </a>
-                                    <a ng-click="delete(item.ticketSourceId, item.sysUserId)" data-original-title="删除">
+                                    <a ng-click="delete(item.ticketSourceId)" data-original-title="删除">
                                         <span class="label btn-danger">删除</span>
                                     </a>
                                 </td>

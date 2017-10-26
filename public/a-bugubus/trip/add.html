@@ -29,11 +29,27 @@
                                 <input type="radio" name="productType" value="1"
                                     ng-model="product.productType" 
                                     ng-checked="product.productType=='1'"
-                                    ng-required=true
+                                    ng-required="true"
                                     ng-click="returnType()"
                                 >
                                 <i></i>
                                 往返
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        是否含景区门票
+                        <span class="text-xs">(非必选)</span>
+                    </label>
+
+                    <div class="col-sm-10">
+                        <div class="radio inline">
+                            <label class="i-checks">
+                                <input type="checkbox" name="view" ng-model="view.haveViewTicket">
+                                <i></i>
+                                含有
                             </label>
                         </div>
                     </div>
@@ -65,6 +81,7 @@
                                 >
                     </div>
                 </div>
+
             </form>
             <div class="form-group"  style="margin-left: 8%;" ng-if="product.isPush">
                 <div class="row">
@@ -84,7 +101,118 @@
                     </div>
                 </div>
             </div>
+            
             <div class="line line-dashed b-b line-lg"></div>
+            <div class="panel b-a" ng-if="view.haveViewTicket">
+                <div class="panel-heading b-b b-light">选择景区<span class="text-danger text-md ">*</span></div>
+                    <div class="table-responsive">
+                        <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light" >
+                            <thead>
+                                <tr>
+                                    <th>选择</th>
+                                    <th>景点ID</th>
+                                    <th>景点名称</th>
+                                    <th>景点地址</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <a ng-click="queryView()">
+                                            <span class="label label-success">选择景点</span>
+                                        </a>
+                                    </td>
+                                    <td ng-bind="view.view.viewid"></td>
+                                    <td ng-bind="view.view.viewName"></td>
+                                    <td ng-bind="view.view.viewaddr"></td>
+                                </tr>
+                            </tbody>
+                      </table>
+                    </div>
+                <div class="table-responsive" ng-if="showViewTable" style="overflow-x: visible">
+                    
+                    <div class="line line-dashed b-b line-lg"></div>
+                    <form class="row wrapper form-horizontal form-validation" id="View_form_search">
+                        <div class="col-sm-5 m-b-xs">
+                                <!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" type="button" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
+                        </div>
+                        <div class="col-sm-3">
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" class="input-sm form-control" name="keyword" placeholder="请输入景点名称" ng-model="view.viewNameSearch">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-sm btn-default"  ng-click="pageRequest.getResponse()" >查询</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                    <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <label class="i-checks m-b-none">选择</label>
+                                </th>
+                                <th sort-name="VIEWID">景点ID</th>
+                                <th sort-name ="VIEW_NAME">景点名称</th>
+                                <th sort-name ="VIEW_ADDR">景点地址</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in pageResponse.viewInfos">
+                                <td>
+                                    <label class="i-checks m-b-none">
+                                        <input type="radio" name="viewSelect" ng-click="selectView(item)"><i></i>
+                                    </label>
+                                </td>
+                                <td ng-bind="item.viewid"></td>
+                                <td ng-bind="item.viewName"></td>
+                                <td ng-bind="item.viewaddr"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <footer class="panel-footer" ng-if="showViewTable">
+                    <div class="box-body" table-pagination style="padding: 0 20px 0 20px;"></div>
+                </footer>
+                <div class="wrapper b-t b-light text-center" ng-if="showViewTable">
+                    <a href class="btn btn-info" ng-click="closeViewTable()">收起</a>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div class="panel b-a">
                 <div class="panel-heading b-b b-light">选择线路<span class="text-danger text-md ">*</span></div>
                     <div class="table-responsive" ng-if="isShowSelectedTable">

@@ -1,0 +1,36 @@
+<div class="wrapper-md" ng-controller="uploadImageController">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            添加评论图片
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <form id="myForm">
+                    <div class="form-group">
+                        <label for="file_upload" class="col-sm-1 control-label" style="margin: 5px 0 0 10px;">图片选择</label>
+                        <div class="col-sm-7" style="position:relative;border: 1px solid #ddd;border-radius:3px; width:230px; padding: 0; height:30px;margin-left: 3px;">
+                        <i class="glyphicon glyphicon-folder-open" style="position: absolute;bottom: 0;right: 10px;margin-top: 5px;cursor: pointer;"></i>
+                            <input type="file" name="fulAvatar" id="file_upload" style="opacity: 0;height: 30px; cursor: pointer;" value=""
+                                placeholder="图片地址" onchange="angular.element(this).scope().uploadByForm()">
+                            
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-2" ng-repeat="imgUrl in imgUrls" style="margin-top: 20px;">
+                    <a class="thumbnail">
+                       <img ng-src="{{imgUrl}}" class="img-responsive"/>
+                    </a>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+                <div class="col-sm-offset-2" style="float: right;margin-right: 15px;">
+                     <button type="submit" class="btn btn-danger m-l" ng-click="submit()" ng-disabled="!isLoadImage">确认提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

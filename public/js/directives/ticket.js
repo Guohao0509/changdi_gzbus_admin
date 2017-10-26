@@ -18,6 +18,7 @@ angular.module('app.directives').directive('ticket', function($document) {
                 car: scope.ticketInfo.platenum,
                 phone: scope.ticketInfo.sourcePhone
             }
+            
             console.log(ticket);
             var date = new Date(Number(ticket.date));
             var year = date.getFullYear();
@@ -55,7 +56,13 @@ angular.module('app.directives').directive('ticket', function($document) {
                 ctx.font="20px Arial";
                 ctx.fillStyle = '#757575';
                 ctx.fillText(ticket.phone,200,1032);
-                ctx.drawImage(barcodeImg, 100, 620, 500, 200);
+                ctx.drawImage(barcodeImg, 100, 570, 500, 200);
+                if(scope.ticketInfo.ticketCode){
+                    ctx.font="26px Arial";
+                    ctx.fillStyle = '#0068B7';
+                    ctx.fillText('景区门票校验码', 120, 820);
+                    ctx.fillText(scope.ticketInfo.ticketCode, 320, 820);
+                }
             }
 
             var btn1 = document.getElementById('btn1');

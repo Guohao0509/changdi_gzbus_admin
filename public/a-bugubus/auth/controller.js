@@ -7,11 +7,22 @@
 //用户登录拦截器，如果用户登录，则跳转到主页，通常在第一次进入其他页面时调用
 app.controller('LoadingController',['$rootScope','$scope','$http','$state','$localStorage','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$myHttpService){
     $myHttpService.get("auth/check",{},function(data){
+        console.log(data);
         if(data==null){
-            $state.go('auth.login')
+            $state.go('auth.login');
         }else{
             $rootScope.session_user = data;
-            $state.go('app.carorder.list');
+            $rootScope.session_user.access = 'systemUser';
+            $rootScope.havePower_user = true;
+            if(data.viewUser){
+                $rootScope.session_user.userName = data.viewUser;
+                $rootScope.session_user.access = 'viewUser';
+                $rootScope.havePower_user = false;
+            }else if(data.sourceUser){
+                $rootScope.session_user.userName = data.sourceUser;
+                $rootScope.session_user.access = 'sourceUser';
+                $rootScope.havePower_user = false;
+            }
         }
     });
 }]);
@@ -26,13 +37,24 @@ app.controller('LoginController',['$rootScope','$scope','$state','$http','$resou
             if(data!=null){
                 //这里需要拿到token和系统管理员id
                 //有待添加
-                $rootScope.session_user=data;
+                $rootScope.session_user = data;
+                if(data.viewUser){
+                    $rootScope.session_user.userName = data.viewUser;
+                    $rootScope.session_user.access = 'viewUser';
+                    $rootScope.havePower_user = false;
+                    $state.go('app.vieworder.list');
+                }else if(data.sourceUser){
+                    $rootScope.session_user.userName = data.sourceUser;
+                    $rootScope.session_user.access = 'sourceUser';
+                    $rootScope.havePower_user = false;
+                    $state.go('app.carorder.list');
+                }else{
+                    $rootScope.session_user.access = 'systemUser';
+                    $rootScope.havePower_user = true;
+                    $state.go('app.carorder.list');
+                }
                 // $rootScope.havePower_user = data.havePower;
                 // $rootScope.ticketSource_user = data.ticketSource;
-                localStorage.setItem('guilvbus_h_p',data.havePower);
-                localStorage.setItem('guilvbus_t_s',data.ticketSourceId);
-                localStorage.setItem('guilvbus_t_s_n',data.ticketSource);
-                $state.go('app.carorder.list');
             }else{
                 $scope.authError = "用户名或密码错误";
             }

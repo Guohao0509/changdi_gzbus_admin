@@ -55,6 +55,7 @@
                     <th sort-name ="PRODUCTID">产品ID</th>
                     <th sort-name = "DEADDRESS">目的地</th>
                     <th sort-name = "PRODUCTTYPE">班次类型</th>
+                    <th sort-name = "VIEWID">景区ID</th>
                     <th>用户须知</th>
                     <th>去程线路</th>
                     <th>返程线路</th>
@@ -75,14 +76,21 @@
                     <td ng-bind="item.productid"></td>
                     <td ng-bind="item.viewaddress"></td>
                     <td>
-                        <span ng-if="item.productType == 0">单程</span>
-                        <span ng-if="item.productType == 1">往返</span>
+                        <span ng-if="item.productType == 0">单程
+                            <span ng-if="item.haveTicket == 1">&nbsp;+&nbsp;</span>
+                            <span ng-if="item.haveTicket == 1" class="label label-warning">门票</span>
+                        </span>
+                        <span ng-if="item.productType == 1">往返
+                            <span ng-if="item.haveTicket == 1">&nbsp;+&nbsp;</span>
+                            <span ng-if="item.haveTicket == 1" class="label label-warning">门票</span>
+                        </span>
                     </td>
-                    <th>
+                    <td ng-bind="item.viewInfo.viewid"></td>
+                    <td>
                         <a ng-click="openUserNoticeModal(item.productinfo)">
                             <span class="label label-primary">查看</span>
                         </a>
-                    </th>
+                    </td>
                     <td>
                         <!-- <a ng-click="openDetailModal(item.golineid)"> -->
                             <span>{{item.golinename}}</span>

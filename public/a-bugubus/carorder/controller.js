@@ -62,17 +62,6 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
     // if($rootScope.session_user.havePower == 0&&$rootScope.session_user.ticketSource){
     //    $scope.orderList.ticketSource = $rootScope.session_user.ticketSource;
     // }
-    if(localStorage.getItem('guilvbus_h_p')!='undefined'&&localStorage.getItem('guilvbus_t_s')!='undefined'){
-        $scope.orderList.havePower = localStorage.getItem('guilvbus_h_p')=='0'?false:true;
-        $scope.orderList.ticketSource = localStorage.getItem('guilvbus_t_s');
-        // $scope.orderList.ticketSource = $rootScope.ticketSource_user;
-        $rootScope.havePower_user = $scope.orderList.havePower;
-        $('#ticketSource').val(localStorage.getItem('guilvbus_t_s'));
-        $scope.carorder.tmpOfflineId = localStorage.getItem('guilvbus_t_s');
-    }else{
-        $scope.orderList.havePower = true;
-        $rootScope.havePower_user = true;
-    }
     var options = {
         searchFormId:"J_search_form",
         listUrl:"api/vieworder/queryViewOrderListByKeyword", 
@@ -215,6 +204,22 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
     $scope.carorder = {};
     $scope.carorder.userid = superUserId;
     $scope.showTicket = false;
+    //数组去重
+    function unique(array){ 
+        var n = {}, r = [], len = array.length, val, type; 
+        for (var i = 0; i < array.length; i++) { 
+            val = array[i].check; 
+            type = typeof val; 
+            if (!n[val]) { 
+                n[val] = [type]; 
+                r.push(array[i]); 
+            } else if (n[val].indexOf(type) < 0) { 
+                n[val].push(type); 
+                r.push(array[i]); 
+            } 
+        } 
+        return r; 
+    }
     var options={
         searchFormId:'J_search_form',
         listUrl:'api/vieworder/ticketsource/queryTicketSourceListByKeyword',
@@ -260,7 +265,7 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
         var day = departDate.getDate();
         var date = year+'-'+month+'-'+day;
         $scope.loadScheduleTable(date,function(data){
-            $scope.dateSchedules = data.products;
+            $scope.dateSchedules = data;
         })
     }
     $scope.showSourceid = function(){
@@ -279,13 +284,58 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
     }
     $scope.loadScheduleTable = function(date,callback) {
         $myHttpService.post('api/vieworder/product/queryProductBusScheduleDetails',{departDate:date},function(data){
-            callback&&callback(data);
+            console.log(data)
+            var tmpData = [];
+            for(var i = 0; i < data.products.length; i ++){
+                if(data.products[i].backbsid){
+                    tmpData.push({
+                        productType: 0,
+                        haveTicket: 1,
+                        gobsname: data.products[i].gobsname,
+                        gobdid: data.products[i].gobdid,
+                        departName: data.products[i].departName,
+                        arriveName: data.products[i].arriveName,
+                        departaddr: data.products[i].departaddr,
+                        departtime: data.products[i].departtime,
+                        goPrice: data.products[i].goPrice,
+                        viewPrices: data.products[i].viewPrices,
+                        drivetime: data.products[i].drivetime,
+                        leftTickets: data.products[i].goLeftTickets,
+                        totalTickets: data.products[i].goTotalTickets,
+                        check: data.products[i].gobsid+'1'
+                    });
+                    tmpData.push({
+                        productType: 0,
+                        haveTicket: 0,
+                        gobsname: data.products[i].backbsname,
+                        gobdid: data.products[i].backbdid,
+                        departName: data.products[i].backDepartName,
+                        arriveName: data.products[i].backArriveName,
+                        departaddr: data.products[i].backDepartaddr,
+                        departtime: data.products[i].backDeparttime,
+                        goPrice: data.products[i].backPrice,
+                        drivetime: data.products[i].drivetime,
+                        leftTickets: data.products[i].backLeftTickets,
+                        totalTickets: data.products[i].backTotalTickets,
+                        check: data.products[i].backbsid+'0'
+                    })
+                }else{
+                    if(data.products[i].haveTicket == 1){
+                        data.products[i].check = data.products[i].gobsid+'1';
+                    }else{
+                         data.products[i].check = data.products[i].gobsid+'0';
+                    }
+                    tmpData.push(data.products[i]);
+                }
+            }
+            var resultData = unique(tmpData)
+            console.log(resultData)
+            callback&&callback(resultData);
         },function() {
 
         })
     }
-
-
+    
     $scope.$watch('departDate',function(){
         if($scope.departDate){
             $scope.selectedDate($scope.departDate);
@@ -293,7 +343,11 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
         $scope.overDeadLineTime = true;
     })
 
-    $scope.selectSchedule = function(schedule) {
+    $scope.selectSchedule = function(schedule,$index) {
+        if(schedule.haveTicket == 1) {
+            $scope.orderType = "haveTicket";
+            $scope.disabledSelect = $index;
+        }
         var dateMs = schedule.departdate;
         var tmpTimeArr = schedule.departtime.split(':');
         var dateMs = dateMs + (Number(tmpTimeArr[0])*60 + Number(tmpTimeArr[1]))*60*1000;
@@ -314,7 +368,7 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
         }
         $scope.carorder.schedule = schedule;
         
-    }
+    };
     $scope.reset = function() {
         // $scope.carorder = {};
         // $scope.carorder.userid = superUserId;
@@ -322,6 +376,7 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
     }
     $scope.submit = function() {
         //默认为1
+
         var countNum = 1;
         var year = $scope.departDate.getFullYear();
         var month = $scope.departDate.getMonth()+1;
@@ -335,13 +390,22 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
             count: countNum,
             bdid:$scope.carorder.schedule.gobdid,
         }
+        if($scope.orderType == "haveTicket") {
+            var id = 'select'+$scope.disabledSelect;
+            var select = document.getElementById(id);
+            reqParam.viewPriceId = select.value;
+            console.log(select.value);
+            if(select.value == 0){
+                layer.msg('请选择票价类型',{offset:'100px'});
+                return;
+            }
+        }
         if(!$scope.carorder.schedule.gobdid){
             reqParam.bdid = $scope.carorder.schedule.backbdid;
         }
         if($scope.carorder.sourceid){
             reqParam.sourceid = $scope.carorder.sourceid;
         }
-        console.log(reqParam)
         if($scope.carorder.havePower){
             angular.forEach($scope.ticketSourceList.sources,function(item, index){
                 if($scope.carorder.offline == item.ticketSource){
@@ -349,9 +413,11 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
                 }
             })
         }
+        console.log('reqParam',reqParam)
         $myHttpService.post('api/vieworder/insertViewOrder',reqParam, function(data){
             layer.msg("添加成功！",{offset: '100px'});
             // $state.go('app.carorder.list',{},{reload: true});
+            console.log(data);
             $scope.creatTicket(data);
         })
     }
@@ -411,6 +477,15 @@ app.controller('uploadImageController',['$rootScope','$scope','$http','$state','
         //用form 表单直接 构造formData 对象; 就不需要下面的append 方法来为表单进行赋值了。
         var formData = new FormData($("#myForm")[0]);
         // var host = "192.168.5.183:4000";
+        var file = document.getElementById("file_upload").files[0]
+        if(file.type.indexOf('image/') == -1){
+            layer.msg('上传的文件类型必须是png、jpg或jpeg图片');
+            return;
+        }
+        if(file.size > 1024*1000){
+            layer.msg('上传的图片必须小于1M')
+            return;
+        }
         var url = "files/image";
         $.ajax({
             url: url,

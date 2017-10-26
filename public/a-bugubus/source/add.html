@@ -35,7 +35,7 @@
 					<label class="col-sm-2 control-label">门店账号<span class="text-danger text-md">*</span></label></label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control"
-							   ng-model="source.userName"
+							   ng-model="source.sourceUser"
 							   ng-pattern="/^[0-9a-zA-z]{6,18}$/"
 							   placeholder="6-18位字母和数字的组合"
 							   ng-required="true">
@@ -45,7 +45,7 @@
 					<label class="col-sm-2 control-label">登录密码<span class="text-danger text-md">*</span></label></label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control"
-							   ng-model="sourcePwd.passWord"
+							   ng-model="sourcePwd.sourcePass"
 							   ng-pattern="/^[0-9a-zA-z]{6,18}$/"
 							   placeholder="6-18位字母和数字的组合,修改时为空表示不修改"
 							   ng-required = "!editMode"

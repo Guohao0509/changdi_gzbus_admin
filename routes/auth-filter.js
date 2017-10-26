@@ -16,9 +16,22 @@ router.get('/login', function(req, res, next) {
     password:req.query.password
   }
   httpProxy(serviceUrl,option,function(data){
-    console.log(data);
-    user = JSON.parse(data).data.systemUser;
+    user = JSON.parse(data).data;
+    var accessKey;
+    if(user.viewLogin){
+      user = user.viewAdmin;
+      accessKey = 'viewLogin';
+    }else if(user.sourceLogin){
+      user = user.sourceAdmin;
+      accessKey = 'sourceLogin';
+    }else if(user.handletoken){
+      user = user.systemUser;
+      accessKey = 'handletoken';
+    }else{
+      user = null;
+    }
     req.session.user = user;
+    req.session.access = accessKey;
     res.send({
       "code":0,
       "data":user

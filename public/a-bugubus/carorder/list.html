@@ -10,7 +10,7 @@
 	            <li style=" padding-top:4px; padding-right:15px" ng-click="exportToExcel()"><button class="btn m-b-xs btn-sm btn-info btn-addon"><i class="fa fa-file-excel-o"></i>导出到Excel</button></li>
 	        </ul>
 		</div>
-    	<form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()">
+    	<form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()" style="padding-top:0;padding-bottom: 0;">
 	      	<!-- <div class="col-sm-5 m-b-xs">
 	        	<button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button>
 	      	</div>
@@ -31,10 +31,10 @@
 
 
 
-                <div class="col-sm-1" ng-show="orderList.havePower">
+                <div class="col-sm-1">
                     <label class="control-label f12">票据来源</label>
                 </div>
-                <div class="col-sm-3" ng-show="orderList.havePower">
+                <div class="col-sm-3">
                     <!-- <input id="ticketSource" type="text" class="input-sm form-control"  name="ticketSource" placeholder="请输入票据来源" ng-model="orderList.ticketSource"> -->
                     <input id="ticketSource" type="text" name="ticketSource" ng-model="carorder.tmpOfflineId" style="display: none;">
                     <select class="form-control" ng-init="carorder.offline = '0'" ng-model="carorder.offline" ng-required="true" ng-change="showSourceid()">
@@ -52,7 +52,6 @@
                         </option>
                     </select>
                 </div>
-                <div class="col-sm-4" ng-show="!orderList.havePower"></div>
                 <div class="col-sm-4">
                     <button class="btn btn-sm btn-primary pull-right">搜索</button>
                 </div>

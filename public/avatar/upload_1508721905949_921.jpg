@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title> </title>
+    <style>
+        .demo{
+            margin-top: 200px;
+            width: 300px;
+            height: 300px;
+            border: 1px solid red;
+        }
+        .ta{
+
+            width: 100px;
+            height: 100px;
+            border: 1px solid green;
+        }
+        .tb{
+
+            width: 100px;
+            height: 100px;
+            border: 1px solid green;
+        }
+        #tc{
+            display: block;
+            top: 230px;
+            left: 593px;
+        }
+    </style>
+</head>
+<body>
+    <img id="tc" src="">
+    <img id="td" src="">
+
+    <div class="demo">
+        <img class="ta" src="./640.jpg">
+        <img class="tb" src="./640.jpg">
+    </div>
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+//        var ei = document.getElementById('tc');
+//        var ej = document.getElementById('td');
+//
+//        ei.style.top=   event.clientY + -200 + "px";
+//        ei.style.left = document.body.scrollLeft+event.clientX +100+ "px";
+//
+//        ej.style.top=   event.clientY + -200 + "px";
+//        ej.style.left = document.body.scrollLeft+event.clientX +100+ "px";
+
+function huangDaGe() {
+       var ei = document.getElementById('tc');
+       var ej = document.getElementById('td');
+
+       ei.style.top=   event.clientY + -200 + "px";
+       ei.style.left = document.body.scrollLeft+event.clientX +100+ "px";
+}
+/*****将上面的方法带入下面程序，为.tc和.td加尺寸*******************************/
+
+        $(".demo").each(function(i) {
+            $(this).mouseover(function (e) {
+                var x = e.pageX
+                var y = e.pageY
+                var ata=$(this).children('.ta');
+                var asrc=$(ata)[0].src;
+
+                var btb=$(this).children('.tb');
+                var bsrc=$(btb)[0].src;
+
+                $("#tc").attr('src',asrc);
+                $("#td").attr('src',bsrc);
+                
+                $("#tc").attr('src',asrc);
+                $("#td").attr('src',bsrc);
+            })
+        });
+        $(".demo").each(function(i) {
+            $(this).mouseout(function () {
+                $("#tc").attr('src','');
+            });
+            $(this).mouseout(function () {
+                $("#td").attr('src','');
+            })
+        });
+    </script>
+</body>
+</html>

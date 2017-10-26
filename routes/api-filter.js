@@ -7,34 +7,75 @@ var filter = function(req,res,next){
     '/api/vieworder/ticketsource',
     '/api/vieworder/product'
   ];
+  
+  function checkeAccess(reqUrl, key){
+    var accessApi = {
+      viewLogin: ['api/ticketorder/queryTicketOrderListByKeyword'],
+      sourceLogin: [
+        'api/vieworder/ticketsource/queryTicketSourceListByKeyword',
+        'api/vieworder/queryViewOrderListByKeyword',
+        'api/vieworder/updateViewOrderPictureShow',
+        'api/vieworder/applyRefund',
+        'api/vieworder/offlineTicketsRefund',
+        'api/vieworder/product/queryProductBusScheduleDetails',
+        'api/vieworder/insertViewOrder',
+        'api/vieworder/updateViewOrderPhoto',
+        'files/excel', 
+        'files/image'
+      ]
+    };
+    for(var i = 0; i < accessApi[key].length; i ++){
+      if(reqUrl.indexOf(accessApi[key][i]) != -1){
+        return true;
+      }
+    }
+  }
   if(req.session.user==undefined){
     res.send({"code":401,"data":"权限不足，用户未登录"})
     res.end();
-  }else if(req.session.user.havePower == 0&&urlArr[2] != 'vieworder'){
-    //获取完整目录名
-      res.send({"code": 403,"data":"您没有权限访问此模块"});
-      res.end();
-  }else if(req.session.user.havePower == 0&&urlArr[2] == 'vieworder'&&urlArr[3].indexOf('queryViewOrderListByKeyword')>-1&&req.query.ticketSource!= req.session.user.ticketSourceId){
-      res.send({"code": 403,"data":"您没有权限访问此模块"});
-      res.end();
   }else{
-    var tmpUrl = urlArr.slice(0,4).join('/');
-    var serviceUrl;
-    if(tmpUrl == access[0]||tmpUrl == access[1]){
-      urlArr.splice(2,1);
-      serviceUrl = urlArr.join('/');
-      serviceUrl = serviceUrl.substring(4,serviceUrl.length);
+    console.log('req.session.accessyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy',req.session.access)
+    //判断请求是否在上述的表中
+    if((req.session.access == 'viewLogin' || req.session.access == 'sourceLogin')&&checkeAccess(req.originalUrl, req.session.access)){
+      var tmpUrl = urlArr.slice(0,4).join('/');
+      var serviceUrl;
+      if(tmpUrl == access[0]||tmpUrl == access[1]){
+        urlArr.splice(2,1);
+        serviceUrl = urlArr.join('/');
+        serviceUrl = serviceUrl.substring(4,serviceUrl.length);
+      }else{
+        var url = req.originalUrl;
+        serviceUrl =req.originalUrl.substring(4,url.length);
+      }
+      httpProxy(serviceUrl,req.body,function(data){
+        res.send(data);
+        res.end();
+      },function(data){
+        res.send(data);
+        res.end();
+      });
+    }else if(req.session.access == 'handletoken'){
+      var tmpUrl = urlArr.slice(0,4).join('/');
+      var serviceUrl;
+      if(tmpUrl == access[0]||tmpUrl == access[1]){
+        urlArr.splice(2,1);
+        serviceUrl = urlArr.join('/');
+        serviceUrl = serviceUrl.substring(4,serviceUrl.length);
+      }else{
+        var url = req.originalUrl;
+        serviceUrl =req.originalUrl.substring(4,url.length);
+      }
+      httpProxy(serviceUrl,req.body,function(data){
+        res.send(data);
+        res.end();
+      },function(data){
+        res.send(data);
+        res.end();
+      });
     }else{
-      var url = req.originalUrl;
-      serviceUrl =req.originalUrl.substring(4,url.length);
+      res.send({"code":401,"data":"您没有权限访问此模块"})
+      res.end();
     }
-    httpProxy(serviceUrl,req.body,function(data){
-      res.send(data);
-      res.end();
-    },function(data){
-      res.send(data);
-      res.end();
-    });
   }
 }
 module.exports = filter;

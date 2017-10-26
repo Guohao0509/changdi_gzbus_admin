@@ -4,7 +4,13 @@
  * @version 1.0.0
  * @descriptions AngularJS的启动文件,AngularJs的路由配置文件
  */
-
+/**
+ * @author Guohao
+ * @date 2017-9-07
+ * @version 1.0.0
+ * @descriptions AngularJS的启动文件,AngularJs的路由配置文件
+ * @module 产品管理、优惠券管理、订单管理、票据来源管理、景区管理、景区订单管理
+ */
 app
     .run(
     //AngularJS启动的时候，运行如下配置
@@ -27,14 +33,16 @@ app
                         $state.go('auth.login');
                     }else{
                         $rootScope.session_user = data;
-                        if(data.havePower=='0'){
-                            localStorage.setItem('guilvbus_h_p',data.havePower);
-                            localStorage.setItem('guilvbus_t_s',data.ticketSourceId);
-                            localStorage.setItem('guilvbus_t_s_n', data.ticketSource);
+                        $rootScope.session_user.access = 'systemUser';
+                        $rootScope.havePower_user = true;
+                        if(data.viewUser){
+                            $rootScope.session_user.userName = data.viewUser;
+                            $rootScope.session_user.access = 'viewUser';
                             $rootScope.havePower_user = false;
-                            $rootScope.ticketSource_user = data.ticketSource;
-                        }else{
-                            $rootScope.havePower_user = true;
+                        }else if(data.sourceUser){
+                            $rootScope.session_user.userName = data.sourceUser;
+                            $rootScope.session_user.access = 'sourceUser';
+                            $rootScope.havePower_user = false;
                         }
                     }
                 });
@@ -49,22 +57,8 @@ app
             $myHttpService.get("auth/logout",{},function(data){
                 $rootScope.session_user=undefined;
                 $state.go('auth.login');
-                localStorage.removeItem('guilvbus_h_p');
-                localStorage.removeItem('guilvbus_t_s');
-                localStorage.removeItem('guilvbus_t_s_n');
             });
         }
-        // $(function(){
-        //     if($rootScope.session_user==undefined){
-        //         $myHttpService.get("auth/check",{},function(data){
-        //             if(data==null){
-        //                 $state.go('auth.login');
-        //             }else{
-        //                 $rootScope.session_user = data;
-        //             }
-        //         });
-        //     }
-        // })
     }
 )
 .config(
@@ -76,6 +70,7 @@ app
             .otherwise('/auth/login');
         //使用ui-router组件来进行路由
         $stateProvider
+            
             .state('error',{
                 abstract: true,
                 url:'/error',
@@ -114,6 +109,7 @@ app
                 url: '/app',
                 templateUrl: basePath+'app.html',
             })
+
             .state('app.dashboard', {
                 //跳转到系统主页
                 url: '/dashboard',
@@ -278,7 +274,7 @@ app
                 }
             })
             .state('app.route.list', {
-                //跳转到司机详情界面
+                //跳转到线路list界面
                 url: '/list',
                 templateUrl: basePath+'route/list.html',
                 ncyBreadcrumb: {
@@ -289,7 +285,7 @@ app
 
 
             .state('app.route.create_list', {
-                //跳转到司机详情界面
+                //跳转到线路添加界面
                 url: '/create_list',
                 templateUrl: basePath+'route/create_list.html',
                 ncyBreadcrumb: {
@@ -570,7 +566,7 @@ app
             })
 
             .state('app.source', {
-                //线路列表，线路管理
+                //票据来源
                 abstract: true,
                 url:'/source',
                 template: '<div ui-view class="fade-in"></div>',
@@ -583,7 +579,7 @@ app
                 }
             })
             .state('app.source.list', {
-                //跳转到司机详情界面
+                //跳转到票据来源列表
                 url: '/list',
                 templateUrl: basePath+'source/list.html',
                 ncyBreadcrumb: {
@@ -592,6 +588,7 @@ app
                 }
             })
             .state('app.source.add', {
+                //跳转到票据来源添加页面
                 url: '/add',
                 templateUrl: basePath+'source/add.html',
                 ncyBreadcrumb: {
@@ -600,6 +597,7 @@ app
                 }
             })
             .state('app.source.edit', {
+                //票据来源编辑
                 url: '/edit/{id}',
                 templateUrl: basePath+'source/add.html',
                 ncyBreadcrumb: {
@@ -635,5 +633,89 @@ app
                     label: '包车服务'
                 }
             })
+            .state('app.view', {
+                //景点管理
+                abstract: true,
+                url:'/view',
+                template: '<div ui-view class="fade-in"></div>',
+                resolve: {
+                    deps: ['$ocLazyLoad',
+                        function( $ocLazyLoad ){
+                            //延迟加载授权控制器
+                            return $ocLazyLoad.load(basePath+'view/controller.js');
+                        }]
+                }
+            })
+            .state('app.view.list', {
+                //跳转到景点管理list
+                url: '/list',
+                templateUrl: basePath+'view/list.html',
+                ncyBreadcrumb: {
+                    parent:'app.dashboard',
+                    label: '景点管理'
+                }
+            })
+            .state('app.view.add', {
+                //跳转到景点添加
+                url: '/add',
+                templateUrl: basePath+'view/add.html',
+                ncyBreadcrumb: {
+                    parent:'app.dashboard',
+                    label: '添加景点'
+                }
+            })
+            .state('app.view.edit', {
+                //跳转到景点添加
+                url: '/edit/{id}',
+                templateUrl: basePath+'view/add.html',
+                ncyBreadcrumb: {
+                    parent:'app.dashboard',
+                    label: '编辑景点'
+                }
+            })
+            .state('app.vieworder', {
+                //跳转到景点订单
+                abstract: true,
+                url:'/vieworder',
+                template: '<div ui-view class="fade-in"></div>',
+                resolve: {
+                    deps: ['$ocLazyLoad',
+                        function( $ocLazyLoad ){
+                            //延迟加载授权控制器
+                            return $ocLazyLoad.load(basePath+'vieworder/controller.js');
+                        }]
+                }
+            })
+            .state('app.vieworder.list', {
+                //跳转到景点列表页面
+                url: '/list',
+                templateUrl: basePath+'vieworder/list.html',
+                ncyBreadcrumb: {
+                    parent:'app.dashboard',
+                    label: '产品管理'
+                }
+            })
+            .state('app.test', {
+                //跳转到景点订单
+                abstract: true,
+                url:'/test',
+                template: '<div ui-view class="fade-in"></div>',
+                resolve: {
+                    deps: ['$ocLazyLoad',
+                        function( $ocLazyLoad ){
+                            //延迟加载授权控制器
+                            return $ocLazyLoad.load(basePath+'a-blocks/controller.js');
+                        }]
+                }
+            })
+            .state('app.test.upload', {
+                url: '/upload',
+                templateUrl: basePath+'a-blocks/uploadimage.html',
+                ncyBreadcrumb: {
+                    parent:'app.test',
+                    label: '优惠券列表'
+                }
+            })
+
     }
 );

@@ -105,13 +105,13 @@ app.controller('BusListController',['$rootScope','$scope','$http','$state','$loc
 app.controller('BusPositionController', ['$scope','$rootScope','$stateParams',function($scope, $rootScope,$stateParams) {
     //根据车辆的id获取位置信息，先判断obd状态，如果obd状态为不正常，先唤醒obd，在获取位置信息
     var carPosition = $stateParams.carPosition;
-    var map = new AMap.Map('J_map_canvas', {
+    $scope.map = new AMap.Map('J_map_canvas', {
         resizeEnable: true,
         zoom:11,
         center: carPosition.split('&')
     });
-    marker = new AMap.Marker({
+    $scope.marker = new AMap.Marker({
         position: carPosition.split('&'),
     });
-    marker.setMap(map);
+    $scope.marker.setMap($scope.map);
 }])

@@ -1,87 +1,98 @@
-﻿<!-- list -->
-<ul class="nav">
-  <li class="hidden-folded padder m-t m-b-sm text-muted text-xs" ng-if="havePower_user">
+﻿<ul class="nav">
+  <li class="hidden-folded padder m-t m-b-sm text-muted text-xs" ng-if="session_user.access == 'systemUser'">
     <span>直通车管理</span>
   </li>
   
-  <li ui-sref-active="active" ng-if="havePower_user">
+  <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'">
     <a ui-sref="app.driver.list">
       <i class="glyphicon glyphicon-user icon text-success"></i>
       <span>司机管理</span>
     </a>
   </li>
   
-  <li ui-sref-active="active" ng-if="havePower_user">
+  <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'">
     <a ui-sref="app.bus.list">
       <i class="fa fa-taxi icon text-info-dker"></i>
       <span>车辆管理</span>
     </a>
   </li>
 
-  <li ng-class="{active:$state.includes('app.route')||$state.includes('layout.route_edit')}" ng-if="havePower_user">
+  <li ng-class="{active:$state.includes('app.route')||$state.includes('layout.route_edit')}" ng-if="session_user.access == 'systemUser'">
     <a ui-sref="app.route.list">
       <i class="fa fa-road icon text-info-dker"></i>
       <span>线路管理</span>
     </a>
   </li>
   
-  <li ui-sref-active="active" ng-if="havePower_user">
+  <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'">
     <a ui-sref="app.schedule.list">
       <i class="fa fa-reorder icon text-info-dker"></i>
       <span>排班管理</span>
     </a>
   </li>
 
-  <li ui-sref-active="active" ng-if="havePower_user">
+  <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'">
     <a ui-sref="app.trip.list">
       <i class="fa fa-calendar icon text-info-dker"></i>
       <span>产品管理</span>
     </a>
   </li>
   
-  <li ui-sref-active="active" ng-if="havePower_user">
+  <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'">
     <a ui-sref="app.charterbus.operationadmin">
       <i class="glyphicon glyphicon glyphicon-link text-success"></i>
       <span>包车管理</span>
     </a>
   </li>
 
-  <li ui-sref-active="active" ng-if="havePower_user">
+  <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'">
     <a ui-sref="app.coupon.list">
       <i class="fa fa-ticket icon text-info-dker"></i>
       <span>优惠券管理</span>
     </a>
   </li>
 
-  <li ui-sref-active="active">
+  <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'||session_user.access == 'sourceUser'">
     <a ui-sref="app.carorder.list">
       <i class="fa fa-bus icon text-info-dker"></i>
       <span>直通车订单</span>
     </a>
   </li>
-  <li ui-sref-active="active" ng-if="havePower_user">
+  <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'">
     <a ui-sref="app.statistic.profit">
       <i class="fa fa-cny icon text-danger-lter"></i>
       <span>收益统计</span>
     </a>
   </li>
 
-  <li ui-sref-active="active" ng-if="havePower_user">
+  <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'">
     <a ui-sref="app.user.user_list">
       <i class="fa fa-user icon text-primary-lter"></i>
       <span>用户管理</span>
     </a>
   </li>
-  <li ui-sref-active="active" ng-if="havePower_user">
+  <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'">
     <a ui-sref="app.trade.recharge_list">
       <i class="fa fa-credit-card icon text-danger-lter"></i>
       <span>充值查询</span>
     </a>
   </li>
-  <li ui-sref-active="active" ng-if="havePower_user">
+  <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'">
     <a ui-sref="app.source.list">
       <i class="glyphicon glyphicon-paperclip icon text-primary-lter"></i>
       <span>票据来源管理</span>
+    </a>
+  </li>
+  <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'">
+    <a ui-sref="app.view.list">
+      <i class="fa fa-map-marker text-primary-lter"></i>
+      <span>景点管理</span>
+    </a>
+  </li>
+  <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'|| session_user.access == 'viewUser'">
+    <a ui-sref="app.vieworder.list">
+      <i class="fa-cc-paypal fa text-primary-lter"></i>
+      <span>景点订单管理</span>
     </a>
   </li>
   <!---->
@@ -129,4 +140,3 @@
     </a>
   </li>
 </ul> -->
-<!-- / list

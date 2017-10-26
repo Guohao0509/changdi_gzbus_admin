@@ -71,8 +71,14 @@
                             <td>{{$index+1}}</td>
                             <!-- <td ng-bind="item.productid"></td> -->
                             <td style="border-right: 1px solid #EAEFF0">
-                                <span ng-if="item.productType == 0">单程</span>
-                                <span ng-if="item.productType == 1">往返</span>
+                                <span ng-if="item.productType == 0">单程
+                                    <span ng-if="item.haveTicket == 1">&nbsp;+&nbsp;</span>
+                                    <span ng-if="item.haveTicket == 1" class="label label-warning">门票</span>
+                                </span>
+                                <span ng-if="item.productType == 1">往返
+                                    <span ng-if="item.haveTicket == 1">&nbsp;+&nbsp;</span>
+                                    <span ng-if="item.haveTicket == 1" class="label label-warning">门票</span>
+                                </span>
                             </td>
                             <td ng-bind="item.gobsname"></td>
                             <td ng-bind="item.departtime"></td>

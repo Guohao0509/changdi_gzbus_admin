@@ -1,3 +1,8 @@
+/**
+ * @author Guohao
+ * @date 2016-8-11
+ * @version 1.0.0 票据来源的控制器
+ */
 app.controller('sourceListController', ['$scope','$http','$myHttpService','$tableListService','$state', function($scope,$http,$myHttpService,$tableListService,$state) {
 	var options={
         searchFormId:'J_search_form',
@@ -5,11 +10,10 @@ app.controller('sourceListController', ['$scope','$http','$myHttpService','$tabl
     };
     $tableListService.init($scope, options);
     $tableListService.get();
-    $scope.delete = function(ticketSourceId, sysUserId){
+    $scope.delete = function(ticketSourceId){
 		layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){
 			var reqParam = {
-				ticketSourceId: ticketSourceId,
-                sysUserId: sysUserId
+				ticketSourceId: ticketSourceId
 			}
             $myHttpService.post("api/ticketsource/deleteTicketSource",reqParam,function(){
                 layer.msg("删除成功！",{offset: '100px'})
@@ -32,8 +36,7 @@ app.controller('addTicketSourceController', ['$scope','$myHttpService', '$state'
         $myHttpService.post("api/ticketsource/queryTicketSource",reqParam,function(data){
         	$scope.source = {
         		ticketSource: data.ticketSource.ticketSource,
-        		userName: data.ticketSource.userName,
-        		passWord: data.ticketSource.passWord,
+        		sourceUser: data.ticketSource.sourceUser,
         		sourcePhone: data.ticketSource.sourcePhone,
         		needSourceId: data.ticketSource.needSourceId == '1'?true:false
         	}
@@ -48,13 +51,12 @@ app.controller('addTicketSourceController', ['$scope','$myHttpService', '$state'
 	$scope.submit  = function() {
 		var reqParam = {
 			ticketSource: $scope.source.ticketSource,
-			userName: $scope.source.userName,
+			sourceUser: $scope.source.sourceUser,
 			sourcePhone: $scope.source.sourcePhone
 		}
-		if(!$scope.sourcePwd.passWord&&$scope.editMode){
-			reqParam.passWord = md5.createHash($scope.source.passWord)
+		if(!$scope.sourcePwd.sourcePass&&$scope.editMode){
 		}else{
-			reqParam.passWord = md5.createHash($scope.sourcePwd.passWord)
+			reqParam.sourcePass = md5.createHash($scope.sourcePwd.sourcePass)
 		}
 		if(!$scope.source.needSourceId || $scope.source.needSourceId == 'false'){
 			reqParam.needSourceId = '0';

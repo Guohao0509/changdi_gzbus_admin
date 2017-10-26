@@ -1,0 +1,188 @@
+<div class="wrapper-md" ng-controller="ViewAddController">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="3000" close="closeAlert($index)" >{{alert.msg}}</alert>
+    <div class="panel panel-default">
+        <div class="panel-heading" ng-show="!editMode">
+            添加景点
+        </div>
+        <div class="panel-heading" ng-show="editMode">
+            编辑景点
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal form-validation" name="form">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">景区名称<span class="text-danger text-md ">*</span></label>
+                    <div class="col-sm-10">
+                        <input type="text"  class="form-control"
+                               name="name"
+                               ng-model="view.viewName"
+                               maxlength="20"
+                                ng-required="true"
+                                >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">景区地址<span class="text-danger text-md ">*</span></label>
+                    <div class="col-sm-10">
+                        <input type="text"  class="form-control"
+                               name="name"
+                               ng-model="view.viewaddr"
+                               maxlength="20"
+                               ng-required="true"
+                                >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">门票类型<span class="text-danger text-md ">*</span></label>
+                    <div class="col-sm-6">
+                       <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed" style="border: 1px solid #CFDADD;">
+                                <thead >
+                                    <tr>
+                                        <th>门票类型</th>
+                                        <th>价格</th>
+                                        <th>折扣</th>
+                                        <th style="border-right: 1px solid #CFDADD;">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in ticketType track by $index">
+                                        <td  ng-bind="item.viewPriceType"></td>
+                                        <td  ng-bind="item.viewPrice"></td>
+                                        <!-- <td  ng-bind="item.linename"></td> -->
+                                        <td  ng-bind="item.viewCoupon"></td>
+                                        <!-- <td ng-bind="item.price"></td> -->
+                                        <!-- <td>
+                                            <a ng-click="deleteSchedule(item)">
+                                              <span class="label btn-danger">删除</span>
+                                            </a>
+                                        </td> -->
+                                        <td  style="border-right: 1px solid #CFDADD;"> 
+                                            <label class="label label-danger" ng-click="deleteType($index)">移除</label>
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="!display.viewTicketType">
+                                        <td colspan="8" style="text-align: center; border-bottom: 1px solid #EAEFF0;">
+                                            <a href class="label label-success text-xs" ng-click="addViewticketType()">
+                                            <i class="fa fa-plus"></i>
+                                            添加门票类型</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody style="border-top: 0;border-right: 1px solid #CFDADD; font-size: 12px;" ng-show="display.viewTicketType">
+                                    <tr>
+                                        <td class="form-group">
+                                            <input type="text" ng-model="tmpAddtion.type" placeholder="门票类型" class="form-control">
+                                        </td>
+                                         <td class="form-group">
+                                            <input type="number" ng-model="tmpAddtion.price" placeholder="门票价格" class="form-control">
+                                        </td>
+                                         <td class="form-group">
+                                            <input type="number" ng-model="tmpAddtion.discount" placeholder="门票折扣" ng-max="1" ng-min="0.01" class="form-control">
+                                        </td>
+                                        <td  style="border-right: 1px solid #CFDADD;">
+                                            <a>
+                                                <span class="label label-primary" ng-click="ensureAddViewTicket()">确定</span>
+                                            </a>
+                                            <a>
+                                                <span class="label btn-danger">取消</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-sm-2 control-label">景区账号<span class="text-danger text-md ">*</span></label>
+                    <div class="col-sm-10">
+                        <input type="text"  class="form-control"
+                               name="name"
+                               ng-model="admin.viewUser"
+                               ng-pattern="/^[0-9a-zA-Z]{6,18}$/"
+                               maxlength="20"
+                               ng-required="true"
+                               placeholder="6-18位数字和字母的组合"
+                                >
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-sm-2 control-label">景区密码<span class="text-danger text-md" ng-show="!editMode">*</span></label>
+                    <div class="col-sm-10">
+                        <input type="text"  class="form-control"
+                               name="name"
+                               ng-model="viewPass"
+                               ng-pattern="/^[0-9a-zA-Z]{6,18}$/"
+                               maxlength="20"
+                               placeholder="6-18位数字和字母的组合"
+                                >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">景区类型</label>
+                    <div class="col-sm-10">
+                        <input type="text"  class="form-control"
+                               name="name"
+                               ng-model="view.viewType"
+                               maxlength="20"
+                                >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">景区级别</label>
+                    <div class="col-sm-10">
+                        <input type="text"  class="form-control"
+                               name="name"
+                               ng-model="view.viewLevel"
+                               maxlength="20"
+                                >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">景区简介</label>
+                    <div class="col-sm-10">
+                        <input type="text"  class="form-control"
+                               name="name"
+                               ng-model="view.viewintru"
+                                >
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">注意事项</label>
+                    <div class="col-sm-10">
+                        <input type="text"  class="form-control"
+                               name="name"
+                               ng-model="view.notice"
+                                >
+                    </div>
+                </div>
+            </form>
+            <div class="form-group"  style="margin-left: 8%;">
+                <div class="row">
+                    <form id="myForm">
+                        <div class="form-group">
+                            <label for="file_upload" class="col-sm-1 control-label text-right" style="margin: 5px 0 0 20px;">景区图片</label>
+                            <div class="col-sm-7" style="position:relative;border: 1px solid #ddd;border-radius:3px; width:230px; padding: 0;height:30px;margin-left: 15px;">
+                                <i class="glyphicon glyphicon-folder-open" style="position: absolute;bottom: 0;right: 10px;margin-top: 5px;"></i>
+                                <input type="file" name="fulAvatar" id="file_upload"  style="position: absolute;opacity: 0;height:30px;" value="" placeholder="图片地址" onchange="angular.element(this).scope().uploadByForm()">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="col-sm-2 col-sm-offset-1" ng-show="view.viewUrl">
+                        <a class="thumbnail">
+                           <img ng-if="editMode" ng-src="{{view.viewPhoto}}" class="img-responsive"/>
+                           <img ng-src="{{view.viewUrl}}" class="img-responsive"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group clear-float">
+                <div class="col-sm-2 col-sm-offset-10">
+                    <button style="float: right; margin-right: 20px;" type="submit" ng-click="submit()" class="btn btn-primary m-l" ng-disabled="form.$invalid">保存</button>
+                    <button style="float: right;" type="reset" ng-show="!editMode" class="btn btn-default" ng-click="reset()">清空</button>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+

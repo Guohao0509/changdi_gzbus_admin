@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <h4 class="modal-title">推荐图片</h4>
+</div>
+<div class="modal-body" style="padding: 15px 0 15px 0">
+     <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed">
+        <thead >
+            <tr>
+                <th>门票类型</th>
+                <th>价格</th>
+                <th>折扣</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in viewPrices track by $index">
+                <td  ng-bind="item.viewPriceType"></td>
+                <td  ng-bind="item.viewPrice"></td>
+                <td  ng-bind="item.viewCoupon"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary btn-sm" ng-click="ok()">关闭</button>
+</div>
