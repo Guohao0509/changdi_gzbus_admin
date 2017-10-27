@@ -130,6 +130,9 @@ router.post('/excel', function(req, res) {
 	}else{
 		reqParam.viewOrderStatus = '0';
 	}
+	if(req.session.access == 'sourceLogin'){
+		reqParam.ticketSource = req.session.user.ticketSourceId;
+	}
 	var url = host + api + '?ticketSource='+reqParam.ticketSource+'&viewOrderStatus='+reqParam.viewOrderStatus+'&offset=0'+'&pagesize='+reqParam.pagesize;
 	request.post(url).send({}).end(function(error,response){
 		if(response.body.code !=0){

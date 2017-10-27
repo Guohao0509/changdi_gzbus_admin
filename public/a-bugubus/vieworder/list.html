@@ -6,7 +6,7 @@
 		    </ul> -->
      		 景点订单列表
 		</div>
-    	<form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()">
+    	<form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()" ng-if="session_user.access == 'systemUser'">
       		<div class="col-sm-5 m-b-xs">
         		<!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
       		</div>

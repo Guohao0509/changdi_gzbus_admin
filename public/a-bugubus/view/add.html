@@ -167,9 +167,8 @@
                             </div>
                         </div>
                     </form>
-                    <div class="col-sm-2 col-sm-offset-1" ng-show="view.viewUrl">
+                    <div class="col-sm-2 col-sm-offset-1" ng-if="view.viewUrl">
                         <a class="thumbnail">
-                           <img ng-if="editMode" ng-src="{{view.viewPhoto}}" class="img-responsive"/>
                            <img ng-src="{{view.viewUrl}}" class="img-responsive"/>
                         </a>
                     </div>

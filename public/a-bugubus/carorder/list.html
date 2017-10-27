@@ -31,10 +31,10 @@
 
 
 
-                <div class="col-sm-1">
+                <div class="col-sm-1" ng-if="session_user.access == 'systemUser'">
                     <label class="control-label f12">票据来源</label>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-3" ng-if="session_user.access == 'systemUser'">
                     <!-- <input id="ticketSource" type="text" class="input-sm form-control"  name="ticketSource" placeholder="请输入票据来源" ng-model="orderList.ticketSource"> -->
                     <input id="ticketSource" type="text" name="ticketSource" ng-model="carorder.tmpOfflineId" style="display: none;">
                     <select class="form-control" ng-init="carorder.offline = '0'" ng-model="carorder.offline" ng-required="true" ng-change="showSourceid()">
@@ -52,6 +52,7 @@
                         </option>
                     </select>
                 </div>
+                 <div class="col-sm-4" ng-if="session_user.access != 'systemUser'"></div>
                 <div class="col-sm-4">
                     <button class="btn btn-sm btn-primary pull-right">搜索</button>
                 </div>

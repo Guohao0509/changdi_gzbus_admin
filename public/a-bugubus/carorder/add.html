@@ -15,8 +15,8 @@
                                disabled>
                     </div>
                 </div> -->
-                <div class="line line-dashed b-b line-lg pull-in"></div>
-                <div class="form-group">
+                <div class="line line-dashed b-b line-lg pull-in"  ng-if="session_user.access == 'systemUser'"></div>
+                <div class="form-group" ng-if="session_user.access == 'systemUser'">
                     <label class="col-sm-1 control-label">线下门店<span class="text-danger text-md ">*</span></label>
                     <div class="col-sm-11" ng-click="loadTicketSource()">
                         <input class="form-control" type="text" ng-model="ticketSourceName" ng-if="!carorder.havePower" disabled>
@@ -136,7 +136,7 @@
             <div class="form-group">
                 <div class="col-sm-offset-2" style="float: right;margin-right: 15px;">
                     <button type="reset" ng-show="!editMode" ng-click="reset()" class="btn btn-default">清空</button>
-                    <button type="submit" ng-click="submit()" ng-disabled="form.$invalid||submiting||missParm||!carorder.schedule||carorder.offline=='0'||overDeadLineTime" class="btn btn-primary m-l">提交</button>
+                    <button type="submit" ng-click="submit()" ng-disabled="submiting||missParm||!carorder.schedule||overDeadLineTime" class="btn btn-primary m-l">提交</button>
                 </div>
             </div>
         </div>

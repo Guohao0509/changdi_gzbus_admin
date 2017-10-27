@@ -144,7 +144,7 @@
             <div class="wrapper b-t b-light text-center" style="position: relative; top: -60px;background-color: #F6F8F8">
                 <a href class="btn btn-info" ng-show="editMode" ng-click="submit()" ng-disabled="form.$invalid">保存线路修改</a>
                 <a href class="btn btn-success" ng-show="editMode" ng-click="save()" ng-disabled="form.$invalid">另存为新线路</a>
-                <a href class="btn btn-info" ng-show="!editMode" ng-click="submit(busline.drivetime,busline.drivedistance)" ng-disabled="form.$invalid">保存线路</a>
+                <a href class="btn btn-info" ng-show="!editMode" ng-click="submit(busline.drivetime,busline.drivedistance)" ng-disabled="form.$invalid||submiting">保存线路</a>
             </div>
         </div>
     </div>

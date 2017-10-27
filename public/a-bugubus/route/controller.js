@@ -301,10 +301,12 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
         $scope.submit(true);
     }
     $scope.submit = function(saveMode){
+        $scope.submiting = true;
         var len = $scope.buslineStations.length;
         for(var i = 1; i < $scope.buslineStations.length; i++){
             if($scope.buslineStations[i].drivingTime == 0){
                 layer.msg('用时不能为0分钟');
+                $scope.submiting = false;
                 return
             }
         }
@@ -338,25 +340,31 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
             }
             if(angular.equals(data,saveDataOld)){
                 layer.msg("线路信息未经过修改");
+                $scope.submiting = false;
                 return;
             }
             if($scope.editMode&&!saveMode){
                 $myHttpService.post("api/busline/updateBuslineInfo.htm",{data:JSON.stringify(data)},function(){
                     layer.msg("修改成功！",{offset: '100px'})
                     $state.go("app.route.list",{},{reload:true});
+                    $scope.submiting = false;
                 });
             }else{
                 if($scope.busline.drivetime==undefined || $scope.busline.drivedistance==undefined){
                     layer.alert("请输入运行时长和运行距离");
+                    $scope.submiting = false;
                     return;
                 }
                 $myHttpService.post("api/busline/insertBusline.htm",{data:JSON.stringify(data)},function(){
                     layer.msg("添加成功！",{offset: '100px'})
                     $state.go("layout.route_add",{},{reload:true});
+                    $scope.submiting = false;
                 });
             }
         }else{
             layer.alert("一条线路必须有一个起点和终点");
+            $scope.submiting = false;
+
         }
     }
 }]);

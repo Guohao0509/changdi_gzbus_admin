@@ -27,41 +27,11 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
                 ticketSource: "全部",
                 ticketSourceId: null
             })
-            // if(localStorage.getItem('guilvbus_h_p')!='undefined'&&localStorage.getItem('guilvbus_t_s')!='undefined'){
-            //     $scope.carorder.havePower = localStorage.getItem('guilvbus_h_p')=='0'?false:true;
-                
-            //     $scope.ticketSourceName = localStorage.getItem('guilvbus_t_s')
-                
-            //     angular.forEach($scope.ticketSourceList.sources,function(item, index){
-            //         if(localStorage.getItem('guilvbus_t_s') == item.ticketSource){
-            //             $scope.carorder.offline = item.ticketSourceId;
-            //         }
-            //     })
-            // }else{
-            //     $scope.carorder.havePower = true;
-            //     $scope.carorder.offline = 0;
-            // }
-            // if($scope.ticketSourceList){
-            //     angular.forEach($scope.ticketSourceList.sources, function(data){
-            //         var needSourceId;
-            //         if(data.needSourceId == '0'){
-            //             needSourceId = false;
-            //         }else if(data.needSourceId == '1'){
-            //             needSourceId = true;
-            //         }
-            //         if(data.ticketSource == $scope.carorder.offline){
-            //             $scope.carorder.needSourceId = needSourceId;
-            //         }
-            //     });
-            // }
         }
     };
     $tableListService.init($scope, options);
     $tableListService.get();
-    // console.log($rootScope.session_user.havePower)
-    // if($rootScope.session_user.havePower == 0&&$rootScope.session_user.ticketSource){
-    //    $scope.orderList.ticketSource = $rootScope.session_user.ticketSource;
-    // }
+
     var options = {
         searchFormId:"J_search_form",
         listUrl:"api/vieworder/queryViewOrderListByKeyword", 
@@ -90,7 +60,6 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
         var reqParam = {
             totalnum: $scope.totalCount,
             viewOrderStatus: $scope.orderList.viewOrderStatu,
-            ticketsource: $scope.carorder.tmpOfflineId
         }
         if($scope.carorder.tmpOfflineId == '线上'){
             reqParam.ticketsource = encodeURI('线上')
@@ -226,20 +195,9 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
         size: '9999',
         multiTable: 'ticketSourceList',
         callback: function(){
-            if(localStorage.getItem('guilvbus_h_p')!='undefined'&&localStorage.getItem('guilvbus_t_s')!='undefined'){
-                $scope.carorder.havePower = localStorage.getItem('guilvbus_h_p')=='0'?false:true;
-                
-                $scope.ticketSourceName = localStorage.getItem('guilvbus_t_s_n')
-                
-                angular.forEach($scope.ticketSourceList.sources,function(item, index){
-                    if(localStorage.getItem('guilvbus_t_s') == item.ticketSourceId){
-                        $scope.carorder.offline = item.ticketSourceId;
-                    }
-                })
-            }else{
-                $scope.carorder.havePower = true;
-                $scope.carorder.offline = 0;
-            }
+            $scope.carorder.havePower = true;
+            $scope.carorder.offline = 0;
+            console.log($scope.ticketSourceList);
             if($scope.ticketSourceList){
                 angular.forEach($scope.ticketSourceList.sources, function(data){
                     var needSourceId;
@@ -248,6 +206,7 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
                     }else if(data.needSourceId == '1'){
                         needSourceId = true;
                     }
+
                     if(data.ticketSource == $scope.carorder.offline){
                         $scope.carorder.needSourceId = needSourceId;
                     }

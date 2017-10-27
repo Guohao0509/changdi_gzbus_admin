@@ -31,10 +31,9 @@ var filter = function(req,res,next){
     }
   }
   if(req.session.user==undefined){
-    res.send({"code":401,"data":"权限不足，用户未登录"})
+    res.send({"code":401,"data":"权限不足，用户未登录"});
     res.end();
   }else{
-    console.log('req.session.accessyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy',req.session.access)
     //判断请求是否在上述的表中
     if((req.session.access == 'viewLogin' || req.session.access == 'sourceLogin')&&checkeAccess(req.originalUrl, req.session.access)){
       var tmpUrl = urlArr.slice(0,4).join('/');
@@ -47,6 +46,18 @@ var filter = function(req,res,next){
         var url = req.originalUrl;
         serviceUrl =req.originalUrl.substring(4,url.length);
       }
+      if(serviceUrl.indexOf('ticketorder') != -1){
+        serviceUrl = serviceUrl+'&viewid=' + req.session.user.viewid;
+      }
+      if(serviceUrl.indexOf('vieworder/queryViewOrderListByKeyword') != -1){
+        var myQuery = 'ticketSource='+req.session.user.ticketSourceId;
+        // serviceUrl = serviceUrl.replace(/ticketSource=(\d){0,}/,myQuery);
+        serviceUrl = serviceUrl + '&' + myQuery;
+      }
+      if(serviceUrl.indexOf('vieworder/insertViewOrder') != -1){
+        req.body.ticketSource = req.session.user.ticketSourceId;
+      }
+      
       httpProxy(serviceUrl,req.body,function(data){
         res.send(data);
         res.end();

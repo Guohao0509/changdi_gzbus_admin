@@ -9,7 +9,7 @@
 	            <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="app.view.add"><i class="fa fa-plus"></i>添加景点</button></li>
 	        </ul>
 		</div>
-		<form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()">
+		<form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()" >
       		<div class="col-sm-5 m-b-xs">
         		<!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
       		</div>
@@ -50,7 +50,7 @@
 						<td ng-bind="item.viewType"></td>
 						<td ng-bind="item.viewLevel"></td>
 						<td>
-							<a ng-click="openImageModal(item.viewPhoto)">
+							<a ng-click="openImageModal(item.viewUrl)">
 	                            <span class="label label-primary">查看图片</span>
 	                        </a>
 						</td>
