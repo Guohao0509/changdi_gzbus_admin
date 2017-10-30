@@ -58,6 +58,7 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
     $scope.exportToExcel = function(){
         var url = 'files/excel';
         var reqParam = {
+            ticketsource:  $scope.carorder.tmpOfflineId,
             totalnum: $scope.totalCount,
             viewOrderStatus: $scope.orderList.viewOrderStatu,
         }

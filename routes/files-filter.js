@@ -134,6 +134,9 @@ router.post('/excel', function(req, res) {
 		reqParam.ticketSource = req.session.user.ticketSourceId;
 	}
 	var url = host + api + '?ticketSource='+reqParam.ticketSource+'&viewOrderStatus='+reqParam.viewOrderStatus+'&offset=0'+'&pagesize='+reqParam.pagesize;
+	console.log("#########################################################")
+	console.log(url);
+	console.log("#########################################################")
 	request.post(url).send({}).end(function(error,response){
 		if(response.body.code !=0){
 			res.send({"code":"-1","data":"下载失败"});
