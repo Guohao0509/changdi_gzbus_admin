@@ -5,7 +5,7 @@
  * @descriptions 获取数据列表，通常在有类似table等列表展示页面使用
  */
 angular.module('app.service',[])
-    .service('$myHttpService',function($http){
+    .service('$myHttpService',function($http,$state){
         this.post = function(url,data,success,error){
             var loadIndex = layer.msg("请求资源中……",{time:99999999,offset: '100px'});
             $http.post(url,data).success(function(data){
@@ -14,7 +14,11 @@ angular.module('app.service',[])
                     success(data.data);
                 }else{
                     if(layer){
-                        layer.alert(JSON.stringify(data));
+                        if(data.code == 401){
+                            $state.go('auth.login');
+                        }else{
+                            layer.alert(JSON.stringify(data));
+                        }
                         console.log(data)
                     }else{
                         alert(JSON.stringify(data));

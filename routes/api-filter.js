@@ -84,7 +84,7 @@ var filter = function(req,res,next){
         res.end();
       });
     }else{
-      res.send({"code":401,"data":"您没有权限访问此模块"})
+      res.send({"code":402,"data":"您没有权限访问此模块"})
       res.end();
     }
   }

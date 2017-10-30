@@ -70,6 +70,7 @@
 						<!-- <th sort-name = "VIEWORDERID">订单号</th> -->
 						<th sort-name = "TICKETSOURCE">票据来源</th>
 						<th sort-name = "USERNAME">用户名</th>
+						<th sort-name = "HAVETICKET">景区门票</th>
 						<!-- <th sort-name = "DRIVERNAME">司机</th>
 						<th sort-name = "BSID">班次ID</th> -->
 						<!-- <th sort-name = "ROUTE">路线</th> -->
@@ -100,6 +101,9 @@
 						<!-- <td ng-bind="item.viewOrderid"></td> -->
 						<td ng-bind="item.ticketSource"></td>
 						<td ng-bind="item.username"></td>
+						<td>
+							<span ng-if="item.haveTicket == 1" class="label label-warning">门票</span>
+						</td>
 						<!-- <td ng-bind="item.drivername"></td>
 						<td ng-bind="item.bsid"></td> -->
 						<!-- <td ng-bind="item.linename"></td> -->

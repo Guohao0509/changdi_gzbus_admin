@@ -73,7 +73,7 @@
                                             <input type="text" ng-model="tmpAddtion.type" placeholder="门票类型" class="form-control">
                                         </td>
                                          <td class="form-group">
-                                            <input type="number" ng-model="tmpAddtion.price" placeholder="门票价格" class="form-control">
+                                            <input type="number" min="0.01" ng-model="tmpAddtion.price" placeholder="门票价格" class="form-control">
                                         </td>
                                          <td class="form-group">
                                             <input type="number" ng-model="tmpAddtion.discount" placeholder="门票折扣" ng-max="1" ng-min="0.01" class="form-control">

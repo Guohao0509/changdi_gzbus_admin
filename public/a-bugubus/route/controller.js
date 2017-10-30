@@ -367,6 +367,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
 
         }
     }
+    $scope.$on('')
 }]);
 /**
  * 线路列表控制器

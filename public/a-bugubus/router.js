@@ -25,6 +25,10 @@ app
         });
         //监听路由改变事件，每次路由改变，需要检查一下用户的权限，状态
         $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
+            // if($rootScope.map){
+            //     console.log(111111)
+            //     $rootScope.map.destroy()
+            // }
             var urls = toState.name.split('.');
             //包含验证页面，则无需过滤，否则跳转到登录页
             if(urls.length>0&&urls[0]!="auth"&&$rootScope.session_user==undefined){
@@ -382,7 +386,10 @@ app
                     deps: ['$ocLazyLoad',
                         function( $ocLazyLoad ){
                             //延迟加载授权控制器
-                            return $ocLazyLoad.load(basePath+'bus/controller.js');
+                            return $ocLazyLoad.load([
+                                    basePath+'bus/controller.js',
+                                    'http://webapi.amap.com/maps?v=1.3&key=1a5cdec55ebac9dbd85652429f54d4d1'
+                                ]);
                         }]
                 }
             })

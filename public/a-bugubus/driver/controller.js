@@ -53,18 +53,19 @@ app.controller('DriverEditController',['$rootScope','$scope','$myHttpService','$
             },3000)
         });
         $scope.submit = function(){
-            if( $scope.driver.loginpwd!=""){
-                $scope.tempPwd  = $scope.driver.loginpwd;
-                $scope.driver.loginpwd = md5.createHash($scope.driver.loginpwd);
+            $scope.tmpDriver = angular.copy($scope.driver);
+            if( $scope.tmpDriver.loginpwd!=""){
+                $scope.tempPwd  = $scope.tmpDriver.loginpwd;
+                $scope.tmpDriver.loginpwd = md5.createHash($scope.tmpDriver.loginpwd);
             }
             //提交表单到服务器地址
-            $myHttpService.post("api/driver/updateDriverInfo.htm",$scope.driver,function(data){
+            $myHttpService.post("api/driver/updateDriverInfo.htm",$scope.tmpDriver,function(data){
                 layer.msg("修改成功！",{offset: '100px'});
                 $timeout(function(){
                     $state.go('app.driver.list');
                 },1000)
             },function(){
-                $scope.driver.loginpwd=$scope.tempPwd;
+                // $scope.driver.loginpwd=$scope.tempPwd;
             });
         };
         $scope.delete=function(item){
@@ -84,8 +85,9 @@ app.controller('DriverEditController',['$rootScope','$scope','$myHttpService','$
         $scope.submit = function(){
             //提交表单到服务器地址
             $scope.tempPwd  = $scope.driver.loginpwd;
-            $scope.driver.loginpwd=md5.createHash($scope.driver.loginpwd);
-            $myHttpService.post("api/driver/insertDriver.htm",$scope.driver,function(data){
+            $scope.tmpDriver = angular.copy($scope.driver)
+             $scope.tmpDriver.loginpwd=md5.createHash($scope.tmpDriver.loginpwd);
+            $myHttpService.post("api/driver/insertDriver.htm",$scope.tmpDriver,function(data){
                 layer.msg("添加成功！",{offset: '100px'})
                 $state.go("app.driver.add",{},{reload:true});
             });
