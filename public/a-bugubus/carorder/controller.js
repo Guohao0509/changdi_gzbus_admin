@@ -244,13 +244,12 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
     }
     $scope.loadScheduleTable = function(date,callback) {
         $myHttpService.post('api/vieworder/product/queryProductBusScheduleDetails',{departDate:date},function(data){
-            console.log(data)
+            console.log(data);
             var tmpData = [];
             for(var i = 0; i < data.products.length; i ++){
                 if(data.products[i].backbsid){
-                    tmpData.push({
+                    var obj1 = {
                         productType: 0,
-                        haveTicket: 1,
                         gobsname: data.products[i].gobsname,
                         gobdid: data.products[i].gobdid,
                         departName: data.products[i].departName,
@@ -262,9 +261,9 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
                         drivetime: data.products[i].drivetime,
                         leftTickets: data.products[i].goLeftTickets,
                         totalTickets: data.products[i].goTotalTickets,
-                        check: data.products[i].gobsid+'1'
-                    });
-                    tmpData.push({
+                        
+                    }
+                    var obj2 = {
                         productType: 0,
                         haveTicket: 0,
                         gobsname: data.products[i].backbsname,
@@ -278,7 +277,13 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
                         leftTickets: data.products[i].backLeftTickets,
                         totalTickets: data.products[i].backTotalTickets,
                         check: data.products[i].backbsid+'0'
-                    })
+                    }
+                    if(data.products[i].haveTicket == 1){
+                        obj1.haveTicket = 1;
+                        obj1.check = data.products[i].gobsid+'1';
+                    }
+                    tmpData.push(obj1);
+                    tmpData.push(obj2);
                 }else{
                     if(data.products[i].haveTicket == 1){
                         data.products[i].check = data.products[i].gobsid+'1';
@@ -288,8 +293,7 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
                     tmpData.push(data.products[i]);
                 }
             }
-            var resultData = unique(tmpData)
-            console.log(resultData)
+            var resultData = unique(tmpData);
             callback&&callback(resultData);
         },function() {
 

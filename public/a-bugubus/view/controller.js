@@ -179,7 +179,6 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
                 layer.msg('请添加门票类型');
                 return;
             }
-            console.log(JSON.stringify(reqParam));
             $myHttpService.post("api/viewinfo/updateViewInfo",{data: JSON.stringify(reqParam)},function(data){
                 $state.go('app.view.list',{},{reload: true});
                 console.log(data);
