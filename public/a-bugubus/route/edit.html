@@ -87,7 +87,17 @@
                                         </div>
                                         <div class="form-group">
                                             <label>运行区域</label>
-                                            <input type="text" class="form-control" ng-model="busline.region" placeholder="默认为 贵州" ng-required="true">
+                                            <select class="form-control" ng-init="busline.region = '贵阳'" ng-model="busline.region" ng-required="true">
+                                                <option value="贵阳">贵阳</option>
+                                                <option value="六盘水">六盘水</option>
+                                                <option value="遵义">遵义</option>
+                                                <option value="铜仁">铜仁</option>
+                                                <option value="毕节">毕节</option>
+                                                <option value="黔西南">黔西南</option>
+                                                <option value="黔东南">黔东南</option>
+                                                <option value="黔南">黔南</option>
+                                                <option value="安顺">安顺</option>
+                                            </select>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">运行时长</label>
