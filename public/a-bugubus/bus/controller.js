@@ -113,7 +113,7 @@ app.controller('BusPositionController', ['$scope','$rootScope','$stateParams',fu
     var marker = new AMap.Marker({
         position: carPosition.split('&'),
     });
-    marker.setMap($scope.map);
+    marker.setMap(map);
     $scope.$on('$destroy',function() {
       map.destroy();
     });
