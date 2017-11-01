@@ -169,7 +169,7 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
 /**
  * 直通车订单添加控制器
  */
-app.controller('addCarOrderController',['$scope','$http','$state','$tableListService','$myHttpService','$modal',function($scope,$http,$state,$tableListService,$myHttpService,$modal){
+app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','$tableListService','$myHttpService','$modal',function($scope,$rootScope,$http,$state,$tableListService,$myHttpService,$modal){
     var superUserId = '2017001001001001001001';
     $scope.carorder = {};
     $scope.carorder.userid = superUserId;
@@ -312,13 +312,13 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
             $scope.orderType = "haveTicket";
             $scope.disabledSelect = $index;
         }
+        //dataMs schedule.departdate的毫秒数，判断发车时间与购票时间
         var dateMs = schedule.departdate;
         var tmpTimeArr = schedule.departtime.split(':');
         var dateMs = dateMs + (Number(tmpTimeArr[0])*60 + Number(tmpTimeArr[1]))*60*1000;
         function checkDeadLineTime(dateMs){
-            var deadLineTime = 30*60*1000;
             var currentTime = new Date().getTime();
-            if((dateMs - currentTime) < deadLineTime){
+            if((dateMs - currentTime) < 0){
                 $scope.overDeadLineTime = true;
                 return true;
             }else{
@@ -327,7 +327,7 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
             }
         }
         if(checkDeadLineTime(dateMs)){
-            layer.msg('购票时间至出发时间小于30分钟',{offset:'100px'});
+            layer.msg('您选择的车辆已发车,请重新选择',{offset:'100px'});
             return;
         }
         $scope.carorder.schedule = schedule;
@@ -376,6 +376,10 @@ app.controller('addCarOrderController',['$scope','$http','$state','$tableListSer
                     reqParam.ticketSource = item.ticketSourceId;
                 }
             })
+        }
+        if($rootScope.session_user.access == 'systemUser' && reqParam.ticketSource == 0){
+            layer.msg('请选票据来源',{offset:'100px'});
+            return;
         }
         console.log('reqParam',reqParam)
         $myHttpService.post('api/vieworder/insertViewOrder',reqParam, function(data){
