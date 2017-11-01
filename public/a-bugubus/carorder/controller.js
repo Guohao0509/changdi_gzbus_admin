@@ -36,6 +36,7 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
         searchFormId:"J_search_form",
         listUrl:"api/vieworder/queryViewOrderListByKeyword", 
         callback: function($scope,data){
+            console.log(data);
             $scope.totalCount = data.totalnum;
             angular.forEach(data.viewOrders,function(item, index){
                 if(item.isShow=='true'){
