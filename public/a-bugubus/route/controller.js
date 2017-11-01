@@ -310,6 +310,13 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                 return
             }
         }
+        for(var i = 0; i < $scope.buslineStations.length; i++){
+            if($scope.buslineStations[i].stationName.indexOf("新建站点") != -1){
+                layer.msg('请输入站点名称');
+                $scope.submiting = false;
+                return
+            }
+        }
         if(len>1){
             var stations = [];
             for(var i=0;i<len;i++){
