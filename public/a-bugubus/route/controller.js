@@ -28,7 +28,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                     lng:stations[i].stalongitude,
                     lat:stations[i].stalatitude,
                     drivingTime:stations[i].drivingtime,
-                    "stationType": $scope.busline[i].stationType
+                    "stationType": $scope.stations[i].stationType
                 })
             };
             window.setTimeout(function(){
