@@ -17,6 +17,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                 busline: data.busline,
                 stations: data.stations
             }
+            console.log(data.stations)
             saveDataOld = angular.copy(tmpData);
             $scope.busline = data.busline;
             var stations = data.stations;
@@ -28,7 +29,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                     lng:stations[i].stalongitude,
                     lat:stations[i].stalatitude,
                     drivingTime:stations[i].drivingtime,
-                    "stationType":stations[i].stationType
+                    stationType:stations[i].stationType
                 })
             };
             window.setTimeout(function(){
@@ -129,7 +130,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                     "editMode":true,
                     "drivetime":$scope.busline.drivetime,
                     "drivedistance":$scope.busline.drivedistance,
-                    "stationType": $scope.busline.stationType
+                    "stationType": 1
                 };
                 if(len>1){
                     $scope.buslineStations.splice(len-1, 0, busline);
