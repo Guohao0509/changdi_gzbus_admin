@@ -28,6 +28,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                     lng:stations[i].stalongitude,
                     lat:stations[i].stalatitude,
                     drivingTime:stations[i].drivingtime,
+                    "stationType": $scope.busline.stationType
                 })
             };
             window.setTimeout(function(){
@@ -127,7 +128,8 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                     "drivingTime":0,
                     "editMode":true,
                     "drivetime":$scope.busline.drivetime,
-                    "drivedistance":$scope.busline.drivedistance
+                    "drivedistance":$scope.busline.drivedistance,
+                    "stationType": $scope.busline.stationType
                 };
                 if(len>1){
                     $scope.buslineStations.splice(len-1, 0, busline);
@@ -250,7 +252,8 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
             "drivingTime":0,
             "editMode":true,
             "drivetime":$scope.busline.drivetime,
-            "drivedistance":$scope.busline.drivedistance
+            "drivedistance":$scope.busline.drivedistance,
+            "stationType":$scope.stationType
         }
         if(len>1){
             $scope.buslineStations.splice(len-1, 0, busline);
@@ -327,9 +330,10 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                     stalongitude:$scope.buslineStations[i].lng,
                     stalatitude:$scope.buslineStations[i].lat,
                     drivingtime:$scope.buslineStations[i].drivingTime,
-                    serialno:i
+                    serialno:i,
                     //drivetime:$scope.buslineStations[i].drivetime,
                     //drivedistance:$scope.buslineStations[i].drivedistance
+                    stationType:$scope.buslineStations[i].stationType
                 });
             }
             $scope.busline.stationnum =len;
@@ -350,6 +354,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                 $scope.submiting = false;
                 return;
             }
+            console.log(JSON.stringify(data));
             if($scope.editMode&&!saveMode){
                 $myHttpService.post("api/busline/updateBuslineInfo.htm",{data:JSON.stringify(data)},function(){
                     layer.msg("修改成功！",{offset: '100px'})

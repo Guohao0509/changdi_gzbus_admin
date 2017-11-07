@@ -81,6 +81,16 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
             }
         });
     }
+    $scope.checkTicket = function(viewOrderid) {
+        layer.confirm('您确定要验票吗？', {icon: 3, title:'提示'},function(){
+            $myHttpService.post('api/vieworder/offlineCheckUserTicket', {viewOrderid:viewOrderid}, function(data) {
+                layer.alert(viewOrderid+"已验票");
+                $state.go('app.carorder.list',{},{reload: true});
+            })
+        },function(index){
+            layer.close(index);
+        });
+    }
     $scope.openCarorderImageModal = function(images){
         var showImageModel = $modal.open({
             templateUrl: 'a-bugubus/carorder/showImage.html',

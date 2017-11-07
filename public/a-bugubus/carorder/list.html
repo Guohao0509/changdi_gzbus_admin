@@ -52,9 +52,14 @@
                         </option>
                     </select>
                 </div>
-                 <div class="col-sm-4" ng-if="session_user.access != 'systemUser'"></div>
-                <div class="col-sm-4">
-                    <button class="btn btn-sm btn-primary pull-right">搜索</button>
+                 <div class="col-sm-1">
+                    <label class="control-label f12">车票ID</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" name="ticketid" placeholder="请输入车票ID">
+                </div>
+            	<div class="col-sm-4 col-sm-offset-8">
+                    <button class="btn btn-sm btn-primary pull-right" style="margin-top: 15px;">搜索</button>
                 </div>
             </div>
 	    </form>
@@ -152,9 +157,12 @@
 							</a>
 						</td>
 						<td>
-						<!-- <a ui-sref="app.driver.edit({id:item.ordernum})">
-						  <span class="label label-primary">编辑</span>
-						</a> -->
+							<a  ng-if="item.viewOrderStatus == 2"  ng-click="checkTicket(item.viewOrderid)">
+							  	<span class="label label-danger">验票</span>
+							</a>
+							<a  ng-if="item.viewOrderStatus != 2" >
+							  	<span class="label label-default">验票</span>
+							</a>
 							<a ng-click="openDetailModel(item)">
 							  	<span class="label btn-info">详情</span>
 							</a>

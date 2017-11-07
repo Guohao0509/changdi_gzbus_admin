@@ -20,7 +20,7 @@ var filter = function(req,res,next){
         'api/vieworder/product/queryProductBusScheduleDetails',
         'api/vieworder/insertViewOrder',
         'api/vieworder/updateViewOrderPhoto',
-        'files/excel', 
+        'files/excel',
         'files/image'
       ]
     };

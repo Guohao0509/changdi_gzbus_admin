@@ -62,6 +62,13 @@
                                                 <p><label>用时&nbsp;&nbsp;</label><input type="text" ng-model="data.drivingTime" > 分钟</p>
                                                 <p><label>经度&nbsp;&nbsp;</label><input type="text" ng-model="data.lng"><a href title="定位到站点" ng-click="location(data)" ng-show="data.editMode">  <i class="icon icon-pin  fa-fw"></i></a></p>
                                                 <p><label>纬度&nbsp;&nbsp;</label><input type="text" ng-model="data.lat"></p>
+                                                <p>
+                                                    <label>类型&nbsp;&nbsp;</label>
+                                                    <select ng-init="data.stationType = 0" ng-model="data.stationType">
+                                                        <option value="1">停靠点</option>
+                                                        <option value="0">途经点</option>
+                                                    </select>
+                                                </p>
                                                 <p><label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                 </label><a href class="btn btn-sm btn-success" ng-click="edit($index)">保存</a></p>
                                             </form>
