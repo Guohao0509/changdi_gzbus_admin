@@ -134,6 +134,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                 };
                 if(len>1){
                     $scope.buslineStations.splice(len-1, 0, busline);
+                    busline.stationType = 0;
                 }else{
                     $scope.buslineStations.push(busline);
                 }

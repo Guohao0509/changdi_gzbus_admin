@@ -71,18 +71,22 @@ angular.module('app.directives').directive('ticket', function($document) {
                 download(type);
             }
             scope.preview = function() { 
+                console.log('打印车票')
                 var dataUrl = canvas.toDataURL();  
                 var newImg = document.createElement("img");  
                 newImg.src = dataUrl;  
                 /* document.body.appendChild(newImg);  */  
                 /* window.open(newImg.src); */  
-                var printWindow = window.open(newImg.src);  
+                var printWindow = window.open(newImg);
                     // printWindow.document.write();   
-                 printWindow.document.write('<img src="'+newImg.src+'" id="ticket"/>')
+                printWindow.document.write('<img src="'+newImg.src+'" id="ticket"/>')
                  // printWindow.document.appendChild(newImg)
-                 setTimeout(function(){
-                    printWindow.print();  
-                 },0)
+
+                printWindow.document.getElementById("ticket").onload = function() {
+                    console.log('打印');
+                    printWindow.print();
+                }
+                console.log('打印完成')
             } 
             //图片下载操作,指定图片类型
             function download(type) {
