@@ -70,7 +70,7 @@
                         </div>
                         <div class="col-sm-2">
                             <p>注册时间</p>
-                            <p class="text-dark">{{selectedUser.regDate}}</p>
+                            <p class="text-dark">{{selectedUser.regDate|date:'yyyy/MM/dd HH:mm:ss'}}</p>
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn m-b-xs btn-sm btn-danger btn-addon" style="margin-top:10px;" ng-click="selectUserToggle()"><i class="fa fa-edit"></i>更换用户</button>
