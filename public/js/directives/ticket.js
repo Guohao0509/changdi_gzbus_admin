@@ -8,62 +8,111 @@ angular.module('app.directives').directive('ticket', function($document) {
             // selectDate: '&',
         },
         link: function(scope, element, attrs) {
-             var ticket = {
-                viewOrderid: scope.ticketInfo.viewOrderid,
-                start: scope.ticketInfo.departName,
-                end: scope.ticketInfo.arriveName,
-                date: scope.ticketInfo.departDate,
-                time: scope.ticketInfo.departTime,
-                barcode: scope.ticketInfo.barcode, 
-                car: scope.ticketInfo.platenum,
-                phone: scope.ticketInfo.sourcePhone
-            }
-            
-            console.log(ticket);
-            var date = new Date(Number(ticket.date));
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var day = date.getDate();
-            var departDate = year + ' 年 ' + month + ' 月 ' + day + ' 日 ';
+            if(scope.ticketInfo.barcode){
+                var ticket = {
+                    viewOrderid: scope.ticketInfo.viewOrderid,
+                    start: scope.ticketInfo.departName,
+                    startAddr: scope.ticketInfo.departaddr,
+                    end: scope.ticketInfo.arriveName,
+                    date: scope.ticketInfo.departDate,
+                    time: scope.ticketInfo.departTime,
+                    barcode: scope.ticketInfo.barcode, 
+                    car: scope.ticketInfo.platenum,
+                    phone: scope.ticketInfo.sourcePhone
+                }
+                
+                console.log(ticket);
+                var date = new Date(Number(ticket.date));
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                var departDate = year + ' 年 ' + month + ' 月 ' + day + ' 日 ';
 
-            var barcode = document.getElementById('barcodeCanvas');
-            // barcode.id = 'barcode';
-            // console.log(barcode)
-            JsBarcode('#barcodeCanvas',ticket.barcode);
+                var barcode = document.getElementById('barcodeCanvas');
+                // barcode.id = 'barcode';
+                // console.log(barcode)
+                JsBarcode('#barcodeCanvas',ticket.barcode);
 
-            var imgSrc = barcode.toDataURL();
-            var img = new Image();
-            img.crossOrigin="anonymous";
-            img.src = '../../img/ticket.png';
-            var barcodeImg = new Image();
-            barcodeImg.src = imgSrc;
-            var canvas = document.getElementById('canvas');
-            var ctx = canvas.getContext('2d');
-            img.onload = function() {  
-                ctx.drawImage(img, 0, 0,700,1100);
-                ctx.fillStyle = '#0068B7';
-                ctx.font="bold 40px Arial";
-                ctx.fillText(ticket.start,140,156);
-                ctx.fillText(ticket.end,140,256);
-                ctx.font="26px Arial";
-                ctx.fillText('车牌号：',70, 360);
-                ctx.fillText('出发时间：',70, 410);
-                ctx.fillText('发车地点：',70, 460);
-                ctx.fillText(ticket.car,230, 360);
-                ctx.fillText(departDate,230, 410);
-                ctx.fillText(ticket.time,500,410);
-                ctx.fillText(ticket.start,230,460);
-                ctx.font="20px Arial";
-                ctx.fillStyle = '#757575';
-                ctx.fillText(ticket.phone,200,1032);
-                ctx.drawImage(barcodeImg, 100, 570, 500, 200);
-                if(scope.ticketInfo.ticketCode){
-                    ctx.font="26px Arial";
+                var imgSrc = barcode.toDataURL();
+                var img = new Image();
+                img.crossOrigin="anonymous";
+                img.src = '../../img/ticket.png';
+                var barcodeImg = new Image();
+                barcodeImg.src = imgSrc;
+                var canvas = document.getElementById('canvas');
+                var ctx = canvas.getContext('2d');
+                img.onload = function() {  
+                    ctx.drawImage(img, 0, 0,700,1100);
                     ctx.fillStyle = '#0068B7';
-                    ctx.fillText('景区门票校验码', 120, 820);
-                    ctx.fillText(scope.ticketInfo.ticketCode, 320, 820);
+                    ctx.font="bold 40px Arial";
+                    ctx.fillText(ticket.start,140,156);
+                    ctx.fillText(ticket.end,140,256);
+                    ctx.font="26px Arial";
+                    ctx.fillText('车牌号：',70, 360);
+                    ctx.fillText('出发时间：',70, 410);
+                    ctx.fillText('发车地点：',70, 460);
+                    ctx.fillText(ticket.car,230, 360);
+                    ctx.fillText(departDate,230, 410);
+                    ctx.fillText(ticket.time,500,410);
+                    ctx.fillText(ticket.startAddr,230,460);
+                    ctx.font="20px Arial";
+                    ctx.fillStyle = '#757575';
+                    ctx.fillText(ticket.phone,200,1032);
+                    ctx.drawImage(barcodeImg, 100, 600, 500, 200);
+                    if(scope.ticketInfo.ticketCode){
+                        ctx.font="26px Arial";
+                        ctx.fillStyle = '#0068B7';
+                        ctx.fillText('景区门票校验码', 120, 820);
+                        ctx.fillText(scope.ticketInfo.ticketCode, 320, 820);
+                    }
+                }
+            }else if(scope.ticketInfo.ticketCode) {
+                var viewTicket = {
+                    sourcePhone: scope.ticketInfo.sourcePhone,
+                    ticketCode: scope.ticketInfo.ticketCode,
+                    useDate: scope.ticketInfo.useDate,
+                    viewName: scope.ticketInfo.viewName,
+                    viewPriceType: scope.ticketInfo.viewPriceType,
+                    ticketPrice: scope.ticketInfo.ticketPrice,
+                    couponPrice: scope.ticketInfo.couponPrice,
+                    viewPriceType: scope.ticketInfo.couponPrice
+                }
+                console.log(viewTicket);
+                var date = new Date(Number(viewTicket.useDate));
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                var departDate = year + ' 年 ' + month + ' 月 ' + day + ' 日 ';
+
+                var barcode = document.getElementById('barcodeCanvas');
+                // barcode.id = 'barcode';
+                // console.log(barcode)
+                JsBarcode('#barcodeCanvas',viewTicket.ticketCode);
+
+                var imgSrc = barcode.toDataURL();
+                var img = new Image();
+                img.crossOrigin="anonymous";
+                img.src = '../../img/view_ticket.png';
+                var barcodeImg = new Image();
+                barcodeImg.src = imgSrc;
+                var canvas = document.getElementById('canvas');
+                var ctx = canvas.getContext('2d');
+                img.onload = function() {  
+                    ctx.drawImage(img, 0, 0,700,1100);
+                    ctx.fillStyle = '#0068B7';
+                    ctx.font="bold 60px Arial";
+                    ctx.fillText(viewTicket.viewName,140,156);
+                    ctx.font="35px Arial";
+                    ctx.fillText(departDate,140,256);
+                    ctx.fillText('门票类型：',140, 316);
+                    ctx.fillText('门票类型：',140, 316);
+                    ctx.fillText(viewTicket.viewPriceType,340, 316);
+                    ctx.fillStyle = '#757575';
+                    ctx.fillText(viewTicket.sourcePhone,200,1032);
+                    ctx.drawImage(barcodeImg, 100, 600, 500, 200);
                 }
             }
+            
 
             var btn1 = document.getElementById('btn1');
             btn1.onclick = function () {
@@ -71,7 +120,7 @@ angular.module('app.directives').directive('ticket', function($document) {
                 download(type);
             }
             scope.preview = function() { 
-                console.log('打印车票')
+                console.log('打印票')
                 var dataUrl = canvas.toDataURL();  
                 var newImg = document.createElement("img");  
                 newImg.src = dataUrl;  

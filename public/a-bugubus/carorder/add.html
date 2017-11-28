@@ -1,7 +1,10 @@
 <div class="wrapper-md" ng-controller="addCarOrderController">
     <div class="panel panel-default" ng-show="!showTicket">
         <div class="panel-heading">
-            添加线下票据
+            添加线下车票
+            <a ui-sref="app.carorder.add_view" style="margin-left: 30px;color: #777;">
+                添加线下门票
+             </a>
         </div>
         <div class="panel-body">
             <form class="form-horizontal form-validation" name="form">
@@ -19,11 +22,14 @@
                 <div class="form-group" ng-if="session_user.access == 'systemUser'">
                     <label class="col-sm-1 control-label">线下门店<span class="text-danger text-md ">*</span></label>
                     <div class="col-sm-11" ng-click="loadTicketSource()">
-                        <input class="form-control" type="text" ng-model="ticketSourceName" ng-if="!carorder.havePower" disabled>
-                        <select class="form-control" ng-init="carorder.offline = '0'" ng-model="carorder.offline" ng-required="true" ng-change="showSourceid()" ng-if="carorder.havePower">
+                        <!-- <input class="form-control" type="text" ng-model="ticketSourceName" ng-if="!carorder.havePower" disabled> -->
+                        <select class="form-control" ng-init="carorder.offline = '0'" ng-model="carorder.offline" ng-required="true" ng-change="showSourceid()">
                             <option value="0" style="display: none;">请选择</option>
                             <option ng-repeat="item in ticketSourceList.sources" value="{{item.ticketSource}}">{{item.ticketSource}}</option>
                         </select>
+
+                         <!-- ng-if="carorder.havePower" -->
+
                         <!-- <select  class="input-sm form-control"  name="viewOrderStatus" ng-model="carorder.offline">
                             <option  ng-repeat="item in ticketSourceList.sources" value="{{item.ticketSource}}"  placeholder="选择门店" selected = "selected">
                                {{item.ticketSource}}
@@ -81,13 +87,12 @@
                                 <th>选择班次</th>
                                 <!-- <th>产品ID</th> -->
                                 <th>班次名称</th>
-                                <th>班次类型</th>
                                 <th>起点</th>
                                 <th>终点</th>
                                 <th>发车地址</th>
+                                <th>车牌号</th>
                                 <th>出发时间</th>
                                 <th>车票价格(元)</th>
-                                <th>门票价格</th>
                                 <th>时长</th>
                                 <th>余票/总票数</th>
                             </tr>
@@ -99,30 +104,13 @@
                                         <input type="radio" ng-disabled="item.leftTickets==0" name="selectSchedule" ng-click=selectSchedule(item,$index)><i></i>
                                     </label>
                                 </td>
-                                <td ng-bind="item.gobsname"></td>
-                                <td>
-                                    <span ng-if="item.productType == 0">单程
-                                        <span ng-if="item.haveTicket == 1">&nbsp;+&nbsp;</span>
-                                        <span ng-if="item.haveTicket == 1" class="label label-warning">门票</span>
-                                    </span>
-                                    <span ng-if="item.productType == 1">往返
-                                        <span ng-if="item.haveTicket == 1">&nbsp;+&nbsp;</span>
-                                        <span ng-if="item.haveTicket == 1" class="label label-warning">门票</span>
-                                    </span>
-                                </td>
+                                <td ng-bind="item.bsname"></td>
                                 <td ng-bind="item.departName"></td>
                                 <td ng-bind="item.arriveName"></td>
                                 <td ng-bind="item.departaddr"></td>
-                                <td ng-bind="item.departtime"></td>
-                                <th ng-bind="item.goPrice"></th>
-                                <th>
-                                    <select id="select{{$index}}" ng-disabled="disabledSelect != $index" class="form-control" style="padding: 2px;height: auto;" ng-if="item.haveTicket == 1">
-                                        <option value="0" style="display: none;">请选择</option>
-                                        <option ng-repeat="price in item.viewPrices" value="{{price.viewPriceId}}" >
-                                            {{price.viewPriceType}}:&nbsp;&nbsp;{{price.viewPrice}}元;&nbsp;&nbsp;折扣:&nbsp;&nbsp; {{price.viewCoupon*10}}折
-                                        </option>
-                                    </select>
-                                </th>
+                                <td ng-bind="item.platenum"></td>
+                                <td ng-bind="item.departTime"></td>
+                                <th ng-bind="item.price"></th>
                                 <th>{{item.drivetime}} 分</th>
                                 <td>
                                    剩 {{item.leftTickets}} 张 / {{item.totalTickets}} 张
@@ -136,7 +124,7 @@
             <div class="form-group">
                 <div class="col-sm-offset-2" style="float: right;margin-right: 15px;">
                     <button type="reset" ng-show="!editMode" ng-click="reset()" class="btn btn-default">清空</button>
-                    <button type="submit" ng-click="submit()" ng-disabled="submiting||missParm||!carorder.schedule||overDeadLineTime" class="btn btn-primary m-l">提交</button>
+                    <button type="submit" ng-click="submit()" ng-disabled="submiting||missParm||overDeadLineTime" class="btn btn-primary m-l">提交</button>
                 </div>
             </div>
         </div>

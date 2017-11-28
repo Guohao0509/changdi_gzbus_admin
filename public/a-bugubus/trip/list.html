@@ -4,30 +4,10 @@
         <ul class="nav nav-pills pull-right">
             <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-info btn-addon" ui-sref="app.trip.dailyschedule"><i class="fa fa-calendar"></i>每日排班详情</button></li>
             <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="app.trip.add"><i class="fa fa-plus"></i>添加产品</button></li>
+            <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-success btn-addon" ui-sref="app.trip.evaluation"><i class="fa fa-ticket"></i>查看评论</button></li>
         </ul>
             产品列表
         </div>
-        <!-- <div class="wrapper row"> -->
-            <!-- <div class="col-xs-1 block-default">
-                日常排班
-            </div> -->
-            <!-- <form class="row wrapper col-sm-3" id="J_search_form">
-                <div class="input-group">
-                  <input type="text" class="input-sm form-control" name="keyword" placeholder="请输入线路名称" ng-model="search_context">
-                  <span class="input-group-btn">
-                    <button class="btn btn-sm btn-default" ng-click="pageRequest.getResponse()" type="button">查询</button>
-                  </span>
-                </div>
-            </form> -->
-            <!-- <ul class="nav nav-tabs">
-                <li ng-repeat="item in tabs" ng-class="{'active': item.isActive}">
-                    <a  ng-click="selectTab(item)">
-                        <span class="mgr-15">{{item.selectedtime | date:'yyyy/M/d'}}</span>
-                        <i class="icon fa fa-close" ng-click="closeTab(item)"></i>
-                    </a>
-                </li>
-            </ul> -->
-        <!-- </div> -->
         <form class="row wrapper" id="J_search_form">
             <div class="col-sm-5 m-b-xs">
                 <!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
@@ -53,13 +33,9 @@
                         </label>
                     </th> -->
                     <th sort-name ="PRODUCTID">产品ID</th>
-                    <th sort-name = "DEADDRESS">目的地</th>
                     <th sort-name = "PRODUCTTYPE">班次类型</th>
-                    <th sort-name = "VIEWID">景区ID</th>
                     <th>用户须知</th>
-                    <th>去程线路</th>
-                    <th>返程线路</th>
-                    <th>查看排班详情</th>
+                    <th>产品关键词</th>
                     <th>推荐图片</th>
                     <th>推荐标题</th>
                     <th sort-name = "ISPUSH">推荐行程(最多只有五个)</th>
@@ -74,38 +50,15 @@
                         </label>
                     </td> -->
                     <td ng-bind="item.productid"></td>
-                    <td ng-bind="item.viewaddress"></td>
                     <td>
-                        <span ng-if="item.productType == 0">单程
-                            <span ng-if="item.haveTicket == 1">&nbsp;+&nbsp;</span>
-                            <span ng-if="item.haveTicket == 1" class="label label-warning">门票</span>
-                        </span>
-                        <span ng-if="item.productType == 1">往返
-                            <span ng-if="item.haveTicket == 1">&nbsp;+&nbsp;</span>
-                            <span ng-if="item.haveTicket == 1" class="label label-warning">门票</span>
-                        </span>
+                        <span my-tag my-tags="item.productType"></span>
                     </td>
-                    <td ng-bind="item.viewInfo.viewid"></td>
                     <td>
                         <a ng-click="openUserNoticeModal(item.productinfo)">
                             <span class="label label-primary">查看</span>
                         </a>
                     </td>
-                    <td>
-                        <!-- <a ng-click="openDetailModal(item.golineid)"> -->
-                            <span>{{item.golinename}}</span>
-                        <!-- </a> -->
-                    </td>
-                    <td>
-                        <!-- <a ng-show="item.backlineid" ng-click="openDetailModal(item.backlineid)"> -->
-                            <span>{{item.backlinename}}</span>
-                        <!-- </a> -->
-                    </td>
-                    <td>
-                        <a ng-click="openDetailModal(item.productid,item.productType)">
-                            <span class="label label-info">查看</span>
-                        </a>
-                    </td>
+                    <td  ng-bind="item.viewaddress"></td>
                     <td>
                         <a ng-click="openTripImageModal(item.photoPath)">
                             <span class="label btn-info">查看图片</span>
@@ -120,6 +73,11 @@
                         <span ng-show="item.isPush == 'true'">是</span>
                         <span ng-show="item.isPush == 'false'">否</span>
                     </td>
+                   <!--  <td>
+                        <a ng-click="openDetailModal(item.proDetails)">
+                            <span class="label label-primary">查看</span>
+                        </a>
+                    </td> -->
                     <td>
                         <a ui-sref="app.trip.edit({id:item.productid})">
                           <span class="label label-primary">编辑</span>

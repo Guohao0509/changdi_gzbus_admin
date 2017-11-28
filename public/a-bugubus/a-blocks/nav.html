@@ -31,13 +31,18 @@
     </a>
   </li>
 
-  <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'">
+  <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'|| session_user.access == 'viewUser'">
     <a ui-sref="app.trip.list">
-      <i class="fa fa-calendar icon text-info-dker"></i>
+      <i class="fa-cc-paypal fa text-primary-lter"></i>
       <span>产品管理</span>
     </a>
   </li>
-  
+  <!-- <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'|| session_user.access == 'viewUser'">
+    <a ui-sref="app.product.list">
+      <i class="fa-cc-paypal fa text-primary-lter"></i>
+      <span>产品管理</span>
+    </a>
+  </li> -->
   <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'">
     <a ui-sref="app.charterbus.operationadmin">
       <i class="glyphicon glyphicon glyphicon-link text-success"></i>
@@ -55,7 +60,7 @@
   <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'||session_user.access == 'sourceUser'">
     <a ui-sref="app.carorder.list">
       <i class="fa fa-bus icon text-info-dker"></i>
-      <span>直通车订单</span>
+      <span>订单管理</span>
     </a>
   </li>
   <li ui-sref-active="active" ng-if="session_user.access == 'systemUser'">
@@ -95,6 +100,7 @@
       <span>景点订单管理</span>
     </a>
   </li>
+  
   <!---->
   <!--ng-class="{active:$state.includes('app.route')||-->
   <!--$state.includes('layout.route_add')}"-->

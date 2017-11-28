@@ -5,8 +5,11 @@
 		      <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref=""><i class="fa fa-plus"></i>添加直通车订单</button></li>
 		    </ul> -->
      		 直通车订单列表
+     		 <a ui-sref="app.carorder.view_list" style="margin-left: 30px;color: #777;">
+     		 	景区门票订单
+     		 </a>
      		 <ul class="nav nav-pills pull-right">
-	            <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="app.carorder.add"><i class="fa fa-plus"></i>添加线下票据</button></li>
+	            <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="app.carorder.add"><i class="fa fa-plus"></i>添加线下车票</button></li>
 	            <li style=" padding-top:4px; padding-right:15px" ng-click="exportToExcel()"><button class="btn m-b-xs btn-sm btn-info btn-addon"><i class="fa fa-file-excel-o"></i>导出到Excel</button></li>
 	        </ul>
 		</div>
@@ -62,61 +65,37 @@
 	      	<table cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed text-xs">
 	        	<thead>
 	        		<tr>
-	          			<!-- <th>
-	          				<label class="i-checks m-b-none">
-		              			<input type="checkbox"><i></i>
-		            		</label>
-	          			</th> -->
-						<!-- <th sort-name = "VIEWORDERID">订单号</th> -->
+	          			
 						<th sort-name = "TICKETSOURCE">票据来源</th>
 						<th sort-name = "USERNAME">用户名</th>
-						<th sort-name = "HAVETICKET">景区门票</th>
-						<!-- <th sort-name = "DRIVERNAME">司机</th>
-						<th sort-name = "BSID">班次ID</th> -->
-						<!-- <th sort-name = "ROUTE">路线</th> -->
+						<!-- <th sort-name = "HAVETICKET">景区门票</th> -->
 						<th sort-name = "DEPARTDATE">发班日期</th>
 						<th sort-name = "DEPARTTIME">发车时间</th>
 						<th sort-name = "REFUNDTIME">申请退款时间</th>
 						<th sort-name = "ORDERPRICE">票价</th>
 						<th sort-name = "PAYPRICE">实付</th>
-						<!-- <th sort-name = "ORDERSCORE">订单评分</th>
-						<th sort-name = "ORDERHIE">订单评价</th> -->
-						<th>评论图片</th>
-						<th sort-name = "ISSHOW">评论是否显示</th>
+						<!-- <th>评论图片</th> -->
+						<!-- <th sort-name = "ISSHOW">评论是否显示</th> -->
 						<th sort-name = "HAVECOUPON">优惠券</th>
 						<th sort-name = "VIEW_ORDER_STATUS">订单状态</th>
 						<th sort-name = "SOURCEID">来源票ID</th>
-						<!-- <th>车票条形码</th> -->
 						<th>打印车票</th>
 						<th>操作</th>
 					</tr>
 	        	</thead>
 	        	<tbody>
 		        	<tr ng-repeat="item in pageResponse.viewOrders">
-		          		<!-- <td>
-		            		<label class="i-checks m-b-none">
-		              			<input type="checkbox" ng-model="item.selected"><i></i>
-		            		</label>
-		          		</td> -->
-						<!-- <td ng-bind="item.viewOrderid"></td> -->
 						<td ng-bind="item.ticketSource"></td>
 						<td ng-bind="item.username"></td>
-						<td>
+						<!-- <td>
 							<span ng-if="item.haveTicket == 1" class="label label-warning">门票</span>
-						</td>
-						<!-- <td ng-bind="item.drivername"></td>
-						<td ng-bind="item.bsid"></td> -->
-						<!-- <td ng-bind="item.linename"></td> -->
+						</td> -->
 						<td>{{item.departDate | date: 'yyyy-MM-dd'}}</td>
 						<td ng-bind="item.departTime"></td>
 						<td>{{item.refundTime | date: 'yyyy-MM-dd HH:MM'}}</td>
 						<td ng-bind="item.price"></td>
 						<td ng-bind="item.payPrice"></td>
-						<!-- <td ng-bind="item.orderScore"></td>
-						<td>
-							<p ng-bind="item.orderhie"></p>
-						</td> -->
-						<td>
+						<!-- <td>
 							<a ng-if="!item.images[0]" ui-sref="app.carorder.uploadimage({id:item.viewOrderid})">
 							  	<span class="label btn-info">上传图片</span>
 							</a>
@@ -128,7 +107,7 @@
 							<label class="i-checks m-b-none">
 							  	<input type="checkbox" ng-model="item.isShow" ng-click="isShow(item.viewOrderid, item.isShow)"><i></i>
 							</label>
-						</td>
+						</td> -->
 						<td>
 							<span ng-if="item.haveCoupon">优惠券</span>
 						</td>
@@ -140,9 +119,6 @@
 							<span ng-if="item.viewOrderStatus == 5">已退款</span>
 						</td>
 						<td ng-bind="item.sourceid"></td>
-						<!-- <td>
-							<canvas class="barcode-canvas" ng-model="item.barcode" barcode style="width: 150px;"></canvas>
-						</td> -->
 						<td>
 							<a ng-click="printTicket(item)" ng-if="(item.viewOrderStatus == 2 && item.ticketSource != '线上')">
 							  	<span class="label btn-success">打印车票</span>

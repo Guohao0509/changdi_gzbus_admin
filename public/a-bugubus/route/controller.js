@@ -214,11 +214,9 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
     $scope.getLngLat = function() {
         MapOperation.geocoder.getLocation($scope.address.formattedAddress, function(status, result){
             if (status === 'complete' && result.info === 'OK') {
-                //TODO:获得了有效经纬度，可以做一些展示工作
-                //比如在获得的经纬度上打上一个Marker
+                //获得了有效经纬度
                 $scope.address.gdPosition = result.geocodes;
                 openInfo($scope.address.gdPosition[0]);
-                
             }else{
                 //获取经纬度失败
                 layer.msg('没有找到您输入的地址')
@@ -378,7 +376,6 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
         }else{
             layer.alert("一条线路必须有一个起点和终点");
             $scope.submiting = false;
-
         }
     }
     $scope.$on('')

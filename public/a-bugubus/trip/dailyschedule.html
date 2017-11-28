@@ -51,18 +51,11 @@
                                   <span class="label label-primary">新增</span>
                                 </a>
                             </th>
-                            <!-- <th>产品ID</th> -->
-                            <th style="border-right: 1px solid #EAEFF0">班次类型</th>
-                            <!-- <th>司机</th>
-                            <th>车辆</th> -->
-                            <th>去程排班</th>
-                            <th>出发时间(去程)</th>
-                            <th>车辆(去程)</th>
-                            <th style="border-right: 1px solid #EAEFF0">司机(去程)</th>
-                            <th>返程排班</th>
-                            <th>出发时间(返程)</th>
-                            <th>车辆(返程)</th>
-                            <th>司机(返程)</th>
+                            <th>线路</th>
+                            <th>班次名称</th>
+                            <th>出发时间</th>
+                            <th>车辆</th>
+                            <th>司机</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -70,30 +63,16 @@
                         <tr ng-repeat="item in dateSchedules track by $index">
                             <td>{{$index+1}}</td>
                             <!-- <td ng-bind="item.productid"></td> -->
-                            <td style="border-right: 1px solid #EAEFF0">
-                                <span ng-if="item.productType == 0">单程
-                                    <span ng-if="item.haveTicket == 1">&nbsp;+&nbsp;</span>
-                                    <span ng-if="item.haveTicket == 1" class="label label-warning">门票</span>
-                                </span>
-                                <span ng-if="item.productType == 1">往返
-                                    <span ng-if="item.haveTicket == 1">&nbsp;+&nbsp;</span>
-                                    <span ng-if="item.haveTicket == 1" class="label label-warning">门票</span>
-                                </span>
-                            </td>
-                            <td ng-bind="item.gobsname"></td>
-                            <td ng-bind="item.departtime"></td>
+                            <td ng-bind="item.linename"></td>
+                            <td ng-bind="item.bsname"></td>
                             <td ng-bind="item.platenum"></td>
-                            <td ng-bind="item.drivername" style="border-right: 1px solid #EAEFF0"></td>
-
-                            <td ng-bind="item.backbsname"></td>
-                            <td ng-bind="item.backDeparttime"></td>
-                            <td ng-bind="item.backPlatenum"></td>
-                            <td ng-bind="item.backDrivername"></td>
+                            <td ng-bind="item.departTime"></td>
+                            <td ng-bind="item.drivername"></td>
                             <td>
                                 <a ng-click="deleteSchedule(item)">
                                   <span class="label btn-danger">删除</span>
                                 </a>
-                          </td>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

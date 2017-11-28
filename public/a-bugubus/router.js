@@ -246,6 +246,22 @@ app
                     label: '添加评论图片'
                 }
             })
+            .state('app.carorder.view_list', {
+                url: '/view_list',
+                templateUrl: basePath+'carorder/view.html',
+                ncyBreadcrumb: {
+                    parent:'app.carorder.list',
+                    label: '门票列表'
+                }
+            })
+            .state('app.carorder.add_view', {
+                url: '/add_view',
+                templateUrl: basePath+'carorder/addView.html',
+                ncyBreadcrumb: {
+                    parent:'app.carorder.list',
+                    label: '添加评论图片'
+                }
+            })
             // .state('app.carorder.add', {
             //     //跳转到直通车订单编辑界面
             //     url: '/add',
@@ -494,6 +510,15 @@ app
                     label: '添加推荐图片'
                 }
             })
+            .state('app.trip.evaluation', {
+                //跳转到产品评论界面
+                url: '/evaluation',
+                templateUrl: basePath+'trip/evaluation.html',
+                ncyBreadcrumb: {
+                    parent:'app.trip.list',
+                    label: '产品评论'
+                }
+            })
             .state('app.trade', {
                 //交易管理
                 abstract: true,
@@ -723,6 +748,70 @@ app
                     label: '优惠券列表'
                 }
             })
-
+            .state('app.product', {
+                //行程管理
+                abstract: true,
+                url:'/product',
+                template: '<div ui-view class="fade-in"></div>',
+                resolve: {
+                    deps: ['$ocLazyLoad',
+                        function( $ocLazyLoad ){
+                            //延迟加载授权控制器
+                            return $ocLazyLoad.load(basePath+'product/controller.js');
+                        }]
+                }
+            })
+            .state('app.product.list', {
+                //跳转到产品列表界面
+                url: '/list',
+                templateUrl: basePath+'product/list.html',
+                ncyBreadcrumb: {
+                    parent:'app.dashboard',
+                    label: '产品管理'
+                }
+            })
+            .state('app.product.add', {
+                //跳转到产品添加界面
+                url: '/add',
+                templateUrl: basePath+'product/add.html',
+                ncyBreadcrumb: {
+                    parent:'app.product.list',
+                    label: '添加产品'
+                }
+            })
+            .state('app.product.edit', {
+                //跳转到产品编辑界面
+                url: '/edit/{id}',
+                templateUrl: basePath+'product/add.html',
+                ncyBreadcrumb: {
+                    parent:'app.product.list',
+                    label: '编辑产品'
+                }
+            })
+            .state('app.product.evaluation', {
+                //跳转到产品评论界面
+                url: '/evaluation',
+                templateUrl: basePath+'product/evaluation.html',
+                ncyBreadcrumb: {
+                    parent:'app.product.list',
+                    label: '产品评论'
+                }
+            })
+            .state('app.product.uploadimage', {
+                url: '/uploadimage/{id}',
+                templateUrl: basePath+'product/uploadimage.html',
+                ncyBreadcrumb: {
+                    parent:'app.product.list',
+                    label: '添加评论图片'
+                }
+            })
+            .state('app.product.dailyschedule', {
+                url: '/dailyschedule',
+                templateUrl: basePath+'product/dailyschedule.html',
+                ncyBreadcrumb: {
+                    parent: 'app.product.list',
+                    label: '每日排班详情'
+                }
+            })
     }
 );

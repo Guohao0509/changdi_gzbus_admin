@@ -10,50 +10,61 @@
         <div class="panel-body">
             <form class="form-horizontal form-validation" name="form">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">产品类型<span class="text-danger text-md ">*</span></label></label>
+
+                    <label class="col-sm-2 control-label">检索关键字<span class="text-danger text-md ">*</span></label></label>
+                    <div class="col-sm-10">
+                        <div class="col-sm-3" style="padding: 0 10px 0 0;">
+                            <input type="text"  class="form-control"
+                               name="name"
+                               ng-model="product.keyWordTitle"
+                               maxlength="20"
+                               ng-required="true"
+                               placeholder="产品名称 如：青岩古镇" 
+                                >
+                        </div>
+                        <div class="col-sm-9" style="padding: 0;">
+                            <input type="text"  class="form-control"
+                               name="name"
+                               ng-model="product.keyWordInfo"
+                               maxlength="20"
+                               ng-required="true"
+                               placeholder="产品简介 如：贵州四大古镇之一，具有历史文化、建筑文化、宗教文化、农耕文化、饮食文化、革命传统文化底蕴，多民族聚居。" 
+                                >
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">产品组合<span class="text-danger text-md ">*</span></label>
                     <div class="col-sm-10">
                         <div class="radio inline">
                             <label class="i-checks">
-                                <input type="radio" name="productType" value="0"
-                                    ng-model="product.productType"
-                                    ng-checked="product.productType =='0'"
-                                    ng-required="true"
-                                    ng-click="singleType()"
+                                <input type="checkbox" name="productType" value="0"
+                                    ng-model="combine_car"
+                                    ng-checked="combine_car"
                                 >
                                 <i></i>
-                                单程
+                                行程
                             </label>
                         </div>
                         <div class="radio inline m-l">
                             <label class="i-checks">
-                                <input type="radio" name="productType" value="1"
-                                    ng-model="product.productType" 
-                                    ng-checked="product.productType=='1'"
-                                    ng-required="true"
-                                    ng-click="returnType()"
+                                <input type="checkbox" name="productType" value="1"
+                                    ng-model="combine_view"
+                                    ng-checked="combine_view"
                                 >
                                 <i></i>
-                                往返
+                                景区
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">
-                        是否含景区门票
-                        <span class="text-xs">(非必选)</span>
-                    </label>
-
+                    <label class="col-sm-2 control-label">产品标签<span class="text-danger text-md ">*</span></label></label>
                     <div class="col-sm-10">
-                        <div class="radio inline">
-                            <label class="i-checks">
-                                <input type="checkbox" name="view" ng-model="view.haveViewTicket">
-                                <i></i>
-                                含有
-                            </label>
-                        </div>
+                        <input type="text" class="form-control" ng-model="product.productType">
                     </div>
                 </div>
+               
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
                         是否推荐
@@ -70,7 +81,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group" ng-if="product.isPush">
+                <div class="form-group">
                     <label class="col-sm-2 control-label">推荐标题<span class="text-danger text-md ">*</span></label>
                     <div class="col-sm-10">
                         <input type="text"  class="form-control"
@@ -78,10 +89,10 @@
                                ng-model="product.titleName"
                                maxlength="20"
                                ng-required="true"
+                               placeholder="首页产品推荐标题" 
                                 >
                     </div>
                 </div>
-
             </form>
             <div class="form-group"  style="margin-left: 8%;" ng-if="product.isPush">
                 <div class="row">
@@ -103,7 +114,7 @@
             </div>
             
             <div class="line line-dashed b-b line-lg"></div>
-            <div class="panel b-a" ng-if="view.haveViewTicket">
+            <div class="panel b-a"  ng-show="combine_view">
                 <div class="panel-heading b-b b-light">选择景区<span class="text-danger text-md ">*</span></div>
                     <div class="table-responsive">
                         <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light" >
@@ -213,9 +224,32 @@
 
 
 
-            <div class="panel b-a">
-                <div class="panel-heading b-b b-light">选择线路<span class="text-danger text-md ">*</span></div>
-                    <div class="table-responsive" ng-if="isShowSelectedTable">
+            <div class="panel b-a" ng-show="combine_car">
+                <div class="panel-heading b-b b-light">选择线路<span class="text-danger text-md ">*</span>
+                    <div class="radio inline" style="margin: 0 0 0 20px;">
+                        <label class="i-checks">
+                            <input type="radio" name="productType" value="0"
+                                ng-checked="goCarType"
+                                ng-required="true"
+                                ng-click="singleType()"
+                            >
+                            <i></i>
+                            单程
+                        </label>
+                    </div>
+                    <div class="radio inline m-l" style="margin: 0 0 0 10px;">
+                        <label class="i-checks">
+                            <input type="radio" name="productType" value="1"
+                                ng-checked="backCarType"
+                                ng-required="true"
+                                ng-click="returnType()"
+                            >
+                            <i></i>
+                            往返
+                        </label>
+                    </div>
+                </div>
+                    <div class="table-responsive" >
                         <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light" >
                             <thead>
                                 <tr>
@@ -338,7 +372,7 @@
 
 
 
-            <div class="panel b-a">
+            <div class="panel b-a" ng-show="combine_car">
                 <div class="panel-heading b-b b-light">
                     选择排班
                     <span class="text-danger text-md ">*</span>
@@ -376,7 +410,7 @@
                                         <td  ng-bind="item.drivername"></td>
                                         <td  ng-bind="item.platenum"></td>
                                         <!-- <td  ng-bind="item.linename"></td> -->
-                                        <td  ng-bind="item.departtime"></td>
+                                        <td  ng-bind="item.departTime"></td>
                                         <!-- <td ng-bind="item.price"></td> -->
                                         <!-- <td>
                                             <a ng-click="deleteSchedule(item)">
@@ -384,7 +418,7 @@
                                             </a>
                                         </td> -->
                                         <td>
-                                            <label class="label label-danger" ng-click="deleteBs($index)">移除</label>
+                                            <label class="label label-danger" ng-click="deleteBs(goLineBs,$index)">移除</label>
                                         </td>
                                     </tr>
                                     <tr  ng-if="!goLineBs[0]">
@@ -440,7 +474,7 @@
                                             <td  ng-bind="item.drivername"></td>
                                             <td  ng-bind="item.platenum"></td>
                                             <!-- <td  ng-bind="item.linename"></td> -->
-                                            <td  ng-bind="item.departtime"></td>
+                                            <td  ng-bind="item.departTime"></td>
                                             <!-- <td ng-bind="item.price"></td> -->
                                            <!--  <td>
                                                 <a ng-click="deleteSchedule(item)">
@@ -448,7 +482,7 @@
                                                 </a>
                                             </td> -->
                                             <td>
-                                                <label class="label label-danger" ng-click="deleteBs($index)">移除</label>
+                                                <label class="label label-danger" ng-click="deleteBs(backLineBs,$index)">移除</label>
                                             </td>
                                         </tr>
                                         <tr  ng-if="!backLineBs[0]">
@@ -566,7 +600,7 @@
             </div>
             <div class="form-group clear-float">
                 <div class="col-sm-2 col-sm-offset-10">
-                    <button style="float: right; margin-right: 20px;" type="submit" ng-click="submit()" class="btn btn-primary m-l" ng-disabled="form.$invalid||missParam||submiting||!userNotice">保存</button>
+                    <button style="float: right; margin-right: 20px;" type="submit" ng-click="submit()" class="btn btn-primary m-l" ng-disabled="form.$invalid||submiting||!userNotice">保存</button>
                     <button style="float: right;" type="reset" ng-show="!editMode" class="btn btn-default" ng-click="reset()">清空</button>
                 </div>
             </div>

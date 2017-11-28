@@ -5,6 +5,11 @@
  * @descriptions 司机管理界面的控制器
  */
 /**
+ * @author 郭浩
+ * @date 2017-8-09
+ * @descriptions 膜拜大神
+ */
+/**
  * 司机列表控制器
  */
 app.controller('DriverListController',['$rootScope','$scope','$http','$state','$localStorage','$tableListService','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$tableListService,$myHttpService){
@@ -92,7 +97,6 @@ app.controller('DriverEditController',['$rootScope','$scope','$myHttpService','$
                 $state.go("app.driver.add",{},{reload:true});
             });
         }
-
     }
 
     $scope.$watch('dt', function(v){
@@ -115,7 +119,6 @@ app.controller('DriverEditController',['$rootScope','$scope','$myHttpService','$
     $scope.open = function($event) {
         $event.preventDefault();
         $event.stopPropagation();
-
         $scope.opened = true;
     };
     $scope.dateOptions = {

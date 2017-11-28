@@ -1,0 +1,98 @@
+<div class="wrapper-md" ng-controller="dailyScheduleController">
+   <!--  <div class="row">
+        
+        
+    </div> -->
+    <div class = "row">
+        <div class="col-sm-3">
+            <div my-calendar change-date="changedDate" select-date="selectedDate(date)"></div>
+            <div style="float: left">
+                <span class="label label-default">已完成</span>
+                <span class="label" style="color: #000;border: 1px solid #000;">未完成</span>
+                <span class="label label-danger">已修改</span>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                <!-- <ul class="nav nav-pills pull-right">
+                    <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="app.trip.add"><i class="fa fa-plus"></i>添加排班</button></li>
+                </ul> -->
+                    <span style="font-size: 16px; font-weight: 800;">{{departDate}}</span>&nbsp;&nbsp;排班
+                </div>
+                <!-- <div class="wrapper row">
+                    <div class="col-xs-1 block-default">
+                        日常排班
+                    </div>
+                    <form class="row wrapper col-sm-3" id="J_search_form">
+                        <div class="input-group">
+                          <input type="text" class="input-sm form-control" name="keyword" placeholder="请输入线路名称" ng-model="search_context">
+                          <span class="input-group-btn">
+                            <button class="btn btn-sm btn-default" ng-click="pageRequest.getResponse()" type="button">查询</button>
+                          </span>
+                        </div>
+                    </form>
+                    <ul class="nav nav-tabs">
+                        <li ng-repeat="item in tabs" ng-class="{'active': item.isActive}">
+                            <a  ng-click="selectTab(item)">
+                                <span class="mgr-15">{{item.selectedtime | date:'yyyy/M/d'}}</span>
+                                <i class="icon fa fa-close" ng-click="closeTab(item)"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div> -->
+                <div class="table-responsive">
+                    <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed text-xs">
+                        <thead>
+                        <tr>
+                            <th>
+                                序号
+                                <a ng-click="openAddDailScheduleModal()">
+                                  <span class="label label-primary">新增</span>
+                                </a>
+                            </th>
+                            <!-- <th>产品ID</th> -->
+                            <th>线路ID</th>
+                            <!-- <th>司机</th>
+                            <th>车辆</th> -->
+                            <th>线路名称</th>
+                            <th>班次名称</th>
+                            <th>司机ID</th>
+                            <th>车辆</th>
+                            <th>出发时间</th>
+                            <th>价格</th>
+                            <th>出发地点</th>
+                            <th>到达地点</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in dateSchedules track by $index">
+                            <td>{{$index+1}}</td>
+                            <td ng-bind="item.lineid"></td>
+                            <td ng-bind="item.linename"></td>
+                            <td ng-bind="item.bsname"></td>
+                            <td ng-bind="item.driverid"></td>
+                            <td ng-bind="item.carid"></td>
+
+                            <td ng-bind="item.departTime"></td>
+                            <td ng-bind="item.price"></td>
+                            <td ng-bind="item.departaddr"></td>
+                            <td ng-bind="item.arriveaddr"></td>
+                            <td>
+                                <a ng-click="deleteSchedule(item)">
+                                  <span class="label btn-danger">删除</span>
+                                </a>
+                          </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- <footer class="panel-footer">
+                    <div class="box-body" table-pagination></div>
+                </footer> -->
+            </div>
+        </div>
+    </div>
+    
+</div>

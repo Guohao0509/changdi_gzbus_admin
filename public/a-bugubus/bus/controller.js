@@ -4,6 +4,11 @@
  * @version 1.0.0
  * @descriptions 针对排班管理的控制器
  */
+/**
+ * @author 郭浩
+ * @date 2017-10-13
+ * @descriptions 添加车辆obd
+ */
 app.controller('BusEditController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$myHttpService','$timeout',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$myHttpService,$timeout){
     $scope.editMode = !!$stateParams.id;//检测有没有ID，判断当前是添加还是编辑，共用一套模板
     if($scope.editMode){//编辑模式
@@ -47,7 +52,6 @@ app.controller('BusEditController',['$rootScope','$scope','$http','$state','$loc
         $scope.submit = function(){
             $scope.submiting = true;
             //提交表单到服务器地址
-            
             if($scope.bus.cartype == '0'){
                 $scope.bus.seatnum = 46
             }else if($scope.bus.cartype == '1'){
@@ -65,9 +69,7 @@ app.controller('BusEditController',['$rootScope','$scope','$http','$state','$loc
                 $scope.submiting = false;
             });
         }
-
     }
-
 }]);
 /**
  * 线路列表控制器
@@ -103,7 +105,7 @@ app.controller('BusListController',['$rootScope','$scope','$http','$state','$loc
     $tableListService.get();
 }]);
 app.controller('BusPositionController', ['$scope','$rootScope','$stateParams',function($scope, $rootScope,$stateParams) {
-    //根据车辆的id获取位置信息，先判断obd状态，如果obd状态为不正常，先唤醒obd，在获取位置信息
+    //获取位置信息
     var carPosition = $stateParams.carPosition;
     var map = new AMap.Map('J_map_canvas', {
         resizeEnable: true,
@@ -114,6 +116,7 @@ app.controller('BusPositionController', ['$scope','$rootScope','$stateParams',fu
         position: carPosition.split('&'),
     });
     marker.setMap(map);
+    //当组件销毁时清除地图缓存
     $scope.$on('$destroy',function() {
       map.destroy();
     });

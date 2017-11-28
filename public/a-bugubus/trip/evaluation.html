@@ -1,0 +1,81 @@
+<div class="wrapper-md" ng-controller="evaluationController">
+  	<div class="panel panel-default">
+  		<span ng-repeat="t in tags" class="{{tag(t)}}">{{t}}</span>
+    	<div class="panel-heading">
+			产品评论列表     		 
+		</div>
+    	<!-- <form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()" ng-if="session_user.access == 'systemUser'"> -->
+      		<!-- <div class="col-sm-5 m-b-xs"> -->
+        		<!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
+      		<!-- </div>
+	      	<div class="col-sm-3">
+	      	</div>
+      		<div class="col-sm-4">
+        		<div class="input-group">
+          			<input type="text" class="input-sm form-control" name="keyword" placeholder="输入景点名称">
+          			<span class="input-group-btn">
+            			<button class="btn btn-sm btn-default" >查询</button>
+          			</span>
+        		</div>
+      		</div> -->
+      		<!-- <div class="row wrapper form-horizontal">
+                <div class="col-sm-1">
+                    <label class="control-label f12">景点名称</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" name="keyword" placeholder="输入景点名称">
+                </div>
+                <div class="col-sm-1">
+                    <label class="control-label f12">有效时间</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="注册时间如2017-01-01" class="input-sm form-control" ng-click="viewOrder.open($event)" datepicker-popup="{{viewOrder.format}}" name="newTime" ng-model="newTime" is-open="viewOrder.opened" datepicker-options="viewOrder.dateOptions" close-text="关闭" clear-text="清空"  current-text="今天" />
+                </div>
+            	<div class="col-sm-4">
+                    <button class="btn btn-sm btn-primary pull-right">搜索</button>
+                </div>
+            </div> -->
+    	<!-- </form> -->
+    	<div class="table-responsive" style="overflow: hidden">
+	      	<table cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed text-xs">
+	        	<thead>
+	        		<tr>
+						<th>产品ID</th>
+						<th>用户ID</th>
+						<th>用户名称</th>
+						<th>评论</th>
+						<th>评分</th>
+						<th>是否显示</th>
+						<th>图片</th>
+						
+					</tr>
+	        	</thead>
+	        	<tbody>
+		        	<tr ng-repeat="item in pageResponse.buslineHierarchys">
+						<td ng-bind="item.productid"></td>
+						<td ng-bind="item.userid"></td>
+						<td ng-bind="item.username"></td>
+						<td ng-bind="item.orderhie"></td>
+						<td ng-bind="item.orderScore"></td>
+						<td>
+							<label class="i-checks m-b-none">
+							  	<input type="checkbox" ng-model="item.isShow" ng-click="isShow(item.hieid, item.isShow)"><i></i>
+							</label>
+						</td>
+						<td>
+							<a ng-if="!item.images[0]" ui-sref="app.product.uploadimage({id:item.hieid})">
+							  	<span class="label btn-info">上传图片</span>
+							</a>
+							<a ng-if="item.images[0]" ng-click="openCarorderImageModal(item.images)">
+							  	<span class="label btn-success">查看图片</span>
+							</a>
+						</td>
+		        	</tr>
+		        </tbody>
+	  		</table>
+    	</div>
+	    <footer class="panel-footer">
+	      	<div class="box-body" table-pagination></div>
+	    </footer>
+  	</div>
+</div>

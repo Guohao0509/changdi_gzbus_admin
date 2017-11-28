@@ -49,6 +49,15 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
     };
     $tableListService.init($scope, options);
     $tableListService.get();
+    $scope.viewOrderStatus=['1','2','3','4','5','0'];
+    $scope.selectname = {
+        1:'未付费',
+        2:'已付费未使用',
+        3:'已使用',
+        4:'正在退款',
+        5:'已退款',
+        0:'全部状态'
+    };
     $scope.isShow = function(viewOrderid, isShow) {
         $myHttpService.post('api/vieworder/updateViewOrderPictureShow',{viewOrderid:viewOrderid,isShow: isShow},function(data) {
             if(data.code == 0) {
@@ -152,7 +161,6 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
         },function(index){
             layer.close(index);
         });
-        
     }
     $scope.printTicket = function(data){
         var printTicketModel = $modal.open({
@@ -166,15 +174,7 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
             }
         });
     }
-    $scope.viewOrderStatus=['1','2','3','4','5','0'];
-    $scope.selectname = {
-        1:'未付费',
-        2:'已付费未使用',
-        3:'已使用',
-        4:'正在退款',
-        5:'已退款',
-        0:'全部状态'
-    };
+    
 }]);
 
 /**
@@ -235,10 +235,8 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
         var month = departDate.getMonth()+1;
         var day = departDate.getDate();
         var date = year+'-'+month+'-'+day;
-        $scope.loadScheduleTable(date,function(data){
-            $scope.dateSchedules = data;
-        })
     }
+
     $scope.showSourceid = function(){
         
         angular.forEach($scope.ticketSourceList.sources, function(data){
@@ -257,55 +255,8 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
         $myHttpService.post('api/vieworder/product/queryProductBusScheduleDetails',{departDate:date},function(data){
             console.log(data);
             var tmpData = [];
-            for(var i = 0; i < data.products.length; i ++){
-                if(data.products[i].backbsid){
-                    var obj1 = {
-                        productType: 0,
-                        gobsname: data.products[i].gobsname,
-                        gobdid: data.products[i].gobdid,
-                        departName: data.products[i].departName,
-                        arriveName: data.products[i].arriveName,
-                        departaddr: data.products[i].departaddr,
-                        departtime: data.products[i].departtime,
-                        goPrice: data.products[i].goPrice,
-                        viewPrices: data.products[i].viewPrices,
-                        drivetime: data.products[i].drivetime,
-                        leftTickets: data.products[i].goLeftTickets,
-                        totalTickets: data.products[i].goTotalTickets,
-                        
-                    }
-                    var obj2 = {
-                        productType: 0,
-                        haveTicket: 0,
-                        gobsname: data.products[i].backbsname,
-                        gobdid: data.products[i].backbdid,
-                        departName: data.products[i].backDepartName,
-                        arriveName: data.products[i].backArriveName,
-                        departaddr: data.products[i].backDepartaddr,
-                        departtime: data.products[i].backDeparttime,
-                        goPrice: data.products[i].backPrice,
-                        drivetime: data.products[i].drivetime,
-                        leftTickets: data.products[i].backLeftTickets,
-                        totalTickets: data.products[i].backTotalTickets,
-                        check: data.products[i].backbsid+'0'
-                    }
-                    if(data.products[i].haveTicket == 1){
-                        obj1.haveTicket = 1;
-                        obj1.check = data.products[i].gobsid+'1';
-                    }
-                    tmpData.push(obj1);
-                    tmpData.push(obj2);
-                }else{
-                    if(data.products[i].haveTicket == 1){
-                        data.products[i].check = data.products[i].gobsid+'1';
-                    }else{
-                         data.products[i].check = data.products[i].gobsid+'0';
-                    }
-                    tmpData.push(data.products[i]);
-                }
-            }
-            var resultData = unique(tmpData);
-            callback&&callback(resultData);
+            
+            callback&&callback(data);
         },function() {
 
         })
@@ -319,13 +270,9 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
     })
 
     $scope.selectSchedule = function(schedule,$index) {
-        if(schedule.haveTicket == 1) {
-            $scope.orderType = "haveTicket";
-            $scope.disabledSelect = $index;
-        }
         //dataMs schedule.departdate的毫秒数，判断发车时间与购票时间
         var dateMs = schedule.departdate;
-        var tmpTimeArr = schedule.departtime.split(':');
+        var tmpTimeArr = schedule.departTime.split(':');
         var dateMs = dateMs + (Number(tmpTimeArr[0])*60 + Number(tmpTimeArr[1]))*60*1000;
         function checkDeadLineTime(dateMs){
             var currentTime = new Date().getTime();
@@ -357,27 +304,17 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
         var month = $scope.departDate.getMonth()+1;
         var day = $scope.departDate.getDate();
         var departDate = year+'-'+month+'-'+day;
+        console.log('$scope.carorder.schedule')
+        console.log($scope.carorder.schedule)
         var reqParam = {
             userid: $scope.carorder.userid,
             // count: $scope.carorder.ticketNum,
             ticketSource: $scope.carorder.offline,
             departDate: departDate,
             count: countNum,
-            bdid:$scope.carorder.schedule.gobdid,
+            bdid:$scope.carorder.schedule.bdid
         }
-        if($scope.orderType == "haveTicket") {
-            var id = 'select'+$scope.disabledSelect;
-            var select = document.getElementById(id);
-            reqParam.viewPriceId = select.value;
-            console.log(select.value);
-            if(select.value == 0){
-                layer.msg('请选择票价类型',{offset:'100px'});
-                return;
-            }
-        }
-        if(!$scope.carorder.schedule.gobdid){
-            reqParam.bdid = $scope.carorder.schedule.backbdid;
-        }
+        
         if($scope.carorder.sourceid){
             reqParam.sourceid = $scope.carorder.sourceid;
         }
@@ -402,7 +339,7 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
     }
   
     $scope.creatTicket = function(data){
-        $scope.ticket = data.viewOrder;
+        $scope.ticket = data.viewOrders[0];
         $scope.showTicket = true;
     }
     $scope.scheduleTime = {
@@ -525,5 +462,232 @@ app.controller('carorderShowImageController', ['$scope', '$modalInstance', 'imag
     $scope.imgUrls = imageUrls;
     $scope.ok = function () {
         $showImageModel.close();
+    };
+}]);
+app.controller('ViewOrderListController',['$scope','$http','$state','$myHttpService','$tableListService','$modal',function($scope,$http,$state,$myHttpService,$tableListService,$modal){
+    var options = {
+        searchFormId:"J_search_form",
+        listUrl:"api/ticketorder/queryTicketOrderListByKeyword"
+    };
+    $tableListService.init($scope, options);
+    $tableListService.get();
+    console.log($scope);
+
+    $scope.viewOrder = {
+        opened:false,
+        dateOptions:{
+            datepickerMode:'day',
+            showWeeks: false,
+            minMode:'day'
+        },
+        format:"yyyy-MM-dd",
+        clear:function(){
+            $scope.newTime = null;
+        },
+        disabled:function(date, mode) {
+            return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+        },
+        toggleMin: function() {
+            $scope.minDate = $scope.minDate ? null : new Date();
+        },
+        open:function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.viewOrder.opened = true;
+        }
+    };
+    $scope.applyRefund = function(item){
+        layer.confirm('您确定要退款吗？', {icon: 3, title:'提示'},function(){
+            if(item.ticketSource != '线上'){
+                $myHttpService.post('api/ticketorder/offlineDoorTicketsRefund',{orderid:item.orderid},function(data){
+                    console.log(data)
+                    layer.msg('退款成功')
+                    $state.go('app.carorder.view_list',{},{reload: true});
+                },function(err) {
+                    console.log(err);
+                })
+            }else{
+                var reqParam = {
+                    userid: item.userid,
+                    openid: 'test',
+                    viewOrderid: item.viewOrderid,
+                    applyResult: 'true'
+                }
+                $myHttpService.post('api/ticketorder/applyDoorTicketRefund',reqParam,function(data){
+                    console.log(data)
+                    layer.msg('退款成功')
+                    $state.go('app.carorder.view_list',{},{reload: true});
+                },function(err) {
+                    console.log(err);
+                })
+            }
+        },function(index){
+            layer.close(index);
+        });
+    }
+    $scope.printTicket = function(data){
+        var printTicketModel = $modal.open({
+            templateUrl: 'a-bugubus/carorder/printTicket.html',
+            controller: 'carorderTicketController',
+            size: 'md',
+            resolve: {
+                ticketInfo: function () {
+                    return data;
+                }
+            }
+        });
+    }
+}]);
+app.controller('addViewOrderController',['$scope','$rootScope','$http','$state','$tableListService','$myHttpService','$modal',function($scope,$rootScope,$http,$state,$tableListService,$myHttpService,$modal){
+    var superUserId = '2017001001001001001001';
+    $scope.carorder = {};
+    $scope.carorder.userid = superUserId;
+    $scope.showTicket = false;
+    //数组去重
+    
+    var options={
+        searchFormId:'J_search_form',
+        listUrl:'api/vieworder/ticketsource/queryTicketSourceListByKeyword',
+        size: '9999',
+        multiTable: 'ticketSourceList',
+        callback: function(){
+            $scope.carorder.havePower = true;
+            $scope.carorder.offline = 0;
+            console.log($scope.ticketSourceList);
+            if($scope.ticketSourceList){
+                angular.forEach($scope.ticketSourceList.sources, function(data){
+                    var needSourceId;
+                    if(data.needSourceId == '0'){
+                        needSourceId = false;
+                    }else if(data.needSourceId == '1'){
+                        needSourceId = true;
+                    }
+
+                    if(data.ticketSource == $scope.carorder.offline){
+                        $scope.carorder.needSourceId = needSourceId;
+                    }
+                });
+            }
+        }
+    };
+    $tableListService.init($scope, options);
+    $tableListService.get();
+    var options2 = {
+        searchFormId:"J_search_form",
+        listUrl:"api/vieworder/queryViewInfoListByKeyword",
+        callback: function(data,scope){
+        }
+    };
+    $tableListService.init($scope, options2);
+    $tableListService.get();
+    
+    $scope.showSourceid = function(){
+        angular.forEach($scope.ticketSourceList.sources, function(data){
+            var needSourceId;
+            if(data.needSourceId == '0'){
+                needSourceId = false;
+            }else if(data.needSourceId == '1'){
+                needSourceId = true;
+            }
+            if(data.ticketSource == $scope.carorder.offline){
+                $scope.carorder.needSourceId = needSourceId;
+            }
+        });
+    }
+   
+    $scope.openViewUserModel = function(notice){
+        var ViewUserModel = $modal.open({
+            templateUrl: 'a-bugubus/view/view_user.html',
+            controller: 'checkViewUserController',
+            size: 'md',
+            resolve: {
+                notice: function () {
+                    return notice;
+                }
+            }
+        });
+    }
+    //选择门票
+    $scope.selectView = function(item,$index) {
+        $scope.disabledSelect = $index;
+        $scope.addViewOrder = item;
+        console.log($scope.addViewOrder)
+    };
+    $scope.submit = function() {
+        //默认为1
+
+        var countNum = 1;
+        var year = $scope.departDate.getFullYear();
+        var month = $scope.departDate.getMonth()+1;
+        var day = $scope.departDate.getDate();
+        var departDate = year+'-'+month+'-'+day;
+        console.log('$scope.carorder.schedule')
+        console.log($scope.carorder.schedule)
+        var reqParam = {
+            userid: $scope.carorder.userid,
+            // count: $scope.carorder.ticketNum,
+            useDate: departDate,
+            count: countNum,
+            viewPriceId: $scope.addViewOrder.viewPriceId
+        }
+        var id = 'select'+$scope.disabledSelect;
+        var select = document.getElementById(id);
+        reqParam.viewPriceId = select.value;
+        if($scope.carorder.sourceid){
+            reqParam.sourceid = $scope.carorder.sourceid;
+        }
+
+        if($scope.carorder.havePower){
+            angular.forEach($scope.ticketSourceList.sources,function(item, index){
+                if($scope.carorder.offline == item.ticketSource){
+                    reqParam.ticketSourceId = item.ticketSourceId;
+                }
+            })
+        }
+        if($rootScope.session_user.access == 'systemUser' && reqParam.ticketSource == 0){
+            layer.msg('请选票据来源',{offset:'100px'});
+            return;
+        }
+        console.log('reqParam',reqParam)
+        $myHttpService.post('api/vieworder/insertTicketOrder',reqParam, function(data){
+            layer.msg("添加成功！",{offset: '100px'});
+            // $state.go('app.carorder.list',{},{reload: true});
+            console.log(data);
+            $scope.creatTicket(data);
+        })
+    }
+  
+    $scope.creatTicket = function(data){
+        $scope.ticket = data.ticketOrders[0];
+        $scope.showTicket = true;
+    }
+    $scope.scheduleTime = {
+        opened:false,
+        dateOptions:{
+            datepickerMode:'day',
+            showWeeks: false,
+            minMode:'day'
+        },
+        format:"yyyy-MM-dd",
+        clear:function(){
+            $scope.regDate = null;
+        },
+        disabled:function(date, mode) {
+            return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+        },
+        toggleMin: function() {
+            $scope.minDate = $scope.minDate ? null : new Date();
+        },
+        open:function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.scheduleTime.opened = true;
+        }
+    };
+}]);
+app.controller('checkViewUserController',['$scope','$http','$state','$myHttpService','notice','$modalInstance',function($scope,$http,$state,$myHttpService,notice,$ViewUserModel){
+    $scope.notice = notice;
+    $scope.ok = function () {
+        $ViewUserModel.close();
     };
 }]);
