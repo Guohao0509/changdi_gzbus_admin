@@ -59,12 +59,6 @@ angular.module('app.directives').directive('ticket', function($document) {
                     ctx.fillStyle = '#757575';
                     ctx.fillText(ticket.phone,200,1032);
                     ctx.drawImage(barcodeImg, 100, 600, 500, 200);
-                    if(scope.ticketInfo.ticketCode){
-                        ctx.font="26px Arial";
-                        ctx.fillStyle = '#0068B7';
-                        ctx.fillText('景区门票校验码', 120, 820);
-                        ctx.fillText(scope.ticketInfo.ticketCode, 320, 820);
-                    }
                 }
             }else if(scope.ticketInfo.ticketCode) {
                 var viewTicket = {
@@ -74,10 +68,9 @@ angular.module('app.directives').directive('ticket', function($document) {
                     viewName: scope.ticketInfo.viewName,
                     viewPriceType: scope.ticketInfo.viewPriceType,
                     ticketPrice: scope.ticketInfo.ticketPrice,
-                    couponPrice: scope.ticketInfo.couponPrice,
-                    viewPriceType: scope.ticketInfo.couponPrice
+                    couponPrice: scope.ticketInfo.couponPrice
                 }
-                console.log(viewTicket);
+                console.log(scope.ticketInfo);
                 var date = new Date(Number(viewTicket.useDate));
                 var year = date.getFullYear();
                 var month = date.getMonth() + 1;
@@ -100,16 +93,20 @@ angular.module('app.directives').directive('ticket', function($document) {
                 img.onload = function() {  
                     ctx.drawImage(img, 0, 0,700,1100);
                     ctx.fillStyle = '#0068B7';
-                    ctx.font="bold 60px Arial";
-                    ctx.fillText(viewTicket.viewName,140,156);
-                    ctx.font="35px Arial";
-                    ctx.fillText(departDate,140,256);
-                    ctx.fillText('门票类型：',140, 316);
-                    ctx.fillText('门票类型：',140, 316);
-                    ctx.fillText(viewTicket.viewPriceType,340, 316);
+                    ctx.font="bold 40px Arial";
+                    ctx.fillText('景区：',100, 160);
+                    ctx.fillText(viewTicket.viewName,220,160);
+                    ctx.font="33px Arial";
+                    ctx.fillText('使用日期：',100,280);
+                    ctx.fillText(departDate,270,280);
+                    ctx.fillText('门票类型：',100, 400);
+                    ctx.fillText(viewTicket.viewPriceType,270,400);
+                    ctx.fillText('价格：',390, 400);
+                    ctx.fillText(viewTicket.ticketPrice+"  元",500, 400);
+                    ctx.drawImage(barcodeImg, 100, 600, 500, 200);
+                    ctx.font="20px Arial";
                     ctx.fillStyle = '#757575';
                     ctx.fillText(viewTicket.sourcePhone,200,1032);
-                    ctx.drawImage(barcodeImg, 100, 600, 500, 200);
                 }
             }
             

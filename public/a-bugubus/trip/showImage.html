@@ -1,9 +1,13 @@
 <div class="modal-header">
-    <h4 class="modal-title">推荐图片</h4>
+    <h4 class="modal-title">评论图片</h4>
 </div>
 <div class="modal-body">
     <div class="row" style="padding: 0 20px 0 20px;">
-        <img ng-src="{{imageUrl}}" class="img-responsive"/>
+        <div ng-if="imgUrl" class="col-sm-4" ng-repeat="imgUrl in imgUrls track by $index" style="margin-top: 20px;">
+            <a class="thumbnail">
+               <img ng-src="{{imgUrl}}" class="img-responsive"/>
+            </a>
+        </div>
     </div>
 </div>
 <div class="modal-footer">

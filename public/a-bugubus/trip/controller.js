@@ -94,7 +94,7 @@ app.controller('evaluationController', ['$scope','$myHttpService','$tableListSer
         var showImageModel = $modal.open({
             templateUrl: 'a-bugubus/trip/showImage.html',
             controller: 'carorderShowImageController',
-            size: 'md',
+            size: 'lg',
             resolve: {
                 imageUrls: function () {
                     return images;
