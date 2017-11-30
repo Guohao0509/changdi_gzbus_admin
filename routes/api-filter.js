@@ -5,7 +5,8 @@ var filter = function(req,res,next){
   //'queryViewOrderListByKeyword?ticketSource=%E7%BA%BF%E4%B8%8A&viewOrderStatus=0&offset=0&pagesize=5';
   var access = [
     '/api/vieworder/ticketsource',
-    '/api/vieworder/product'
+    '/api/vieworder/product',
+    '/api/vieworder/ticketorder'
   ];
   
   function checkeAccess(reqUrl, key){
@@ -20,6 +21,11 @@ var filter = function(req,res,next){
         'api/vieworder/product/queryProductBusScheduleDetails',
         'api/vieworder/insertViewOrder',
         'api/vieworder/updateViewOrderPhoto',
+        'api/vieworder/queryTicketOrderListByKeyword',
+        'api/vieworder/queryViewInfoListByKeyword',
+        'api/vieworder/insertTicketOrder',
+        'api/vieworder/ticketorder/applyDoorTicketRefund',
+        'api/vieworder/ticketorder/offlineDoorTicketsRefund',
         'files/excel',
         'files/image'
       ]
@@ -38,7 +44,7 @@ var filter = function(req,res,next){
     if((req.session.access == 'viewLogin' || req.session.access == 'sourceLogin')&&checkeAccess(req.originalUrl, req.session.access)){
       var tmpUrl = urlArr.slice(0,4).join('/');
       var serviceUrl;
-      if(tmpUrl == access[0]||tmpUrl == access[1]){
+      if(tmpUrl == access[0]||tmpUrl == access[1]||tmpUrl == access[2]){
         urlArr.splice(2,1);
         serviceUrl = urlArr.join('/');
         serviceUrl = serviceUrl.substring(4,serviceUrl.length);
@@ -46,11 +52,15 @@ var filter = function(req,res,next){
         var url = req.originalUrl;
         serviceUrl =req.originalUrl.substring(4,url.length);
       }
-      if(serviceUrl.indexOf('ticketorder') != -1){
+      if(serviceUrl.indexOf('ticketorder/queryTicketOrderListByKeyword') != -1){
         serviceUrl = serviceUrl+'&viewid=' + req.session.user.viewid;
       }
       if(serviceUrl.indexOf('vieworder/queryViewOrderListByKeyword') != -1){
         var myQuery = 'ticketSource='+req.session.user.ticketSourceId;
+        // serviceUrl = serviceUrl.replace(/ticketSource=(\d){0,}/,myQuery);
+        serviceUrl = serviceUrl + '&' + myQuery;
+      }else if(serviceUrl.indexOf('vieworder/queryTicketOrderListByKeyword') != -1){
+        var myQuery = 'ticketSourceId='+req.session.user.ticketSourceId;
         // serviceUrl = serviceUrl.replace(/ticketSource=(\d){0,}/,myQuery);
         serviceUrl = serviceUrl + '&' + myQuery;
       }
@@ -68,7 +78,7 @@ var filter = function(req,res,next){
     }else if(req.session.access == 'handletoken'){
       var tmpUrl = urlArr.slice(0,4).join('/');
       var serviceUrl;
-      if(tmpUrl == access[0]||tmpUrl == access[1]){
+      if(tmpUrl == access[0]||tmpUrl == access[1]||tmpUrl == access[2]){
         urlArr.splice(2,1);
         serviceUrl = urlArr.join('/');
         serviceUrl = serviceUrl.substring(4,serviceUrl.length);

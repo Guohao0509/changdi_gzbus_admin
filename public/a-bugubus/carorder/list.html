@@ -129,10 +129,10 @@
 							</a>
 						</td>
 						<td>
-							<a  ng-if="item.viewOrderStatus == 2"  ng-click="checkTicket(item.viewOrderid)">
+							<a  ng-if="session_user.access == 'systemUser'&&item.viewOrderStatus == 2"  ng-click="checkTicket(item.viewOrderid)">
 							  	<span class="label label-danger">验票</span>
 							</a>
-							<a  ng-if="item.viewOrderStatus != 2" >
+							<a  ng-if="session_user.access == 'systemUser'&&item.viewOrderStatus != 2" >
 							  	<span class="label label-default">验票</span>
 							</a>
 							<a ng-click="openDetailModel(item)">

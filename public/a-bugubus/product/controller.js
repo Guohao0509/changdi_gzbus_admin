@@ -766,5 +766,4 @@ app.controller('uploadImageController',['$rootScope','$scope','$http','$state','
             $state.go('app.product.evaluation',{},{reload: true});
         })
     }
-
 }]);

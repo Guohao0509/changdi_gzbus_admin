@@ -259,7 +259,7 @@ app
                 templateUrl: basePath+'carorder/addView.html',
                 ncyBreadcrumb: {
                     parent:'app.carorder.list',
-                    label: '添加评论图片'
+                    label: '添加门票'
                 }
             })
             // .state('app.carorder.add', {

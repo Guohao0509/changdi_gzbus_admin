@@ -4,21 +4,22 @@ angular.module('app.directives').directive('ticket', function($document) {
         replace: true,
         templateUrl: '../../tpl/blocks/ticket.html',
         scope: {
-            ticketInfo: '=',
+            ticketInformation: '=',
             // selectDate: '&',
         },
         link: function(scope, element, attrs) {
-            if(scope.ticketInfo.barcode){
-                var ticket = {
-                    viewOrderid: scope.ticketInfo.viewOrderid,
-                    start: scope.ticketInfo.departName,
-                    startAddr: scope.ticketInfo.departaddr,
-                    end: scope.ticketInfo.arriveName,
-                    date: scope.ticketInfo.departDate,
-                    time: scope.ticketInfo.departTime,
-                    barcode: scope.ticketInfo.barcode, 
-                    car: scope.ticketInfo.platenum,
-                    phone: scope.ticketInfo.sourcePhone
+            var ticket = {}, viewTicket = {};
+            if(scope.ticketInformation.barcode){//车票
+                ticket = {
+                    viewOrderid: scope.ticketInformation.viewOrderid,
+                    start: scope.ticketInformation.departName,
+                    startAddr: scope.ticketInformation.departaddr,
+                    end: scope.ticketInformation.arriveName,
+                    date: scope.ticketInformation.departDate,
+                    time: scope.ticketInformation.departTime,
+                    barcode: scope.ticketInformation.barcode, 
+                    car: scope.ticketInformation.platenum,
+                    phone: scope.ticketInformation.sourcePhone
                 }
                 
                 console.log(ticket);
@@ -29,8 +30,7 @@ angular.module('app.directives').directive('ticket', function($document) {
                 var departDate = year + ' 年 ' + month + ' 月 ' + day + ' 日 ';
 
                 var barcode = document.getElementById('barcodeCanvas');
-                // barcode.id = 'barcode';
-                // console.log(barcode)
+                
                 JsBarcode('#barcodeCanvas',ticket.barcode);
 
                 var imgSrc = barcode.toDataURL();
@@ -60,17 +60,18 @@ angular.module('app.directives').directive('ticket', function($document) {
                     ctx.fillText(ticket.phone,200,1032);
                     ctx.drawImage(barcodeImg, 100, 600, 500, 200);
                 }
-            }else if(scope.ticketInfo.ticketCode) {
-                var viewTicket = {
-                    sourcePhone: scope.ticketInfo.sourcePhone,
-                    ticketCode: scope.ticketInfo.ticketCode,
-                    useDate: scope.ticketInfo.useDate,
-                    viewName: scope.ticketInfo.viewName,
-                    viewPriceType: scope.ticketInfo.viewPriceType,
-                    ticketPrice: scope.ticketInfo.ticketPrice,
-                    couponPrice: scope.ticketInfo.couponPrice
+            }else if(scope.ticketInformation.ticketCode) {//门票
+                viewTicket = {
+                    orderid: scope.ticketInformation.orderid,
+                    sourcePhone: scope.ticketInformation.sourcePhone,
+                    ticketCode: scope.ticketInformation.ticketCode,
+                    useDate: scope.ticketInformation.useDate,
+                    viewName: scope.ticketInformation.viewName,
+                    viewPriceType: scope.ticketInformation.viewPriceType,
+                    ticketPrice: scope.ticketInformation.ticketPrice,
+                    couponPrice: scope.ticketInformation.couponPrice
                 }
-                console.log(scope.ticketInfo);
+                console.log(scope.ticketInformation);
                 var date = new Date(Number(viewTicket.useDate));
                 var year = date.getFullYear();
                 var month = date.getMonth() + 1;
@@ -194,7 +195,12 @@ angular.module('app.directives').directive('ticket', function($document) {
                         link.dispatchEvent(event);
                     }
                 }
-                var filename = ticket.viewOrderid + '.' + type;
+                var filename;
+                if(ticket.viewOrderid){
+                    filename = ticket.viewOrderid + '.' + type;
+                }else if(viewTicket.orderid){
+                    filename = ticket.orderid + '.' + type;
+                }
                 saveFile(imgdata, filename);
             }
         }

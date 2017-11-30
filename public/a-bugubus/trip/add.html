@@ -191,39 +191,6 @@
                 </div>
             </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <div class="panel b-a" ng-show="combine_car">
                 <div class="panel-heading b-b b-light">选择线路<span class="text-danger text-md ">*</span>
                     <div class="radio inline" style="margin: 0 0 0 20px;">
@@ -256,9 +223,7 @@
                                     <th>路线</th>
                                     <th>线路名称</th>
                                     <th>起点</th>
-                                    <th>终点</th>
                                     <th>线路ID</th>
-                                    <th>距离</th>
                                     <th>时间</th>
                                 </tr>
                             </thead>
@@ -271,9 +236,7 @@
                                     </td>
                                     <td ng-bind="goLine.linename"></td>
                                     <td ng-bind="goLine.departaddr"></td>
-                                    <td ng-bind="goLine.arriveaddr"></td>
                                     <td ng-bind="goLine.lineid"></td>
-                                    <td ng-bind="goLine.drivedistance"></td>
                                     <td ng-bind="goLine.drivetime"></td>
                                 </tr>
                                 <tr ng-if="backLineType">
@@ -284,9 +247,7 @@
                                     </td>
                                     <td ng-bind="backLine.linename"></td>
                                     <td ng-bind="backLine.departaddr"></td>
-                                    <td ng-bind="backLine.arriveaddr"></td>
                                     <td ng-bind="backLine.lineid"></td>
-                                    <td ng-bind="backLine.drivedistance"></td>
                                     <td ng-bind="backLine.drivetime"></td>
                                 </tr>
                             </tbody>
@@ -318,10 +279,8 @@
     							</th>
     							<th sort-name="LINENAME">线路名称</th>
     							<th sort-name ="DEPARTADDR">起点</th>
-    							<th sort-name ="DEPARTADDR">终点</th>
     							<th sort-name ="LINEID">线路ID</th>
     							<!-- <th sort-name ="RUNSTATUS">状态</th> -->
-    							<th sort-name ="DRIVEDISTANCE">距离(km)</th>
     							<th sort-name ="DRIVETIME">时间(min)</th>
                             </tr>
                         </thead>
@@ -334,7 +293,6 @@
                           		</td>
     							<td ng-bind="item.linename"></td>
     							<td ng-bind="item.departaddr"></td>
-    							<td ng-bind="item.arriveaddr"></td>
     							<td ng-bind="item.lineid"></td>
                              	<!--<td>
     	                            <div ng-show="item.runstatus=='1'">
@@ -344,7 +302,6 @@
     	                              	<span class="label label-danger">报名中</span>
     	                            </div>
                               	</td>-->
-                              	<td ng-bind="item.drivedistance"></td>
                               	<td ng-bind="item.drivetime"></td>
                         	</tr>
                         </tbody>
@@ -357,20 +314,6 @@
                     <a href class="btn btn-info" ng-click="selectRouteToggle()">收起</a>
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             <div class="panel b-a" ng-show="combine_car">
                 <div class="panel-heading b-b b-light">
@@ -410,7 +353,7 @@
                                         <td  ng-bind="item.drivername"></td>
                                         <td  ng-bind="item.platenum"></td>
                                         <!-- <td  ng-bind="item.linename"></td> -->
-                                        <td  ng-bind="item.departTime"></td>
+                                        <td  ng-bind="item.departtime"></td>
                                         <!-- <td ng-bind="item.price"></td> -->
                                         <!-- <td>
                                             <a ng-click="deleteSchedule(item)">
@@ -474,7 +417,7 @@
                                             <td  ng-bind="item.drivername"></td>
                                             <td  ng-bind="item.platenum"></td>
                                             <!-- <td  ng-bind="item.linename"></td> -->
-                                            <td  ng-bind="item.departTime"></td>
+                                            <td  ng-bind="item.departtime"></td>
                                             <!-- <td ng-bind="item.price"></td> -->
                                            <!--  <td>
                                                 <a ng-click="deleteSchedule(item)">

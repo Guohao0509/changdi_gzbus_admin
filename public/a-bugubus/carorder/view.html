@@ -14,7 +14,7 @@
 	            <li style=" padding-top:4px; padding-right:15px" ng-click="exportToExcel()"><button class="btn m-b-xs btn-sm btn-info btn-addon"><i class="fa fa-file-excel-o"></i>导出到Excel</button></li>
 	        </ul>
 		</div>
-    	<form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()" ng-if="session_user.access == 'systemUser'">
+    	<form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()">
       		<!-- <div class="col-sm-5 m-b-xs"> -->
         		<!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
       		<!-- </div>
@@ -29,6 +29,17 @@
         		</div>
       		</div> -->
       		<div class="row wrapper form-horizontal">
+      			<div class="col-sm-1" ng-if="session_user.access == 'systemUser'">
+                    <label class="control-label f12">票据来源</label>
+                </div>
+                <div class="col-sm-3" ng-if="session_user.access == 'systemUser'">
+                    <!-- <input id="ticketSource" type="text" class="input-sm form-control"  name="ticketSource" placeholder="请输入票据来源" ng-model="orderList.ticketSource"> -->
+                    <input id="ticketSource" type="text" name="ticketSourceId" ng-model="carorder.tmpOfflineId" style="display: none;">
+                    <select class="form-control" ng-init="carorder.offline = '0'" ng-model="carorder.offline" ng-required="true" ng-change="showSourceid()">
+	                    <option value="0" style="display: none;">请选择</option>
+	                    <option ng-repeat="item in ticketSourceList.sources" value="{{item.ticketSource}}">{{item.ticketSource}}</option>
+	                </select>
+                </div>
                 <div class="col-sm-1">
                     <label class="control-label f12">景点名称</label>
                 </div>
@@ -41,8 +52,8 @@
                 <div class="col-sm-3">
                     <input type="text" placeholder="注册时间如2017-01-01" class="input-sm form-control" ng-click="viewOrder.open($event)" datepicker-popup="{{viewOrder.format}}" name="newTime" ng-model="newTime" is-open="viewOrder.opened" datepicker-options="viewOrder.dateOptions" close-text="关闭" clear-text="清空"  current-text="今天" />
                 </div>
-            	<div class="col-sm-4">
-                    <button class="btn btn-sm btn-primary pull-right">搜索</button>
+            	<div class="col-sm-4 col-sm-offset-8">
+                    <button class="btn btn-sm btn-primary pull-right" style="margin-top: 20px;">搜索</button>
                 </div>
             </div>
     	</form>

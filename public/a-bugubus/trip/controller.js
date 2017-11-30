@@ -49,7 +49,7 @@ app.controller('TripListController',['$scope', '$modal','$state','$http','$myHtt
         var tripShowImageModel = $modal.open({
             templateUrl: 'a-bugubus/trip/showImage.html',
             controller: 'tripShowImageController',
-            size: 'md',
+            size: 'lg',
             resolve: {
                 imageUrl: function () {
                     return photoPath;
@@ -59,7 +59,9 @@ app.controller('TripListController',['$scope', '$modal','$state','$http','$myHtt
     }
 }]);
 app.controller('tripShowImageController', ['$scope', '$modalInstance', 'imageUrl',function($scope, $tripShowImageModel, imageUrl) {
-    $scope.imageUrl = imageUrl;
+    $scope.imgUrls = [];
+    $scope.title = '产品图片'
+    $scope.imgUrls.push(imageUrl);
     $scope.ok = function () {
         $tripShowImageModel.close();
     };
@@ -114,6 +116,7 @@ app.controller('evaluationController', ['$scope','$myHttpService','$tableListSer
 app.controller('carorderShowImageController', ['$scope', '$modalInstance', 'imageUrls',function($scope, $showImageModel, imageUrls) {
 
     $scope.imgUrls = imageUrls;
+    $scope.title = '评论图片'
     $scope.ok = function () {
         $showImageModel.close();
     };
@@ -146,10 +149,10 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
                 for(var i = 0; i < data.product.plans.length; i ++){
                     if(data.product.plans[i].sequence == 0){
                         $scope.goLine = data.product.plans[i];
-                        $scope.goLineBs = data.product.plans[i].busDetails
+                        $scope.goLineBs = data.product.plans[i].busSchedules
                     }else if(data.product.plans[i].sequence == 1){
                         $scope.backLine = data.product.plans[i];
-                        $scope.backLineBs = data.product.plans[i].busDetails
+                        $scope.backLineBs = data.product.plans[i].busSchedules
                     }
                 }
             }
@@ -457,15 +460,29 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
                 reqParam.lineids = $scope.goLine.lineid+'&'+$scope.backLine.lineid;
             }
             reqParam.bsids = [];
-            for(var i = 0; i < $scope.goLineBs.length; i ++){
-                reqParam.bsids.push($scope.goLineBs[i].bsid)
+            var len = $scope.goLineBs.length > $scope.backLineBs.length ? $scope.goLineBs.length : $scope.backLineBs.length;
+            for(var i = 0; i < len; i ++){
+                if($scope.goLineBs[i]){
+                    var tmp1 = $scope.goLineBs[i].bsid
+                }else{
+                    tmp1 = ''
+                }
+                if($scope.backLineBs[i]){
+                    var tmp2 = $scope.backLineBs[i].bsid
+                }else{
+                    tmp2 = ''
+                }
+                if($scope.goLineType){
+                    reqParam.bsids.push(tmp1);
+                }else if($scope.backLineType){
+                    reqParam.bsids.push(tmp1+'&'+tmp2)
+                }
             }
-            for(var i = 0; i < $scope.backLineBs.length; i ++){
-                reqParam.bsids.push($scope.backLineBs[i].bsid)
-            }
+            // for(var i = 0; i < $scope.backLineBs.length; i ++){
+            //     reqParam.bsids.push($scope.backLineBs[i].bsid)
+            // }
         }
         console.log(reqParam)
-        console.log($scope.goLineBs)
         $myHttpService.post(tripApi,reqParam,function(data){
             //成功回调
             // var reqParam = {

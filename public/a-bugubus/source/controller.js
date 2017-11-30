@@ -32,7 +32,6 @@ app.controller('addTicketSourceController', ['$scope','$myHttpService', '$state'
     	var reqParam = {
            	ticketSourceId: $stateParams.id
         };
-        //获取司机内容
         $myHttpService.post("api/ticketsource/queryTicketSource",reqParam,function(data){
         	$scope.source = {
         		ticketSource: data.ticketSource.ticketSource,
