@@ -5,6 +5,7 @@
  * @descriptions 景区订单管理的控制器
  */
 app.controller('ViewOrderController',['$scope','$http','$state','$myHttpService','$tableListService',function($scope,$http,$state,$myHttpService,$tableListService){
+    $scope.isShowApk = false;
 	var options = {
         searchFormId:"J_search_form",
         listUrl:"api/ticketorder/queryTicketOrderListByKeyword"
@@ -19,7 +20,8 @@ app.controller('ViewOrderController',['$scope','$http','$state','$myHttpService'
         })
     }
     $scope.downloadApp = function() {
-        window.location.href = 'http://111.230.129.41:5050/app/app-release.apk';
+        $scope.isShowApk = !$scope.isShowApk;
+        // window.location.href = 'http://111.230.129.41:5050/app/app-release.apk';
     }
     $scope.viewOrder = {
         opened:false,
