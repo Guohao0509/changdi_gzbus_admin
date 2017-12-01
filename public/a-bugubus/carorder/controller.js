@@ -679,7 +679,15 @@ app.controller('addViewOrderController',['$scope','$rootScope','$http','$state',
     };
     $scope.submit = function() {
         //默认为1
-
+        if($scope.departDate == null){
+            return layer.msg('请选择日期')
+        }
+        if($scope.addViewOrder == null){
+            return layer.msg('请选择门票')
+        }
+        if($scope.carorder.needSourceId&&$scope.carorder.sourceid == null){
+            return layer.msg('请填写来源票ID')
+        }
         var countNum = 1;
         var year = $scope.departDate.getFullYear();
         var month = $scope.departDate.getMonth()+1;

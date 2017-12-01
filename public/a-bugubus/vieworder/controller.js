@@ -18,6 +18,9 @@ app.controller('ViewOrderController',['$scope','$http','$state','$myHttpService'
             $state.go("app.vieworder.list",{},{reload: true});
         })
     }
+    $scope.downloadApp = function() {
+        window.location.href = 'http://111.230.129.41/app/app-release.apk';
+    }
     $scope.viewOrder = {
         opened:false,
         dateOptions:{
