@@ -724,7 +724,7 @@ app
                 templateUrl: basePath+'vieworder/list.html',
                 ncyBreadcrumb: {
                     parent:'app.dashboard',
-                    label: '产品管理'
+                    label: '景区订单管理'
                 }
             })
             .state('app.test', {

@@ -6,7 +6,7 @@
 		    </ul> -->
      		 景点订单列表
 		</div>
-    	<form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()" ng-if="session_user.access == 'systemUser'">
+    	<form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()">
       		<!-- <div class="col-sm-5 m-b-xs"> -->
         		<!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
       		<!-- </div>
@@ -20,11 +20,11 @@
           			</span>
         		</div>
       		</div> -->
-      		<div class="row wrapper form-horizontal">
-                <div class="col-sm-1">
+      		<div class="row wrapper form-horizontal" >
+                <div class="col-sm-1"  ng-if="session_user.access == 'systemUser'">
                     <label class="control-label f12">景点名称</label>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-3"  ng-if="session_user.access == 'systemUser'">
                     <input type="text" class="form-control" name="keyword" placeholder="请输入景点名称">
                 </div>
                 <div class="col-sm-1">
@@ -71,6 +71,7 @@
 						<th sort-name = "ORDERHIE">订单评价</th> -->
 						<th>门票状态</th>
 						<th sort-name = "TICKET_CODE">票据校验码</th>
+						<th>操作</th>
 					</tr>
 	        	</thead>
 	        	<tbody>
@@ -94,6 +95,14 @@
 							<span ng-if="item.ticketStatus == 5">已退款</span>
 						</td>
 						<td ng-bind="item.ticketCode"></td>
+						<th>
+							<a  ng-if="item.ticketStatus == 2"  ng-click="checkTicket(item.orderid)">
+							  	<span class="label label-danger">验票</span>
+							</a>
+							<a  ng-if="item.ticketStatus != 2" >
+							  	<span class="label label-default">验票</span>
+							</a>
+						</th>
 		        	</tr>
 		        </tbody>
 	  		</table>

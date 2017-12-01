@@ -353,6 +353,7 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
     }
     //控制是否显示打印票的函数
     $scope.creatTicket = function(data){
+        console.log(data);
         $scope.ticket = data.viewOrders[0];
         $scope.showTicket = true;
     }

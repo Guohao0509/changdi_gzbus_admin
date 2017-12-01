@@ -63,13 +63,15 @@ angular.module('app.directives').directive('ticket', function($document) {
             }else if(scope.ticketInformation.ticketCode) {//门票
                 viewTicket = {
                     orderid: scope.ticketInformation.orderid,
+                    couponPrice: scope.ticketInformation.couponPrice,
                     sourcePhone: scope.ticketInformation.sourcePhone,
                     ticketCode: scope.ticketInformation.ticketCode,
                     useDate: scope.ticketInformation.useDate,
                     viewName: scope.ticketInformation.viewName,
                     viewPriceType: scope.ticketInformation.viewPriceType,
                     ticketPrice: scope.ticketInformation.ticketPrice,
-                    couponPrice: scope.ticketInformation.couponPrice
+                    couponPrice: scope.ticketInformation.couponPrice,
+                    viewaddr: scope.ticketInformation.viewaddr
                 }
                 console.log(scope.ticketInformation);
                 var date = new Date(Number(viewTicket.useDate));
@@ -95,15 +97,19 @@ angular.module('app.directives').directive('ticket', function($document) {
                     ctx.drawImage(img, 0, 0,700,1100);
                     ctx.fillStyle = '#0068B7';
                     ctx.font="bold 40px Arial";
-                    ctx.fillText('景区：',100, 160);
-                    ctx.fillText(viewTicket.viewName,220,160);
-                    ctx.font="33px Arial";
-                    ctx.fillText('使用日期：',100,280);
-                    ctx.fillText(departDate,270,280);
-                    ctx.fillText('门票类型：',100, 400);
-                    ctx.fillText(viewTicket.viewPriceType,270,400);
-                    ctx.fillText('价格：',390, 400);
-                    ctx.fillText(viewTicket.ticketPrice+"  元",500, 400);
+                    ctx.fillText('景区：',100, 130);
+                    ctx.fillText(viewTicket.viewName,220,130);
+                    ctx.font="25px Arial";
+                    ctx.fillText('景区地址：',100,200);
+                    ctx.fillText(viewTicket.viewaddr,230,200);
+                    ctx.fillText('使用日期：',100,270);
+                    ctx.fillText(departDate,230,270);
+                    ctx.fillText('门票类型：',100, 340);
+                    ctx.fillText(viewTicket.viewPriceType,230,340);
+                    ctx.fillText('门票价格：',100, 410);
+                    ctx.fillText(viewTicket.ticketPrice+"  元",230, 410);
+                    ctx.fillText('实付价格：',100, 480);
+                    ctx.fillText(viewTicket.couponPrice+"  元",230, 480);
                     ctx.drawImage(barcodeImg, 100, 600, 500, 200);
                     ctx.font="20px Arial";
                     ctx.fillStyle = '#757575';
