@@ -11,7 +11,7 @@ var filter = function(req,res,next){
   
   function checkeAccess(reqUrl, key){
     var accessApi = {
-      viewLogin: ['api/ticketorder/queryTicketOrderListByKeyword'],
+      viewLogin: ['api/ticketorder/queryTicketOrderListByKeyword','api/ticketorder/offlineCheckUserDoorTicket'],
       sourceLogin: [
         'api/vieworder/ticketsource/queryTicketSourceListByKeyword',
         'api/vieworder/queryViewOrderListByKeyword',
