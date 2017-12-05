@@ -431,13 +431,12 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
         	reqParam.isPush = 'false';
         }else {
             reqParam.isPush = 'true';
-            if(!$scope.product.photoPath){
-                layer.msg('请添加推荐图片');
-                $scope.submiting = false;
-                return;
-            }
         }
-        
+        if(!$scope.product.photoPath){
+            layer.msg('请添加推荐图片');
+            $scope.submiting = false;
+            return;
+        }
         if($stateParams.id){
             reqParam.productid = $stateParams.id;
         }
