@@ -432,7 +432,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
         }else {
             reqParam.isPush = 'true';
         }
-        if(!$scope.product.photoPath){
+        if(reqParam.isPush == 'true'&&!$scope.product.photoPath){
             layer.msg('请添加推荐图片');
             $scope.submiting = false;
             return;
