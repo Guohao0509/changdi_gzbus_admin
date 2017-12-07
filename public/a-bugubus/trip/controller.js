@@ -635,12 +635,9 @@ app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpServ
         })
     }
     $scope.loadScheduleTable = function(date,callback) {
-
         $myHttpService.post('api/product/queryProductBusScheduleDetails',{departDate:date},function(data){
-            console.log(data)
             callback&&callback(data);
         },function() {
-
         })
     }
     $scope.deleteSchedule = function(item) {

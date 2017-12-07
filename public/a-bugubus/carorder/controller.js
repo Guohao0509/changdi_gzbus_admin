@@ -251,8 +251,18 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
         var date = year+'-'+month+'-'+day;
         //加载对应日期的排班信息
         $scope.loadScheduleTable(date,function(data){
-            $scope.dateSchedules = data.busDetails
+            $scope.dateSchedules = data.busDetails;
+            // for (var i = $scope.dataSchedules.length - 1, tmp = []; i >= 0; i--) {
+
+            // }
         })
+    }
+    $scope.formatWeeks = function(item){
+        for (var i = item.weeks.length - 1,tmpVal = '',tmpName = '星期',tmpSell; i >= 0; i--) {
+            tmpVal += item.weeks[i].week;
+            tmpName += item.weeks[i].bwname.slice(2, 3) + (i > 0 ? '/' : '');
+        }
+        return tmpName;
     }
     //将ticketSource to Id
     $scope.showSourceid = function(){
@@ -281,6 +291,7 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
     //监听所选时间的变化执行的函数，用于加载排班数据
     $scope.$watch('departDate',function(){
         if($scope.departDate){
+            console.log()
             $scope.selectedDate($scope.departDate);
         }
         $scope.overDeadLineTime = true;
@@ -403,7 +414,6 @@ app.controller('carorderTicketController', ['$scope', '$modalInstance', 'ticketI
 */
 app.controller('carorderDetailController', ['$scope', '$modalInstance', 'detail',function($scope, $showDetailModel, detail) {
     $scope.detail = detail;
-    console.log($scope.detail)
     $scope.ok = function () {
         $showDetailModel.close();
     };

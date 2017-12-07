@@ -16,6 +16,9 @@ var app = express();
 //schedule
 var schedule = require('node-schedule');
 var fse = require('fs-extra');
+
+var env=require('./conf.js')
+console.log(env)
 //在每周日晚上0点清除图片;
 var j = schedule.scheduleJob({hour: 0, minute: 0, dayOfWeek: 0}, function(){
   fse.emptyDir('./public/avatar', function(err){

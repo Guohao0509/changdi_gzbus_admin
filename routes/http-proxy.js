@@ -6,7 +6,7 @@
  */
 var httpProxy = function(url,data,success,error){
     var ng=require('nodegrass');
-    var host = require('../config.json').host+"/"+ require('../config.json').projectName +"/web"+url;
+    var host = require('../conf.js').host+"/"+ require('../conf.js').projectName +"/web"+url;
     //定义主机
     var header ={
         'Content-Type': 'application/x-www-form-urlencoded'

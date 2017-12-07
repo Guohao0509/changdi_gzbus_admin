@@ -8,8 +8,8 @@ var formidable = require('formidable');
 var fse = require('fs-extra');
 // var domain = 'http://192.168.5.183:4000';
 // var host = 'http://192.168.5.223:8080';
-var domain = require('../config.json').domain;
-var host = require('../config.json').host;
+var domain = require('../conf.js').domain;
+var host = require('../conf.js').host;
 
 //上传图片
 
@@ -99,7 +99,7 @@ router.post('/image', function(req, res) {
 // })
 //excel导出
 router.post('/excel', function(req, res) {
-	var api = '/'+ require('../config.json').projectName +'/web/vieworder/queryViewOrderListByKeyword';
+	var api = '/'+ require('../conf.js').projectName +'/web/vieworder/queryViewOrderListByKeyword';
 	var fileName = 'download' + new Date().getTime() + '_' + Math.floor(Math.random()*1000) + '.xlsx';
 	var basePath = './public/excel/' + fileName;
 	var excelTitleConfig = {
