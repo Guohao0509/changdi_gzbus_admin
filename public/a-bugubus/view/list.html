@@ -31,11 +31,12 @@
 						<th sort-name = "VIEWID">景点ID</th>
 						<th sort-name = "VIEW_NAME">景点名称</th>
 						<th sort-name = "VIEW_ADDR">景点地址</th>
-						<th>景点简介</th>
+						<!-- <th>景点简介</th>
 						<th sort-name = "VIEW_TYPE">景点类型</th>
 						<th sort-name = "VIEW_LEVEL">景点级别</th>
 						<th>景点图片</th>
-						<th>注意事项</th>
+						<th>注意事项</th> -->
+						<!-- <th>景点详情</th> -->
 						<th>票价管理</th>
 						<th>账号管理</th>
 						<th>操作</th>
@@ -46,7 +47,7 @@
 		        		<td ng-bind="item.viewid"></td>
 						<td ng-bind="item.viewName"></td>
 						<td ng-bind="item.viewaddr"></td>
-						<td ng-bind="item.viewintru"></td>
+						<!-- <td ng-bind="item.viewintru"></td>
 						<td ng-bind="item.viewType"></td>
 						<td ng-bind="item.viewLevel"></td>
 						<td>
@@ -58,7 +59,7 @@
 							<a ng-click="openViewUserModel(item.notice)">
 	                            <span class="label label-success">查看</span>
 	                        </a>
-						</td>
+						</td> -->
 						<td>
 							<a ng-click="openViewPriceModel(item.viewPrices)">
 	                            <span class="label label-info">查看</span>
@@ -70,6 +71,9 @@
 	                        </a>
 						</td>
 						<td>
+							<a ng-click="openImageModal(item)">
+	                            <span class="label label-info">详情</span>
+	                        </a>
 							<a ui-sref="app.view.edit({id:item.viewid})">
 	                            <span class="label label-primary">编辑</span>
 	                        </a>

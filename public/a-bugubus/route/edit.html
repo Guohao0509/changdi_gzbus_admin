@@ -35,6 +35,10 @@
                                     <div style="padding-bottom: 10px">
                                       <input id="searchPosition" type="text" class="form-control" ng-model="address.formattedAddress" placeholder="搜索地点">
                                       <!-- <span class="input-group-addon" ng-click="getLngLat()"><i class="glyphicon glyphicon-search"></i></span> -->
+                                      <div>
+                                            <a href class="btn btn-info" style="margin-top: 20px;float: right;width:47%;" ng-click="routeEditor.closeEditLine()">保存绘制</a>  
+                                            <a href class="btn btn-info" style="margin-top: 20px;width:47%;" ng-click="routeEditor.startEditLine()">打开编辑</a>
+                                        </div>
                                     </div>
                                     <ul id="J_sortable" class="list-group gutter list-group-lg list-group-sp" style="min-height: 300px;" >
                                         <li class="list-group-item wrapper-sm"

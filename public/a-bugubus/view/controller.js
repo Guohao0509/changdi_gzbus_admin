@@ -51,14 +51,14 @@ app.controller('ViewListController',['$scope','$http','$state','$myHttpService',
             }
         });
     }
-    $scope.openImageModal = function(photoPath) {
+    $scope.openImageModal = function(itemInfo) {
         var showImageModel = $modal.open({
             templateUrl: 'a-bugubus/view/showImage.html',
             controller: 'showImageController',
             size: 'md',
             resolve: {
-                imageUrl: function () {
-                    return photoPath;
+                itemInfo: function () {
+                    return JSON.stringify(itemInfo);
                 }
             }
         });
@@ -223,8 +223,9 @@ app.controller('ViewUserController',['$scope','$http','$state','$myHttpService',
         $ViewUserModel.close();
     };
 }]);
-app.controller('showImageController', ['$scope', '$modalInstance', 'imageUrl',function($scope, $showImageModel, imageUrl) {
-    $scope.imageUrl = imageUrl;
+app.controller('showImageController', ['$scope', '$modalInstance', 'itemInfo',function($scope, $showImageModel, itemInfo) {
+    $scope.itemInfo = JSON.parse(itemInfo);
+    console.log($scope.itemInfo)
     $scope.ok = function () {
         $showImageModel.close();
     };

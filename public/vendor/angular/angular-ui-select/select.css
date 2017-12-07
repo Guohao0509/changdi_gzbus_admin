@@ -55,7 +55,9 @@ body > .select2-container.open {
 .ui-select-container[theme="select2"]{
 
 }
-.ui-select-choices{min-width:60px!important;max-width:60px!important;}
+.ui-select-choices{min-width:60px!important;
+  // max-width:60px!important;
+}
 .ui-select-search{width: 60px;!important;}
 /* Handle up direction Select2 */
 .ui-select-container[theme="select2"].direction-up .ui-select-match,

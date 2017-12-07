@@ -7,6 +7,7 @@ app.controller('TripListController',['$scope', '$modal','$state','$http','$myHtt
     $tableListService.get();
     console.log($scope);
     //删除产品
+
 	$scope.deleteProduct=function(productid) {
         layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){
             $myHttpService.post("api/product/deleteProduct",{productid: productid},function(data){
@@ -130,6 +131,10 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
     $scope.product = {};
     $scope.goLineBs = [];
     $scope.backLineBs = [];
+    $scope.myTag = {
+        selTags: [],
+        tags:['单程', '往返', '门票']
+    };
     if(editMode){//编辑模式
         //编辑模式下的接口
         tripApi += 'updateProduct';
@@ -178,7 +183,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
                 keyWordTitle: data.product.viewaddress.split('&')[0],
                 keyWordInfo: data.product.viewaddress.split('&')[1]
             }
-           
+            $scope.myTag.selTags = data.product.productType.split('+');
             $scope.isPushOld = $scope.product.isPush.toString();
             //通过去程线路id，查找线路的详细信息
             // $scope.queryBusline(data.productinfo.golineid, function(line) {
@@ -420,7 +425,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
         var reqParam = {
             productinfo: $scope.userNotice,
             //测试
-            productType: $scope.product.productType,
+            productType: $scope.myTag.selTags.join('+'),
             viewaddress: $scope.product.keyWordTitle+'&'+$scope.product.keyWordInfo,//这里需要的是景区name
             region: '贵阳', //请求数据需要此参数，但目前没有实际意义
             titleName: $scope.product.titleName,
@@ -607,6 +612,16 @@ app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpServ
                 $scope.changedDate.push(dateHash[f]);
             }
         })
+    }
+    //格式化运营时间为一二三。。。
+    $scope.formatWeeks = function(weeks) {
+        for (var i = weeks.length - 1, str='星期'; i >= 0; i--) {
+            str+=weeks[i].bwname.slice(2, 3);
+            if(i>0){
+                str+='/'
+            }
+        }
+        return str;
     }
     $scope.selectedDate = function(departDate) {
         departDate = new Date(departDate);

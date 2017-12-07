@@ -5324,3 +5324,16 @@ td.completed:before {
     color: #15627C;
 }
 
+.markerNum {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #fff;
+  line-height: 15px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+}

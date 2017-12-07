@@ -69,6 +69,7 @@
 						<th sort-name = "TICKETSOURCE">票据来源</th>
 						<th sort-name = "USERNAME">用户名</th>
 						<!-- <th sort-name = "HAVETICKET">景区门票</th> -->
+						<th>订单创建时间</th>
 						<th sort-name = "DEPARTDATE">发班日期</th>
 						<th sort-name = "DEPARTTIME">发车时间</th>
 						<th sort-name = "REFUNDTIME">申请退款时间</th>
@@ -76,7 +77,7 @@
 						<th sort-name = "PAYPRICE">实付</th>
 						<!-- <th>评论图片</th> -->
 						<!-- <th sort-name = "ISSHOW">评论是否显示</th> -->
-						<th sort-name = "HAVECOUPON">优惠券</th>
+						<th sort-name = "HAVECOUPON">是否使用优惠券</th>
 						<th sort-name = "VIEW_ORDER_STATUS">订单状态</th>
 						<th sort-name = "SOURCEID">来源票ID</th>
 						<th>打印车票</th>
@@ -88,6 +89,7 @@
 		        		<td ng-bind="item.viewOrderid"></td>
 						<td ng-bind="item.ticketSource"></td>
 						<td ng-bind="item.username"></td>
+						<td>{{item.createTime | date: 'yyyy-MM-dd HH:MM'}}</td>
 						<!-- <td>
 							<span ng-if="item.haveTicket == 1" class="label label-warning">门票</span>
 						</td> -->
@@ -110,7 +112,8 @@
 							</label>
 						</td> -->
 						<td>
-							<span ng-if="item.haveCoupon">优惠券</span>
+							<span ng-if="item.haveCoupon == 'false'">否</span>
+							<span ng-if="item.haveCoupon == 'true'">是</span>
 						</td>
 						<td>
 							<span ng-if="item.viewOrderStatus == 1">未付费</span>
@@ -121,10 +124,10 @@
 						</td>
 						<td ng-bind="item.sourceid"></td>
 						<td>
-							<a ng-click="printTicket(item)" ng-if="(item.viewOrderStatus == 2 && item.ticketSource != '线上')">
+							<a ng-click="printTicket(item)" ng-if="item.viewOrderStatus == 2">
 							  	<span class="label btn-success">打印车票</span>
 							</a>
-							<a ng-if="(item.viewOrderStatus != 2 || item.ticketSource == '线上')" style="cursor: default;">
+							<a ng-if="item.viewOrderStatus != 2" style="cursor: default;">
 							  	<span class="label label-default">打印车票</span>
 							</a>
 						</td>

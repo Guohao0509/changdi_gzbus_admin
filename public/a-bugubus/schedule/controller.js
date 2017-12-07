@@ -10,6 +10,10 @@ app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state',
     if($scope.editMode){
         //编辑模式
         $myHttpService.post("api/buslineSchedule/queryBuslineSchedule",{bsid:$stateParams.id},function(data){
+            $scope.selectWeek.week = [];
+            for (var i = data.weeks.length - 1; i >= 0; i--) {
+                $scope.selectWeek.week.push({n:data.weeks[i].bwname,v:data.weeks[i].week})
+            }
             //$scope.busStopStationmess=data.buslineSchedulePrices;
             //$scope.stopStationMap=data.buslineSchedulePrices;
             //console.log('编辑模式：'+JSON.stringify(data.buslineSchedulePrices));
@@ -47,6 +51,27 @@ app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state',
         $scope.driver = {};
         $scope.bus = {};
     }
+    //星期1-7数组
+    $scope.weekArray = [
+        {n: "星期日",v: 1},
+        {n: "星期一",v: 2},
+        {n: "星期二",v: 3},
+        {n: "星期三",v: 4},
+        {n: "星期四",v: 5},
+        {n: "星期五",v: 6},
+        {n: "星期六",v: 7}
+    ]
+    //用户选择的星期
+    $scope.selectWeek = {};
+    $scope.selectWeek.week = [
+        {n: "星期日",v: 1},
+        {n: "星期一",v: 2},
+        {n: "星期二",v: 3},
+        {n: "星期三",v: 4},
+        {n: "星期四",v: 5},
+        {n: "星期五",v: 6},
+        {n: "星期六",v: 7}
+    ];
     //标记是否开启了线路编辑
     $scope.routeEditMode = false;
     $scope.driverEditMode = false;
@@ -92,6 +117,7 @@ app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state',
     //更换临时route
     $scope.changeRoute= function(item){
         $scope.route=item;
+        $scope.routeEditMode = false;
         /*查询经停靠点信息*/
         // $myHttpService.post('api/busline/queryBusline.htm',{lineid:$scope.route.lineid},function(data){
         //     $scope.stopStationList=data.stations;
@@ -115,12 +141,21 @@ app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state',
 
     $scope.changeDriver= function(item){
         $scope.driver=item;
+        $scope.driverEditMode = false;
     };
     $scope.changeBus= function(item){
         $scope.bus=item;
+        $scope.busEditMode = false;
     };
 
-
+    $scope.formatWeek = function(){
+        
+        for (var i = $scope.selectWeek.week.length - 1,tmp=[]; i >= 0; i--) {
+            tmp.push($scope.selectWeek.week[i].v);
+        }
+        console.log(tmp);
+        return tmp
+    }
     $scope.submit  = function(){
 
         // var stopStationList=[]
@@ -146,6 +181,8 @@ app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state',
         $scope.schedule.platenum = $scope.bus.platenum;
         $scope.schedule.departtime = $filter('date')($scope.schedule.departtimetemp,'HH:mm');
         $scope.schedule.arrivetime = $filter('date')($scope.schedule.arrivetimetemp,'HH:mm');
+        $scope.schedule.weeks = $scope.formatWeek();
+        console.log($scope.schedule);
         // $scope.schedule.backDeparttime = $filter('date')($scope.schedule.backDeparttimetemp,'HH:mm');
         // $scope.schedule.backArrivetime = $filter('date')($scope.schedule.backArrivetimetemp,'HH:mm');
         if($scope.editMode){
@@ -182,6 +219,7 @@ app.controller('ScheduleListController',['$rootScope','$scope','$http','$state',
     $tableListService.init($scope, options);
 
     $tableListService.get();
+    console.log($scope);
     $scope.delete=function(item){
         layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){
             $myHttpService.post("api/buslineSchedule/deleteBuslineSchedule.htm",item,function(){

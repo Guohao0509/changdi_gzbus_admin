@@ -327,7 +327,14 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
             ticketSource: $scope.carorder.offline,
             departDate: departDate,
             count: countNum,
-            bdid:$scope.carorder.schedule.bdid
+            bdid:$scope.carorder.schedule.bdid,
+
+        }
+        if($scope.carorder.name){
+            reqParam.name = $scope.carorder.name;
+        }
+        if($scope.userPhone){
+            reqParam.userPhone = $scope.carorder.userPhone;
         }
         if($scope.carorder.sourceid){
             reqParam.sourceid = $scope.carorder.sourceid;
@@ -396,6 +403,7 @@ app.controller('carorderTicketController', ['$scope', '$modalInstance', 'ticketI
 */
 app.controller('carorderDetailController', ['$scope', '$modalInstance', 'detail',function($scope, $showDetailModel, detail) {
     $scope.detail = detail;
+    console.log($scope.detail)
     $scope.ok = function () {
         $showDetailModel.close();
     };
@@ -708,7 +716,12 @@ app.controller('addViewOrderController',['$scope','$rootScope','$http','$state',
         if($scope.carorder.sourceid){
             reqParam.sourceid = $scope.carorder.sourceid;
         }
-
+        if($scope.carorder.name){
+            reqParam.name = $scope.carorder.name;
+        }
+        if($scope.userPhone){
+            reqParam.userPhone = $scope.carorder.userPhone;
+        }
         if($scope.carorder.havePower){
             angular.forEach($scope.ticketSourceList.sources,function(item, index){
                 if($scope.carorder.offline == item.ticketSource){

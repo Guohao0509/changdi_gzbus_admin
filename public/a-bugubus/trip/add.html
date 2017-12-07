@@ -61,7 +61,12 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">产品标签<span class="text-danger text-md ">*</span></label></label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" ng-model="product.productType">
+                        <ui-select multiple ng-model="myTag.selTags" theme="bootstrap" style="width: 100%;">
+                            <ui-select-match placeholder="选择产品标签">{{$item}}</ui-select-match>
+                            <ui-select-choices repeat="item in myTag.tags | filter:$select.search" style="width:300px;">
+                              {{item}}
+                            </ui-select-choices>
+                        </ui-select>
                     </div>
                 </div>
                

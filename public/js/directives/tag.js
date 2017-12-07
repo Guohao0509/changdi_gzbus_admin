@@ -1,11 +1,3 @@
-/*
- * @directive 日历指令
- * @author    郭浩
- * @usage     <div my-calendar change-date="{{changeDate}}" select-date="selectDate()"></div>
- * @param     change-date: Array[Number]
- * @param     select-date: function
-*/
-
 angular.module('app.directives').directive('myTag', [function() {
 	return {
 		restrict: 'A',
@@ -17,7 +9,7 @@ angular.module('app.directives').directive('myTag', [function() {
 		controller: function($scope) {
 		},
 		link: function(scope, element, attrs) {
-			scope.tags = scope.myTags.split('&');
+			scope.tags = scope.myTags.split('+');
 			scope.tag = function(t){
 				switch(t){
 					case '单程':

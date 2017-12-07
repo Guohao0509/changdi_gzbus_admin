@@ -1,9 +1,37 @@
 <div class="modal-header">
-    <h4 class="modal-title">推荐图片</h4>
+    <h4 class="modal-title">景区详情</h4>
 </div>
 <div class="modal-body">
-    <div class="row" style="padding: 0 20px 0 20px;">
-        <img ng-src="{{imageUrl}}" class="img-responsive"/>
+    <div class="row" style="padding:20px;">
+    	<div class="col-sm-2">名称</div>
+    	<div class="col-sm-10">
+        	{{itemInfo.viewName}}
+    	</div>
+    </div>
+    <div class="row" style="padding:20px;">
+        <div class="col-sm-2">类型</div>
+    	<div class="col-sm-10">
+        	{{itemInfo.viewType}}
+    	</div>
+    </div>
+    <div class="row" style="padding:20px;">
+        <div class="col-sm-2">地址</div>
+    	<div class="col-sm-10">
+        	{{itemInfo.viewaddr}}
+    	</div>
+    </div>
+    <div class="row" style="padding:20px;">
+        <div class="col-sm-2">简介</div>
+    	<div class="col-sm-10">
+        	{{itemInfo.viewintru}}
+    	</div>
+    </div>
+    
+    <div class="row" style="padding:20px;">
+        <div class="col-sm-2">图片</div>
+    	<div class="col-sm-10">
+        	<img ng-src="{{itemInfo.viewUrl}}" class="img-responsive"/>
+    	</div>
     </div>
 </div>
 <div class="modal-footer">

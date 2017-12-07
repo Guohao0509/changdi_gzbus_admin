@@ -58,7 +58,7 @@
                             <span class="label label-primary">查看</span>
                         </a>
                     </td>
-                    <td  ng-bind="item.viewaddress"></td>
+                    <td  ng-bind="item.viewaddress.split('&').join('，')"></td>
                     <td>
                         <a ng-click="openTripImageModal(item.photoPath)">
                             <span class="label btn-info">查看图片</span>

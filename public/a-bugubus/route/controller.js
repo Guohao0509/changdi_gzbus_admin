@@ -20,6 +20,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
             console.log(data.stations)
             saveDataOld = angular.copy(tmpData);
             $scope.busline = data.busline;
+            console.log(data)
             var stations = data.stations;
             for(var i = 0;i<stations.length;i++){
                 $scope.buslineStations.push({
@@ -37,6 +38,9 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                 $sortable.sortable();
             });
             MapOperation.addMarkers($scope.buslineStations);
+            if($scope.busline.buslineTrail){
+                $scope.routeEditor = MapOperation.routeEditor(JSON.parse($scope.busline.buslineTrail));
+            }
         });
     }else{
         //添加模式
@@ -74,6 +78,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
         contextMenuPositon: null,
         contextMenu: null,
         geocoder: null,
+        lineArr: [],
         createMap: function(){
             MapOperation.map = new AMap.Map('J_map_canvas', {
                 zooms:[1,18],
@@ -86,7 +91,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                     city: "09"
                 });
             })
-            AMap.plugin(['AMap.Autocomplete','AMap.PlaceSearch'],function(){//回调函数
+            AMap.plugin(['AMap.Autocomplete','AMap.PlaceSearch','AMap.Driving','AMap.PolyEditor','AMap.MouseTool'],function(){//回调函数
                 //实例化Autocomplete
                 var autoOptions = {
                     city: "09", //城市，默认全国
@@ -169,13 +174,50 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                 }
             });
         },
+         routeEditor: function(stations){
+            if( MapOperation.lineArr.length == 0){
+                for(var i = 0; i < stations.length; i++){
+                    MapOperation.lineArr.push([stations[i].lng,stations[i].lat]);
+                }
+            }
+            var editor={};
+            editor._line=(function(){
+                return new AMap.Polyline({
+                    map: MapOperation.map,
+                    path: MapOperation.lineArr,
+                    strokeColor: "#1BAC2E",//线颜色
+                    isOutline: true,
+                    outlineColor: "#fff",
+                    borderWeight: 1.5,
+                    lineJoin: "round",
+                    strokeOpacity: 1,//线透明度
+                    strokeWeight: 6,//线宽
+                    strokeStyle: "solid",//线样式
+                    strokeDasharray: [10, 5],//补充线样式
+                    showDir: true
+                });
+            })();
+            // MapOperation.map.setFitView();
+            editor._lineEditor= new AMap.PolyEditor(MapOperation.map, editor._line);
+            editor.startEditLine=function(){
+                editor._lineEditor.open();
+            }
+            editor.closeEditLine=function(){
+                console.log(MapOperation.lineArr);
+                editor._lineEditor.close();
+            }
+            return editor;
+        },
         addMarkers:function(buslines){
             for(var i = 0,len = buslines.length;i<len;i++){
-                var text = "<div class='marker station-marker'>"+i+"</div>";
+                var text = "<div> <div class='markerNum'>"+i+"</div><img src='http://webapi.amap.com/theme/v1.3/markers/n/mid.png'>  </div>";
+                var icon = 'http://webapi.amap.com/theme/v1.3/markers/n/mid.png';
                 if(i==0){
-                    text="<div class='marker start-marker'>起</div>";
+                    text="<div><img src='http://webapi.amap.com/theme/v1.3/markers/n/start.png'></div>";
+                    icon='http://webapi.amap.com/theme/v1.3/markers/n/start.png';
                 }else if(i==len-1){
-                    text="<div class='marker stop-marker'>终</div>";
+                    text="<div><img src='http://webapi.amap.com/theme/v1.3/markers/n/end.png'></div>";
+                    icon='http://webapi.amap.com/theme/v1.3/markers/n/end.png';
                 }
                 var marker = new AMap.Marker({
                     map: MapOperation.map,
@@ -198,12 +240,17 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                             break;
                         }
                     }
+                    $scope.$apply();
+                    $sortable.sortable();
+                    MapOperation.calcRouteLine();
                 });
             }
         },
         calcRouteLine:function(){
+            MapOperation.lineArr = [];
             MapOperation.map.clearMap();
             MapOperation.addMarkers($scope.buslineStations);
+            $scope.routeEditor = MapOperation.routeEditor($scope.buslineStations);
         }
 
     }
@@ -345,6 +392,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
             $scope.busline.arriveaddr = stations[len-1].stationname;
             $scope.busline.arrivelon = stations[len-1].stalongitude;
             $scope.busline.arrivelat = stations[len-1].stalatitude;
+            $scope.busline.buslineTrail = JSON.stringify(MapOperation.lineArr);
             var data = {
                 busline:$scope.busline,
                 stations:stations
