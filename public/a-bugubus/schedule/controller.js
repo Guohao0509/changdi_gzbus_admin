@@ -198,24 +198,6 @@ app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state',
         return tmp
     }
     $scope.submit  = function(){
-
-        // var stopStationList=[]
-
-        // for(var map=0;map<$scope.stopStationMap.length;map++){
-        //    if(($scope.stopStationMap[map].price)==undefined){
-        //        layer.alert("请输入停靠点票价信息");
-        //        return;
-        //    };
-        //     if(($scope.stopStationMap[map].driverTime)==undefined){
-        //         layer.alert('请输入停靠点站预计到达时间');
-        //         return;
-        //     }
-        //     stopStationList.push($scope.stopStationMap[map].stopnumber+"&"+$scope.stopStationMap[map].top.stationname+'&'+$scope.stopStationMap[map].bottom.stationname+"&"+$scope.stopStationMap[map].price+"&"+$scope.stopStationMap[map].driverTime);
-        // }
-
-        // 
-        // $scope.schedule.stopStationListMess=stopStationList;
-        //$scope.schedule.stopStationListMess=$scope.stopStationMap;
         if(!($scope.startDate&&$scope.endDate)){
             return layer.msg('请选择排班有效时间');
         }
@@ -228,11 +210,15 @@ app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state',
         $scope.schedule.weeks = $scope.formatWeek();
         if(typeof $scope.startDate == 'string'){
             $scope.schedule.startDate =  $scope.startDate;
-            $scope.schedule.endDate =  $scope.endDate;
         }else{
             $scope.schedule.startDate =  $filter('date')($scope.startDate.getTime(),'yyyy-MM-dd');
+        }
+        if(typeof $scope.endDate == 'string'){
+            $scope.schedule.endDate =  $scope.endDate;
+        }else{
             $scope.schedule.endDate =  $filter('date')($scope.endDate.getTime(),'yyyy-MM-dd');
         }
+        
         
         // $scope.schedule.backDeparttime = $filter('date')($scope.schedule.backDeparttimetemp,'HH:mm');
         // $scope.schedule.backArrivetime = $filter('date')($scope.schedule.backArrivetimetemp,'HH:mm');
