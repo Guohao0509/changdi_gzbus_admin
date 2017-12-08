@@ -82,9 +82,9 @@ app.controller('evaluationController', ['$scope','$myHttpService','$tableListSer
             console.log(data.pageResponse.buslineHierarchys)
             angular.forEach(data.pageResponse.buslineHierarchys, function(item, index){
                 console.log(item)
-                if(item.isShow=='true'){
+                if(item.isShow == '1'){
                     item.isShow = true;
-                }else if(item.isShow == 'false'){
+                }else if(item.isShow == '0'){
                     item.isShow = false;
                 }
             })
@@ -107,6 +107,12 @@ app.controller('evaluationController', ['$scope','$myHttpService','$tableListSer
     }
     $scope.isShow = function(hieid, isShow) {
         console.log(hieid, isShow)
+        if(isShow){
+            isShow = '1';
+        }else{
+            isShow = '0';
+        }
+        console.log(isShow)
         $myHttpService.post('api/product/updateProductOrderShow',{hieid:hieid,isShow: isShow},function(data) {
             if(data.code == 0) {
                 layer.msg("修改成功",{offset: '100px'});
