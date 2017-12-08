@@ -87,11 +87,16 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
 	$scope.view = {};
 	$scope.ticketType = [];
 	$scope.display = {};
+    //为啥直接绑定一个变量不能生效，这个得查一下
 	$scope.tmpAddtion = {};
 	$scope.tmpAddtion.type = '';
 	$scope.tmpAddtion.discount = '';
 	$scope.tmpAddtion.price = '';
+    $scope.tmpAddtion.access = '';
+    $scope.tmpAddtion.password = '';
+    $scope.tmpAddtion.userPhone = '';
 	$scope.display.viewTicketType = false;
+    $scope.admin = [];
     $scope.uploadByForm = function() {
         //用form 表单直接 构造formData 对象; 就不需要下面的append 方法来为表单进行赋值了。
         var formData = new FormData($("#myForm")[0]);
@@ -112,7 +117,7 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
             data: formData,
             //必须false才会避开jQuery对 formdata 的默认处理,XMLHttpRequest会对 formdata 进行正确的处理
             processData: false,
-            //必须false才会自动加上正确的Content-Type
+            //浏览器会自动加上正确的必须false才会自动加上正确的Content-Type
             contentType: false,
             success: function (data) {
                 console.log(data);
@@ -131,6 +136,8 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
     $scope.addViewticketType = function(){
         $scope.display.viewTicketType = true;
     }
+    
+    //确定添加门票
     $scope.ensureAddViewTicket = function() {
         console.log($scope.tmpAddtion)
         if(!$scope.tmpAddtion.discount || $scope.tmpAddtion.discount > 1 || $scope.tmpAddtion.discount < 0 || !$scope.tmpAddtion.type|| !$scope.tmpAddtion.price){
@@ -147,8 +154,45 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
         $scope.tmpAddtion.price = '';
         $scope.display.viewTicketType = false;
     }
+    //删除票类型
     $scope.deleteType = function(index) {
         $scope.ticketType.splice(index, 1);
+    }
+    //添加账号
+    $scope.addViewAccess = function(){
+        $scope.display.addViewAccess = true;
+    }
+    //取消添加门票类型和账号 type?addViewAccess:viewTicketType
+     $scope.cancel = function(type){
+        $scope.display[type] = false;
+        switch (type) {
+            case 'addViewAccess':
+                $scope.tmpAddtion.password = '';
+                $scope.tmpAddtion.userPhone = '';
+                $scope.tmpAddtion.access = '';
+                break;
+            default:
+                $scope.tmpAddtion.type = '';
+                $scope.tmpAddtion.discount = '';
+                $scope.tmpAddtion.price = '';
+                break;
+        }
+    }
+    //确定添加账号
+    $scope.ensureAddAccess = function() {
+        $scope.admin.push({
+            viewPass: md5.createHash($scope.tmpAddtion.password),
+            phone: $scope.tmpAddtion.userPhone,
+            viewUser: $scope.tmpAddtion.access
+        })
+        $scope.tmpAddtion.password = '';
+        $scope.tmpAddtion.userPhone = '';
+        $scope.tmpAddtion.access = '';
+        $scope.display.addViewAccess = false;
+    }
+    //删除账号
+    $scope.deleteAccess = function(index) {
+        $scope.admin.splice(index, 1);
     }
     if($scope.editMode){//编辑模式
         $scope.view = {
@@ -159,7 +203,7 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
             console.log(data);
             $scope.view = data.viewInfo;
             $scope.ticketType = data.viewPrices;
-            $scope.admin = data.viewAdmin;
+            $scope.admin = data.viewAdmins;
         },function(){
             $timeout(function(){
                 $state.go('app.view.list');
@@ -173,7 +217,7 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
             var reqParam = {
                 viewinfo: $scope.view,
                 viewPrices: $scope.ticketType,
-                viewAdmin: $scope.admin
+                viewAdmins: $scope.admin
             }
             if(reqParam.viewPrices.length <= 0 ){
                 layer.msg('请添加门票类型');
@@ -188,16 +232,10 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
      	
         $scope.submit = function(){
             //提交表单到服务器地址
-            if($scope.viewPass){
-                $scope.admin.viewPass = md5.createHash($scope.viewPass);
-             }else{
-                layer.msg('请输入密码');
-                return;
-             }
             var reqParam = {
 				viewinfo: $scope.view,
 				viewPrices: $scope.ticketType,
-				viewAdmin: $scope.admin
+				viewAdmins: $scope.admin
             }
             if(reqParam.viewPrices.length <= 0 ){
                 layer.msg('请添加门票类型');

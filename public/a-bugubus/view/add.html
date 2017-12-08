@@ -93,7 +93,7 @@
                                                 <span class="label label-primary" ng-click="ensureAddViewTicket()">确定</span>
                                             </a>
                                             <a>
-                                                <span class="label btn-danger">取消</span>
+                                                <span class="label btn-danger" ng-click="cancel('viewTicketType')">取消</span>
                                             </a>
                                         </td>
                                     </tr>
@@ -101,7 +101,7 @@
                             </table>
                     </div>
                 </div>
-                 <div class="form-group">
+                 <!-- <div class="form-group">
                     <label class="col-sm-2 control-label">联系方式<span class="text-danger text-md ">*</span></label>
                     <div class="col-sm-10">
                         <input type="text"  class="form-control"
@@ -113,8 +113,70 @@
                                placeholder="请输入联系方式"
                                 >
                     </div>
+                </div> -->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">景区账号<span class="text-danger text-md ">*</span></label>
+                    <div class="col-sm-6">
+                       <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed" style="border: 1px solid #CFDADD;">
+                                <thead >
+                                    <tr>
+                                        <th>账号</th>
+                                        <th>手机号</th>
+                                        <th>密码</th>
+                                        <th style="border-right: 1px solid #CFDADD;">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in admin track by $index">
+                                        <td  ng-bind="item.viewUser"></td>
+                                        <td  ng-bind="item.phone"></td>
+                                        <td>-</td>
+                                        <td  style="border-right: 1px solid #CFDADD;"> 
+                                            <label class="label label-danger" ng-click="deleteAccess($index)">移除</label>
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="!display.addViewAccess">
+                                        <td colspan="8" style="text-align: center; border-bottom: 1px solid #EAEFF0;">
+                                            <a href class="label label-info text-xs" ng-click="addViewAccess()">
+                                            <i class="fa fa-plus"></i>
+                                            添加账号</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody style="border-top: 0;border-right: 1px solid #CFDADD; font-size: 12px;" ng-show="display.addViewAccess">
+                                    <tr>
+                                        <td class="form-group">
+                                            <input type="text" ng-model="tmpAddtion.access" placeholder="账号" class="form-control">
+                                        </td>
+                                         <td class="form-group">
+                                            <input type="text" 
+                                                ng-model="tmpAddtion.userPhone" 
+                                                placeholder="手机号" 
+                                                class="form-control"
+                                                ng-pattern="/^1[34578]\d{9}$/">
+                                        </td>
+                                         <td class="form-group">
+                                            <input type="text" 
+                                                ng-model="tmpAddtion.password" 
+                                                placeholder="密码" 
+                                                class="form-control"  
+                                                ng-pattern="/^[0-9a-zA-Z]{6,18}$/"
+                                                placeholder="字母和数字的组合，添加必填，修改时为空表示密码不修改，长度为6-18位">
+                                        </td>
+                                        <td  style="border-right: 1px solid #CFDADD;">
+                                            <a>
+                                                <span class="label label-primary" ng-click="ensureAddAccess()">确定</span>
+                                            </a>
+                                            <a>
+                                                <span class="label btn-danger" ng-click="cancel('addViewAccess')">取消</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                    </div>
                 </div>
-                 <div class="form-group">
+                <!--  <div class="form-group">
                     <label class="col-sm-2 control-label">景区账号<span class="text-danger text-md ">*</span></label>
                     <div class="col-sm-10">
                         <input type="text"  class="form-control"
@@ -138,7 +200,7 @@
                                placeholder="6-18位数字和字母的组合"
                                 >
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label">景区类型</label>
                     <div class="col-sm-10">

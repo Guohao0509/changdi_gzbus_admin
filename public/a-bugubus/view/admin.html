@@ -2,14 +2,14 @@
     <h4 class="modal-title">景区账号</h4>
 </div>
 <div class="modal-body">
-            <div class="row">
-                <label class="col-sm-2 text-md text-right">后台账号: </label>
-                <div class="col-sm-10" ng-bind="admin.viewUser"></div>
-            </div>
-             <div class="row">
-                <label class="col-sm-2 text-md text-right">手机号: </label>
-                <div class="col-sm-10" ng-bind="admin.phone"></div>
-            </div>
+    <div class="row" ng-repeat="item in admin track by $index">
+        <div class="line line-dashed b-b line-lg pull-in" ng-if="$index != 0"></div>
+        <label class="col-sm-3 text-md text-right">{{$index+1}}、后台账号: </label>
+        <div class="col-sm-2" ng-bind="item.viewUser"></div>
+        <label class="col-sm-3 text-md text-right">手机号: </label>
+        <div class="col-sm-2" ng-bind="item.phone"></div>
+    </div>
+
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary btn-sm" ng-click="ok()">关闭</button>
