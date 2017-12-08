@@ -265,7 +265,7 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
                 return true;
             }
             angular.forEach(data.busDetails,function(el){
-                el.isEnable = $scope.checkIsEnable(el)
+                el.isEnable = $scope.checkIsEnable(el)&&(el.isShow == 1? true: false);
                 console.log(el.isEnable,el.bsname)
             })
             console.log(data.busDetails)
