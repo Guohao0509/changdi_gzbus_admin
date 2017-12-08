@@ -12,7 +12,7 @@ app.controller('ViewOrderController',['$scope','$http','$state','$myHttpService'
     };
     $tableListService.init($scope, options);
     $tableListService.get();
-    console.log($scope);
+    
     $scope.checkTicket = function(orderid) {
         $myHttpService.post('api/ticketorder/offlineCheckUserDoorTicket',{orderid:orderid},function(data) {
             layer.msg('验票成功')

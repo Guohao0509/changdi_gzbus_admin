@@ -19,7 +19,6 @@ angular.module('app.service',[])
                         }else{
                             layer.alert(JSON.stringify(data));
                         }
-                        console.log(data)
                     }else{
                         alert(JSON.stringify(data));
                     }
@@ -115,9 +114,11 @@ angular.module('app.service',[])
                 var offset = ($scopeLocal.pageRequest.pageNum-1)*$scopeLocal.pageRequest.pageSize;
                 if(option.size){
                     $scopeLocal.pageRequest.pageSize = option.size;
-                    console.log($scopeLocal.pageRequest.pageSize);
                 }
                 var url = options.listUrl + "?" + requestData + "&offset=" + offset + "&pagesize=" + $scopeLocal.pageRequest.pageSize;
+                // if(options.orderBy){
+                //     $scopeLocal.pageRequest.orderBy = options.orderBy.orderByName + " " + options.orderBy.orderByType;
+                // }
                 if(angular.isDefined($scopeLocal.pageRequest.orderBy)&&$scopeLocal.pageRequest.orderBy!=""){
                     url+="&orderby="+$scopeLocal.pageRequest.orderBy;
                 }

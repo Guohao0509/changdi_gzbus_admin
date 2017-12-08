@@ -39,8 +39,7 @@
                         <th sort-name ="DRIVERID">司机</th>
                         <th sort-name ="PLATENUM">车牌号</th>
                         <th sort-name ="DEPARTTIME">发车时间</th>
-                        <!-- <th sort-name ="BSSTATUS">排班状态</th> -->
-                        <!-- <th sort-name ="CHARGINGTYPE">单程票</th> -->
+                        <th>排班有效时间</th>
                         <th sort-name ="PRICE">单价</th>
                         <th>操作</th>
                     </tr>
@@ -59,6 +58,7 @@
                         <td ng-bind="item.driverid">王A</td>
                         <td ng-bind="item.platenum"></td>
                         <td ng-bind="item.departtime"></td>
+                        <td>{{item.startDate | date:'yyyy-MM-dd' }}&nbsp;<span ng-show="!!item.startDate">至</span>&nbsp;{{item.endDate | date:'yyyy-MM-dd'}}</td>
                         <td ng-bind="item.price"></td>
                         <td>
                             <a ui-sref="app.schedule.edit({id:item.bsid})" data-original-title="编辑">

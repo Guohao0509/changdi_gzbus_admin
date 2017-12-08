@@ -17,10 +17,10 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                 busline: data.busline,
                 stations: data.stations
             }
-            console.log(data.stations)
+            
             saveDataOld = angular.copy(tmpData);
             $scope.busline = data.busline;
-            console.log(data)
+            
             var stations = data.stations;
             for(var i = 0;i<stations.length;i++){
                 $scope.buslineStations.push({
@@ -161,7 +161,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                 MapOperation.contextMenuPositon = e.lnglat;
             });
             // var _onClick = function(e){
-            //     console.log(e.target)
+            //     
             // };
             // AMap.event.addListener(marker, 'click', _onClick);
         },
@@ -203,7 +203,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                 editor._lineEditor.open();
             }
             editor.closeEditLine=function(){
-                console.log(MapOperation.lineArr);
+                
                 editor._lineEditor.close();
             }
             return editor;
@@ -271,7 +271,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
         })
     }
     function openInfo(item) {
-        // console.log(item)
+        // 
         // var info = '<div class="pannal" style="padding: 5px;"><div>经度 :'+item.location.lng+' 纬度 :'+item.location.lat+'</div><div>地址 :'+item.formattedAddress+'</div><a ng-click="add()" class="label label-info pull-right">点击添加</a>';
 
         // var div = $compile(info)($scope);
@@ -402,7 +402,7 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
                 $scope.submiting = false;
                 return;
             }
-            console.log(JSON.stringify(data));
+            
             if($scope.editMode&&!saveMode){
                 $myHttpService.post("api/busline/updateBuslineInfo.htm",{data:JSON.stringify(data)},function(){
                     layer.msg("修改成功！",{offset: '100px'})

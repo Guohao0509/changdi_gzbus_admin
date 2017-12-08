@@ -7,7 +7,7 @@
 //用户登录拦截器，如果用户登录，则跳转到主页，通常在第一次进入其他页面时调用
 app.controller('LoadingController',['$rootScope','$scope','$http','$state','$localStorage','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$myHttpService){
     $myHttpService.get("auth/check",{},function(data){
-        console.log(data);
+        
         if(data==null){
             $state.go('auth.login');
         }else{

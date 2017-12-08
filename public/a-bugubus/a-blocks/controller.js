@@ -39,7 +39,7 @@ app.controller('uploadImageController',['$rootScope','$scope','$http','$state','
                 // var tmpArr = data.newPath.split('/');
                 // tmpArr[2] = host;
                 // var tmpStr = tmpArr.join('/');
-                // console.log(tmpStr)
+                // 
                 $scope.imgUrls.push(data.newPath);
                 $scope.$apply();
             },

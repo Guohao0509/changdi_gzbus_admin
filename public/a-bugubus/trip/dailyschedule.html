@@ -54,6 +54,7 @@
                             <th>线路</th>
                             <th>班次名称</th>
                             <th>运营时间</th>
+                            <th>排班有效时间</th>
                             <th>出发时间</th>
                             <th>车辆</th>
                             <th>司机</th>
@@ -67,6 +68,7 @@
                             <td ng-bind="item.linename"></td>
                             <td ng-bind="item.bsname"></td>
                             <td>{{formatWeeks(item.weeks)}}</td>
+                            <td>{{item.startDate | date:'yyyy-MM-dd' }}&nbsp;<span ng-show="!!item.startDate">至</span>&nbsp;{{item.endDate | date:'yyyy-MM-dd'}}</td>
                             <td ng-bind="item.platenum"></td>
                             <td ng-bind="item.departTime"></td>
                             <td ng-bind="item.drivername"></td>

@@ -28,25 +28,6 @@
                 </div>
                 
                 <div class="line line-dashed b-b line-lg pull-in"></div>
-                <!-- <div class="form-group">
-                    <label class="col-sm-2 control-label">可用单程票<span class="text-danger text-md ">*</span></label>
-                    <div class="col-sm-10">
-                        <div class="radio inline">
-                            <label class="i-checks">
-                                <input type="radio" name="chargingtype" ng-model="schedule.chargingtype" value="0" ng-checked="schedule.chargingtype==0||schedule.chargingtype==undefined">
-                                <i></i>
-                                是
-                            </label>
-                        </div>
-                        <div class="radio inline m-l">
-                            <label class="i-checks">
-                                <input type="radio" name="chargingtype" ng-model="schedule.chargingtype" value="1" ng-checked="schedule.chargingtype==1">
-                                <i></i>
-                                否
-                            </label>
-                        </div>
-                    </div>
-                </div> -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label">运营时间<span class="text-danger text-md ">*</span></label>
                     <div class="col-sm-10">
@@ -57,19 +38,26 @@
                             </ui-select-choices>
                         </ui-select>
                     </div>
-                   <!-- <ui-select ng-model="selectWeek">
-                        <ui-select-match placeholder="Pick one...">{{$select.selectWeek.n}}</ui-select-match>
-                        <ui-select-choices repeat="week in weekArray | filter: $select.search track by person.name">
-                            <div ng-bind-html="week.n | highlight: $select.search"></div>
-                            <div ng-bind-html="week.v | highlight: $select.search"></div>
-                        </ui-select-choices>
-                    </ui-select> -->
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">有效时间<span class="text-danger text-md ">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="text" placeholder="开始日期如2017-01-01" class="input-sm form-control" ng-click="startDateOption.open($event)" datepicker-popup="{{startDateOption.format}}" ng-model="startDate" is-open="startDateOption.opened" datepicker-options="startDateOption.dateOptions" close-text="关闭" clear-text="清空"  current-text="今天" />
+                    </div>
+                    <div class="col-sm-1 no-padder text-center" style="width: 20px;">
+                        <label class="control-label">-</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" placeholder="结束日期如2017-01-01" class="input-sm form-control" ng-click="endDateOption.open($event)" datepicker-popup="{{endDateOption.format}}" ng-model="endDate" is-open="endDateOption.opened" datepicker-options="endDateOption.dateOptions" close-text="关闭" clear-text="清空"  current-text="今天" />
+                    </div>
+
                 </div>
                 <div class="line line-dashed b-b line-lg pull-in"></div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label" style="margin-top:32px;">发车时间<span class="text-danger text-md ">*</span></label>
                     <div class="col-sm-4">
-                        <timepicker ng-model="schedule.departtimetemp"    show-meridian="false"></timepicker>
+                        <timepicker ng-model="schedule.departtimetemp"  show-meridian="false"></timepicker>
                     </div>
                 </div>
                 <div class="line line-dashed b-b line-lg pull-in"></div>
@@ -79,20 +67,6 @@
                         <timepicker ng-model="schedule.arrivetimetemp"  show-meridian="false"></timepicker>
                     </div>
                 </div>
-                <!-- <div class="line line-dashed b-b line-lg pull-in"></div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label" style="margin-top:32px;">晚班发车时间<span class="text-danger text-md ">*</span></label>
-                    <div class="col-sm-4">
-                        <timepicker ng-model="schedule.backDeparttimetemp"  show-meridian="false"></timepicker>
-                    </div>
-                </div>
-                <div class="line line-dashed b-b line-lg pull-in"></div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label" style="margin-top:32px;">晚班到达时间<span class="text-danger text-md ">*</span></label>
-                    <div class="col-sm-10">
-                        <timepicker ng-model="schedule.backArrivetimetemp"  show-meridian="false"></timepicker>
-                    </div>
-                </div> -->
                 <div class="line line-dashed b-b line-lg pull-in"></div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">单程价格<span class="text-danger text-md ">*</span></label>
@@ -104,44 +78,6 @@
                         </div>
                     </div>
                 </div>
-               <!--  <div class="line line-dashed b-b line-lg pull-in"></div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">月票价格<span class="text-danger text-md ">*</span></label>
-                    <div class="col-sm-10">
-                        <div class="input-group m-b">
-                            <span class="input-group-addon">￥</span>
-                            <input type="number" ng-min="0" ng-model="schedule.monthprice" class="form-control" ng-required="true">
-                            <span class="input-group-addon">.00 元</span>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- <div class="line line-dashed b-b line-lg pull-in"></div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">排班状态<span class="text-danger text-md ">*</span></label>
-                    <div class="col-sm-10">
-                        <div class="radio inline">
-                            <label class="i-checks">
-                                <input type="radio" name="bsstatus" ng-model="schedule.bsstatus" value="0" ng-checked="schedule.bsstatus==0||schedule.bsstatus==undefined">
-                                <i></i>
-                                待发车
-                            </label>
-                        </div>
-                        <div class="radio inline m-l">
-                            <label class="i-checks">
-                                <input type="radio" name="bsstatus" ng-model="schedule.bsstatus" value="1" ng-checked="schedule.bsstatus==1">
-                                <i></i>
-                                已发车
-                            </label>
-                        </div>
-                        <div class="radio inline m-l">
-                            <label class="i-checks">
-                                <input type="radio" name="bsstatus" ng-model="schedule.bsstatus" value="2" ng-checked="schedule.bsstatus==2">
-                                <i></i>
-                                待收班
-                            </label>
-                        </div>
-                    </div>
-                </div> -->
             </form>
         </div>
     </div>

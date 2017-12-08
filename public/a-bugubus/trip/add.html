@@ -119,6 +119,15 @@
             </div>
             
             <div class="line line-dashed b-b line-lg"></div>
+            <!-- 
+
+
+
+                添加景点
+
+
+
+            -->
             <div class="panel b-a"  ng-show="combine_view">
                 <div class="panel-heading b-b b-light">选择景区<span class="text-danger text-md ">*</span></div>
                     <div class="table-responsive">
@@ -195,7 +204,15 @@
                     <a href class="btn btn-info" ng-click="closeViewTable()">收起</a>
                 </div>
             </div>
+            <!-- 
 
+
+
+                添加线路
+
+
+
+            -->
             <div class="panel b-a" ng-show="combine_car">
                 <div class="panel-heading b-b b-light">选择线路<span class="text-danger text-md ">*</span>
                     <div class="radio inline" style="margin: 0 0 0 20px;">
@@ -319,7 +336,15 @@
                     <a href class="btn btn-info" ng-click="selectRouteToggle()">收起</a>
                 </div>
             </div>
+            <!-- 
 
+
+
+                添加排班
+
+
+
+            -->
             <div class="panel b-a" ng-show="combine_car">
                 <div class="panel-heading b-b b-light">
                     选择排班
@@ -405,30 +430,16 @@
                                             <th>车牌号</th>
                                             <!-- <th>线路名称</th> -->
                                             <th>发车时间</th>
-                                            <!-- <th>单价</th> -->
+                                            <th>有效时间</th>
                                             <th>操作</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="item in backLineBs">
-                                            <!-- <td>
-                                                <label class="i-checks m-b-none">
-                                                    <input type="radio" name="" ng-click="selectSchedule(item)"><i></i>
-                                                </label>
-                                            </td> -->
-                                            <!-- <td ng-bind="item.bsid"></td> -->
                                             <td ng-bind="item.bsname" style="border-left: 1px solid #EAEFF0"></td>
-                                            <!-- <td  ng-bind="item.driverid"></td> -->
                                             <td  ng-bind="item.drivername"></td>
                                             <td  ng-bind="item.platenum"></td>
-                                            <!-- <td  ng-bind="item.linename"></td> -->
                                             <td  ng-bind="item.departtime"></td>
-                                            <!-- <td ng-bind="item.price"></td> -->
-                                           <!--  <td>
-                                                <a ng-click="deleteSchedule(item)">
-                                                  <span class="label btn-danger">删除</span>
-                                                </a>
-                                            </td> -->
                                             <td>
                                                 <label class="label label-danger" ng-click="deleteBs(backLineBs,$index)">移除</label>
                                             </td>
@@ -451,15 +462,6 @@
                 <div class="panel-body text-xs" ng-if="isShowSchedules">
                     <!--选择器-->
                     <div class="row">
-                        <!-- <form class="row wrapper" id="J_search_form2">
-                            <div class="input-group w-md wrapper">
-                                <input type="text" class="input-sm form-control" name="keyword" placeholder="司机ID/司机姓名/司机电话/司机公司" ng-model="search_context">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-sm btn-default" ng-click="pageRequest.getResponse()" type="button">查询</button>
-                                </span>
-                            </div>
-                            <span class = "padder-l">提示：如果没有合适的司机，可以 <a ui-sref="app.driver.add" target="_blank" class="text-info">添加新的司机</a> ，或者编辑下面的司机信息，然后重新查询一下即可。</span>
-                        </form> -->
                         <div class="table-responsive">
                             <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t bg-light table-condensed">
                                 <thead>
@@ -468,9 +470,6 @@
                                             <label class="i-checks m-b-none">选择</label>
                                         </th>
                                         <th>班次序号
-                                           <!--  <a ng-click="scheduleToggle()">
-                                                <span class="label label-primary">新增</span>
-                                            </a> -->
                                         </th>
                                         <th>班次名称</th>
                                         <th>司机ID</th>
@@ -497,14 +496,6 @@
                                         <td  ng-bind="item.linename"></td>
                                         <td  ng-bind="item.departtime"></td>
                                         <td  ng-bind="item.price"></td>
-                                        <!-- <td>
-                                            <a ng-click="deleteSchedule(item)">
-                                              <span class="label btn-danger">删除</span>
-                                            </a>
-                                        </td> -->
-                                        <!-- <td>
-                                            <label class="label label-danger" ng-click="deleteBs($index)">移除</label>
-                                        </td> -->
                                     </tr>
                                     <tr  ng-if="!buslineSchedules[0]">
                                         <td colspan="8" style="text-align: center">

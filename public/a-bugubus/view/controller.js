@@ -9,15 +9,15 @@ app.controller('ViewListController',['$scope','$http','$state','$myHttpService',
         searchFormId:"J_search_form",
         listUrl:"api/viewinfo/queryViewInfoListByKeyword",
         callback: function(data,scope){
-            console.log(data)
-            console.log(scope)
+            
+            
         }
     };
     $tableListService.init($scope, options);
     $tableListService.get();
-    console.log($scope)
+    
      $scope.delete=function(itemid){
-        console.log(itemid)
+        
             layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){
                 $myHttpService.post("api/viewinfo/deleteViewInfo",{viewid: itemid},function(){
                     layer.msg("删除成功！",{offset: '100px'})
@@ -100,7 +100,7 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
     $scope.uploadByForm = function() {
         //用form 表单直接 构造formData 对象; 就不需要下面的append 方法来为表单进行赋值了。
         var formData = new FormData($("#myForm")[0]);
-        console.log('formData',formData);
+        
         var url = "files/image";
         var file = document.getElementById("file_upload").files[0]
         if(file.type.indexOf('image/') == -1){
@@ -120,7 +120,7 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
             //浏览器会自动加上正确的必须false才会自动加上正确的Content-Type
             contentType: false,
             success: function (data) {
-                console.log(data);
+                
                 if(data.code == -1){
                     layer.msg('请选择图片格式(.jpg/.jpeg/.png)文件',{offset: '100px'});
                     return;
@@ -139,7 +139,7 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
     
     //确定添加门票
     $scope.ensureAddViewTicket = function() {
-        console.log($scope.tmpAddtion)
+        
         if(!$scope.tmpAddtion.discount || $scope.tmpAddtion.discount > 1 || $scope.tmpAddtion.discount < 0 || !$scope.tmpAddtion.type|| !$scope.tmpAddtion.price){
             layer.msg('请输入正确的票价类型');
             return;
@@ -200,7 +200,7 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
         };
         //获取司机内容
         $myHttpService.post("api/viewinfo/queryViewInfo",$scope.view,function(data){
-            console.log(data);
+            
             $scope.view = data.viewInfo;
             $scope.ticketType = data.viewPrices;
             $scope.admin = data.viewAdmins;
@@ -225,7 +225,7 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
             }
             $myHttpService.post("api/viewinfo/updateViewInfo",{data: JSON.stringify(reqParam)},function(data){
                 $state.go('app.view.list',{},{reload: true});
-                console.log(data);
+                
             });
         }
     }else{ //添加模式
@@ -241,10 +241,10 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
                 layer.msg('请添加门票类型');
                 return;
             }
-            console.log(JSON.stringify(reqParam));
+            
             $myHttpService.post("api/viewinfo/insertViewInfo",{data: JSON.stringify(reqParam)},function(data){
                  $state.go('app.view.add', {} ,{reload: true});
-            	console.log(data);
+            	
             });
         }
     }
@@ -263,7 +263,7 @@ app.controller('ViewUserController',['$scope','$http','$state','$myHttpService',
 }]);
 app.controller('showImageController', ['$scope', '$modalInstance', 'itemInfo',function($scope, $showImageModel, itemInfo) {
     $scope.itemInfo = JSON.parse(itemInfo);
-    console.log($scope.itemInfo)
+    
     $scope.ok = function () {
         $showImageModel.close();
     };

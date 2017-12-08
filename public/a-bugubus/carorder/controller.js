@@ -17,8 +17,8 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
         size: '9999',
         multiTable: 'ticketSourceList',
         callback: function(scope, data){
-            console.log(scope)
-            console.log(data)
+            
+            
             data.sources.unshift({
                 ticketSource: "线上",
                 ticketSourceId: "线上"
@@ -35,8 +35,12 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
     var options = {//加载车票订单列表
         searchFormId:"J_search_form",
         listUrl:"api/vieworder/queryViewOrderListByKeyword", 
+        // orderBy: {
+        //     orderByName: 'DEPARTDATE',
+        //     orderByType: 'desc'
+        // },
         callback: function($scope,data){
-            console.log(data);
+            
             $scope.totalCount = data.totalnum;//订单总数，用于获取ecxel
             angular.forEach(data.viewOrders,function(item, index){//string to boolean 不知道为何
                 if(item.isShow=='true'){
@@ -77,7 +81,7 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
         if($scope.carorder.tmpOfflineId == '线上'){
             reqParam.ticketsource = encodeURI('线上')
         }
-        console.log(reqParam)
+        
         $http.post(url,reqParam).success(function(data){
             window.location.href = data.path;//下载
         }).error(function(e){
@@ -144,7 +148,7 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
                     reqParam.rechargeid = item.rechargeid;
                 }
                 $myHttpService.post('api/vieworder/applyRefund', reqParam, function(data) {
-                    console.log(data)
+                    
                     if(data.counponUse){
                         if(!data.couponRefund){
                             layer.alert('退款失败');
@@ -220,9 +224,9 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
             $scope.carorder.offline = 0;
             if($scope.session_user.ticketSource){
                 $scope.carorder.offline = $scope.session_user.ticketSource
-                console.log($scope.carorder.offline);
+                
             }
-            console.log($scope.ticketSourceList);
+            
             if($scope.ticketSourceList){
                 angular.forEach($scope.ticketSourceList.sources, function(data){
                     var needSourceId;
@@ -235,7 +239,7 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
                     if(data.ticketSource == $scope.carorder.offline){
                         $scope.carorder.needSourceId = needSourceId;
                     }
-                    console.log($scope.carorder.offline)
+                    
                 });
             }
         }
@@ -244,6 +248,7 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
     $tableListService.get();
     //选择日期
     $scope.selectedDate = function(departDate) {
+        console.log('')
         departDate = new Date(departDate);
         var year = departDate.getFullYear();
         var month = departDate.getMonth()+1;
@@ -251,12 +256,26 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
         var date = year+'-'+month+'-'+day;
         //加载对应日期的排班信息
         $scope.loadScheduleTable(date,function(data){
+             //判断时间是否显示过期排班的函数
+            $scope.checkIsEnable = function(item) {
+                var dateMs = departDate.getTime();
+                if(dateMs < item.startDate||dateMs > item.endDate){
+                    return false;
+                }
+                return true;
+            }
+            angular.forEach(data.busDetails,function(el){
+                el.isEnable = $scope.checkIsEnable(el)
+                console.log(el.isEnable,el.bsname)
+            })
+            console.log(data.busDetails)
             $scope.dateSchedules = data.busDetails;
             // for (var i = $scope.dataSchedules.length - 1, tmp = []; i >= 0; i--) {
 
             // }
         })
     }
+    //格式化运营时间的日期格式
     $scope.formatWeeks = function(item){
         for (var i = item.weeks.length - 1,tmpVal = '',tmpName = '星期',tmpSell; i >= 0; i--) {
             tmpVal += item.weeks[i].week;
@@ -281,7 +300,7 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
     //加载排班数据
     $scope.loadScheduleTable = function(date,callback) {
         $myHttpService.post('api/vieworder/product/queryProductBusScheduleDetails',{departDate:date},function(data){
-            console.log(data);
+            
             var tmpData = [];
             callback&&callback(data);
         },function() {
@@ -291,7 +310,7 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
     //监听所选时间的变化执行的函数，用于加载排班数据
     $scope.$watch('departDate',function(){
         if($scope.departDate){
-            console.log()
+            
             $scope.selectedDate($scope.departDate);
         }
         $scope.overDeadLineTime = true;
@@ -319,6 +338,7 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
         $scope.carorder.schedule = schedule;
         
     };
+
     $scope.reset = function() {
         $state.go('app.carorder.add',{},{reload: true});
     }
@@ -330,8 +350,8 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
         var month = $scope.departDate.getMonth()+1;
         var day = $scope.departDate.getDate();
         var departDate = year+'-'+month+'-'+day;
-        console.log('$scope.carorder.schedule')
-        console.log($scope.carorder.schedule)
+        
+        
         var reqParam = {
             userid: $scope.carorder.userid,
             // count: $scope.carorder.ticketNum,
@@ -361,17 +381,17 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
             layer.msg('请选票据来源',{offset:'100px'});
             return;
         }
-        console.log('reqParam',reqParam)
+        
         $myHttpService.post('api/vieworder/insertViewOrder',reqParam, function(data){
             layer.msg("添加成功！",{offset: '100px'});
             // $state.go('app.carorder.list',{},{reload: true});
-            console.log(data);
+            
             $scope.creatTicket(data);
         })
     }
     //控制是否显示打印票的函数
     $scope.creatTicket = function(data){
-        console.log(data);
+        
         $scope.ticket = data.viewOrders[0];
         $scope.showTicket = true;
     }
@@ -461,7 +481,7 @@ app.controller('uploadImageController',['$rootScope','$scope','$http','$state','
                 // var tmpArr = data.newPath.split('/');
                 // tmpArr[2] = host;
                 // var tmpStr = tmpArr.join('/');
-                // console.log(tmpStr)
+                // 
                 $scope.imgUrls.push(data.newPath);
                 $scope.$apply();
             },
@@ -484,18 +504,9 @@ app.controller('uploadImageController',['$rootScope','$scope','$http','$state','
         }
         $myHttpService.post('api/vieworder/updateViewOrderPhoto',reqParam, function(data){
             layer.msg("添加成功！",{offset: '100px'})
-            // var reqParam = {
-            //     deleteImages: $scope.sendImgUrls
-            // }
-            // $scope.deleteImage(reqParam);
             $state.go('app.carorder.list',{},{reload: true});
         })
     }
-    // $scope.deleteImage = function(deleteImages){
-    //     $myHttpService.post('files/deleteImage',deleteImages,function(data){
-    //     },function(){
-    //     });
-    // };
 }]);
 /*
     车票图片显示模态框的控制器
@@ -519,8 +530,8 @@ app.controller('ViewOrderListController',['$scope','$http','$state','$myHttpServ
         size: '9999',
         multiTable: 'ticketSourceList',
         callback: function(scope, data){
-            console.log(scope)
-            console.log(data)
+            
+            
             data.sources.unshift({
                 ticketSource: "线上",
                 ticketSourceId: "线上"
@@ -539,7 +550,7 @@ app.controller('ViewOrderListController',['$scope','$http','$state','$myHttpServ
     };
     $tableListService.init($scope, options);
     $tableListService.get();
-    console.log($scope);
+    
     //时间选择框的配置
     $scope.viewOrder = {
         opened:false,
@@ -569,11 +580,11 @@ app.controller('ViewOrderListController',['$scope','$http','$state','$myHttpServ
         layer.confirm('您确定要退款吗？', {icon: 3, title:'提示'},function(){
             if(item.ticketSource != '线上'){
                 $myHttpService.post('api/vieworder/ticketorder/offlineDoorTicketsRefund',{orderid:item.orderid},function(data){
-                    console.log(data)
+                    
                     layer.msg('退款成功')
                     $state.go('app.carorder.view_list',{},{reload: true});
                 },function(err) {
-                    console.log(err);
+                    
                 })
             }else{
                 var reqParam = {
@@ -583,11 +594,11 @@ app.controller('ViewOrderListController',['$scope','$http','$state','$myHttpServ
                     applyResult: 'true'
                 }
                 $myHttpService.post('api/vieworder/ticketorder/applyDoorTicketRefund',reqParam,function(data){
-                    console.log(data)
+                    
                     layer.msg('退款成功')
                     $state.go('app.carorder.view_list',{},{reload: true});
                 },function(err) {
-                    console.log(err);
+                    
                 })
             }
         },function(index){
@@ -633,9 +644,9 @@ app.controller('addViewOrderController',['$scope','$rootScope','$http','$state',
             $scope.carorder.offline = 0;
             if($scope.session_user.ticketSource){
                 $scope.carorder.offline = $scope.session_user.ticketSource
-                console.log($scope.carorder.offline);
+                
             }
-            console.log($scope.ticketSourceList);
+            
             if($scope.ticketSourceList){
                 angular.forEach($scope.ticketSourceList.sources, function(data){
                     var needSourceId;
@@ -693,7 +704,7 @@ app.controller('addViewOrderController',['$scope','$rootScope','$http','$state',
     $scope.selectView = function(item,$index) {
         $scope.disabledSelect = $index;
         $scope.addViewOrder = item;
-        console.log($scope.addViewOrder)
+        
     };
     $scope.submit = function() {
         //默认为1
@@ -711,8 +722,8 @@ app.controller('addViewOrderController',['$scope','$rootScope','$http','$state',
         var month = $scope.departDate.getMonth()+1;
         var day = $scope.departDate.getDate();
         var departDate = year+'-'+month+'-'+day;
-        console.log('$scope.carorder.schedule')
-        console.log($scope.carorder.schedule)
+        
+        
         var reqParam = {
             userid: $scope.carorder.userid,
             // count: $scope.carorder.ticketNum,
@@ -743,18 +754,18 @@ app.controller('addViewOrderController',['$scope','$rootScope','$http','$state',
             layer.msg('请选票据来源',{offset:'100px'});
             return;
         }
-        console.log('reqParam',reqParam)
+        
         $myHttpService.post('api/vieworder/insertTicketOrder',reqParam, function(data){
             layer.msg("添加成功！",{offset: '100px'});
             // $state.go('app.carorder.list',{},{reload: true});
-            console.log(data);
+            
             $scope.creatTicket(data);
         })
     }
     //购票完成之后打赢车票
     $scope.creatTicket = function(data){
-        console.log('+++++++++++++++++++++++++++')
-        console.log(data)
+        
+        
         $scope.ticket = data.ticketOrders[0];
         $scope.showTicket = true;
     }

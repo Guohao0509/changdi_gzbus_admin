@@ -5,7 +5,7 @@ app.controller('TripListController',['$scope', '$modal','$state','$http','$myHtt
     };
     $tableListService.init($scope, options);
     $tableListService.get();
-    console.log($scope);
+    
     //删除产品
 
 	$scope.deleteProduct=function(productid) {
@@ -79,9 +79,9 @@ app.controller('evaluationController', ['$scope','$myHttpService','$tableListSer
         searchFormId:"View_search_form",
         listUrl:"api/product/queryBuslineHierarchyByKeyword",
         callback: function(data,scope){
-            console.log(data.pageResponse.buslineHierarchys)
+            
             angular.forEach(data.pageResponse.buslineHierarchys, function(item, index){
-                console.log(item)
+                
                 if(item.isShow == '1'){
                     item.isShow = true;
                 }else if(item.isShow == '0'){
@@ -106,13 +106,13 @@ app.controller('evaluationController', ['$scope','$myHttpService','$tableListSer
         });
     }
     $scope.isShow = function(hieid, isShow) {
-        console.log(hieid, isShow)
+        
         if(isShow){
             isShow = '1';
         }else{
             isShow = '0';
         }
-        console.log(isShow)
+        
         $myHttpService.post('api/product/updateProductOrderShow',{hieid:hieid,isShow: isShow},function(data) {
             if(data.code == 0) {
                 layer.msg("修改成功",{offset: '100px'});
@@ -148,8 +148,8 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
         $myHttpService.post('api/product/queryProduct',{productid:$stateParams.id},function(data){
             //成功回调
             //判断是单程还是往返类型，初始化页面
-            console.log(data);
-           console.log(data);
+            
+           
             if(data.product.plans){
                 $scope.combine_car = true;
                 if(data.product.plans.length == 1) {
@@ -171,11 +171,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
                 $scope.combine_view = true;
                 $scope.view.view = data.product.viewInfo;
             }
-            // if(data.productinfo.productType == 0) {
-            //     $scope.singleType();
-            // }else if(data.productinfo.productType == 1) {
-            //     $scope.returnType();
-            // }
+            
             //将提交和缺失参数禁止提交的功能打开
             $scope.submiting = false;
             $scope.missParam = false;
@@ -191,45 +187,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
             }
             $scope.myTag.selTags = data.product.productType.split('+');
             $scope.isPushOld = $scope.product.isPush.toString();
-            //通过去程线路id，查找线路的详细信息
-            // $scope.queryBusline(data.productinfo.golineid, function(line) {
-            //     $scope.goLine = {
-            //         lineid: data.productinfo.golineid,
-            //         linename: data.productinfo.golinename,
-            //         departaddr: line.busline.departaddr,
-            //         arriveaddr: line.busline.arriveaddr,
-            //         drivedistance: line.busline.drivedistance,
-            //         drivetime: line.busline.drivetime
-            //     }
-            // })
             $scope.userNotice = data.product.productinfo;
-            //如果返程线路存在，查找返程线路的详细信息
-            // if(data.productinfo.backlineid){
-            //     $scope.queryBusline(data.productinfo.backlineid, function(line) {
-            //         $scope.backLine = {
-            //             linename: data.productinfo.backlinename,
-            //             lineid: data.productinfo.backlineid,
-            //             departaddr: line.busline.departaddr,
-            //             arriveaddr: line.busline.arriveaddr,
-            //             drivedistance: line.busline.drivedistance,
-            //             drivetime: line.busline.drivetime
-            //         }
-            //     })
-            // }
-            console.log(data.product.busDetails)
-
-            // if(true){
-            //     angular.forEach(data.product.busDetails, function(element, index) {
-            //         $scope.goLineBs.push(element.busDetails);
-            //         // statements
-            //     });
-            // }else if(data.product.productType == 1){
-            //     angular.forEach(data.product.busDetails, function(element, index) {
-            //         $scope.goLineBs.push(element.busDetails);
-            //         $scope.backLineBs.push(element.busDetails);
-            //         // statements
-            //     });
-            // }
         },function(){
              $scope.submiting = false;
         });
@@ -274,8 +232,8 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
             searchFormId:"View_search_form",
             listUrl:"api/viewinfo/queryViewInfoListByKeyword",
             callback: function(data,scope){
-                console.log(data)
-                console.log(scope)
+                
+                
             }
         };
         $tableListService.init($scope, options);
@@ -287,7 +245,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
     }
     //选择景区并绑定给产品
     $scope.selectView = function(view) {
-        console.log(view);
+        
         $scope.view.view = view;
         $scope.closeViewTable();
     }
@@ -332,7 +290,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
     $scope.uploadByForm = function() {
         //用form 表单直接 构造formData 对象; 就不需要下面的append 方法来为表单进行赋值了。
         var formData = new FormData($("#myForm")[0]);
-        console.log('formData',formData);
+        
         var url = "files/image";
         var file = document.getElementById("file_upload").files[0]
         if(file.type.indexOf('image/') == -1){
@@ -366,7 +324,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
     }
 
     $scope.bindSchedule = function(lineType) {
-        console.log(lineType)
+        
         var lineid;
         if(lineType == 'goLineBs'){
             lineid = $scope.goLine.lineid;
@@ -377,7 +335,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
         $myHttpService.post("api/product/queryBuslineScheduleByLineid",{lineid: lineid},function(data){
             $scope.buslineSchedules = data.buslineSchedules;
             $scope.isShowSchedules = true;
-            console.log(data)
+            
         });
     }
 
@@ -492,7 +450,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
             //     reqParam.bsids.push($scope.backLineBs[i].bsid)
             // }
         }
-        console.log(reqParam)
+        
         $myHttpService.post(tripApi,reqParam,function(data){
             //成功回调
             // var reqParam = {
@@ -569,7 +527,7 @@ app.controller('tripDetailModalController', ['$scope', '$modalInstance', 'produc
     $scope.goLineBs = [];
     $scope.backLineBs = [];
     $myHttpService.post('api/product/queryProduct',{productid: productid},function(data){
-        console.log(data);
+        
         if(data.productinfo.productType == 0) {
             $scope.backLineType = true;
             $scope.backLineType = false;
@@ -643,11 +601,12 @@ app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpServ
     $scope.loadScheduleTable = function(date,callback) {
         $myHttpService.post('api/product/queryProductBusScheduleDetails',{departDate:date},function(data){
             callback&&callback(data);
+            console.log(data);
         },function() {
         })
     }
     $scope.deleteSchedule = function(item) {
-        console.log(item);
+        
         layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){
             var reqParam = {
                 bsid: item.bsid,
@@ -680,7 +639,7 @@ app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpServ
     }
     $scope.init();
     // if($stateParams.departDate){
-    //     console.log($stateParams.departDate)
+    //     
     //     $scope.departDate = $stateParams.departDate;
     // }
 }]);
@@ -701,7 +660,7 @@ app.controller('addDailScheduleController', ['$scope', '$modalInstance', 'depart
                 searchFormId:"J_search_form",
                 listUrl:"api/buslineSchedule/queryBuslineScheduleByKeyword.htm",
                 callback: function(data){
-                    console.log(data)
+                    
                 }
             };
             $tableListService.init($scope, options);
@@ -724,7 +683,7 @@ app.controller('addDailScheduleController', ['$scope', '$modalInstance', 'depart
             bsid: $scope.dailyschedule.bsid,
         }
         
-        console.log(reqParam);
+        
         $myHttpService.post('api/product/addProductBusScheduleDetails',reqParam,function(data){
             //成功回调
             layer.msg(data.msg,{offset: '100px'});

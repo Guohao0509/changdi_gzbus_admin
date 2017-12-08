@@ -3,12 +3,12 @@ app.controller('TripListController',['$scope', '$modal','$state','$http','$myHtt
         searchFormId:"J_search_form",
         listUrl:"api/product/queryProductListByKeyword",
         callback: function(data){
-            console.log(data)
+            
         }
     };
     $tableListService.init($scope, options);
     $tableListService.get();
-    console.log($scope);
+    
     //删除产品
     $scope.deleteProduct=function(productid) {
         layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){
@@ -85,7 +85,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
     if(editMode){//编辑模式
         //编辑模式下的接口
         tripApi += 'updateProduct';
-        console.log($stateParams.id)
+        
         $myHttpService.post('api/product/queryProduct',{productid:$stateParams.id},function(data){
             if(data.product.plans){
                 $scope.combine_car = true;
@@ -104,7 +104,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
             
             //成功回调
             //判断是单程还是往返类型，初始化页面
-            console.log(data.product.plans.length)
+            
             if(data.product.plans.length == 1) {
                 $scope.singleType();
             }else if(data.product.plans.length == 2) {
@@ -168,8 +168,8 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
             searchFormId:"View_search_form",
             listUrl:"api/viewinfo/queryViewInfoListByKeyword",
             callback: function(data,scope){
-                console.log(data)
-                console.log(scope)
+                
+                
             }
         };
         $tableListService.init($scope, options);
@@ -181,7 +181,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
     }
     //选择景区并绑定给产品
     $scope.selectView = function(view) {
-        console.log(view);
+        
         $scope.view.view = view;
         $scope.closeViewTable();
     }
@@ -226,7 +226,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
     $scope.uploadByForm = function() {
         //用form 表单直接 构造formData 对象; 就不需要下面的append 方法来为表单进行赋值了。
         var formData = new FormData($("#myForm")[0]);
-        console.log('formData',formData);
+        
         var url = "files/image";
         var file = document.getElementById("file_upload").files[0]
         if(file.type.indexOf('image/') == -1){
@@ -312,7 +312,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
                 reqParam.lineids = $scope.goLine.lineid+'&'+$scope.backLine.lineid;
             }
         }
-        console.log(reqParam)
+        
         $myHttpService.post(tripApi,reqParam,function(data){
             //成功回调
             // var reqParam = {
@@ -392,7 +392,7 @@ app.controller('tripDetailModalController', ['$scope', '$modalInstance', 'produc
     $scope.goLineBs = [];
     $scope.backLineBs = [];
     $myHttpService.post('api/product/queryProduct',{productid: productid},function(data){
-        console.log(data);
+        
         if(data.productinfo.productType == 0) {
             $scope.backLineType = true;
             $scope.backLineType = false;
@@ -423,12 +423,12 @@ app.controller('evaluationController', ['$scope','$myHttpService','$tableListSer
         searchFormId:"View_search_form",
         listUrl:"api/product/queryBuslineHierarchyByKeyword",
         callback: function(data,scope){
-            console.log(data.pageResponse.buslineHierarchys)
+            
             angular.forEach(data.pageResponse.buslineHierarchys, function(item, index){
-                console.log(item)
+                
                 if(item.isShow=='true'){
                     item.isShow = true;
-                    console.log(123)
+                    
                 }else if(item.isShow == 'false'){
                     item.isShow = false;
                 }
@@ -451,7 +451,7 @@ app.controller('evaluationController', ['$scope','$myHttpService','$tableListSer
         });
     }
     $scope.isShow = function(hieid, isShow) {
-        console.log(hieid, isShow)
+        
         $myHttpService.post('api/product/updateProductOrderShow',{hieid:hieid,isShow: isShow},function(data) {
             if(data.code == 0) {
                 layer.msg("修改成功",{offset: '100px'});
@@ -478,7 +478,7 @@ app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpServ
         var date = year+'-'+month+'-'+day;
         $scope.departDate = date;
         $scope.loadScheduleTable(date,function(data){
-            console.log(data)
+            
             $scope.changedDate = [];
             $scope.dateSchedules = data.busDetails;
             var schedulesDate = data.busScheduleChanges;
@@ -505,23 +505,23 @@ app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpServ
         })
     }
     $scope.loadScheduleTable = function(date,callback) {
-        console.log(date);
+        
         $myHttpService.post('api/product/queryProductBusScheduleDetails',{departDate:date},function(data){
-            console.log(data)
+            
             callback&&callback(data);
         },function() {
 
         })
     }
     $scope.deleteSchedule = function(item) {
-        console.log(item);
+        
         layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){
             var reqParam = {
                 bsid: item.bsid,
                 departDate: $scope.departDate,
                
             }
-            console.log(reqParam)
+            
             $myHttpService.post('api/product/deleteProductBusScheduleDetails',reqParam,function(data){
                 //这里应该调用selectDate(),
                 $state.go('app.product.dailyschedule',{},{reload: true});
@@ -548,7 +548,7 @@ app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpServ
     }
     $scope.init();
     // if($stateParams.departDate){
-    //     console.log($stateParams.departDate)
+    //     
     //     $scope.departDate = $stateParams.departDate;
     // }
 }]);
@@ -594,8 +594,8 @@ app.controller('addDailScheduleController', ['$scope', '$modalInstance', 'depart
             searchFormId:"View_search_form",
             listUrl:"api/viewinfo/queryViewInfoListByKeyword",
             callback: function(data,scope){
-                console.log(data)
-                console.log(scope)
+                
+                
             }
         };
         $tableListService.init($scope, options);
@@ -647,7 +647,7 @@ app.controller('addDailScheduleController', ['$scope', '$modalInstance', 'depart
         }else {
             reqParam.haveTicket = 0;
         }
-        console.log(reqParam);
+        
         $myHttpService.post('api/product/addProductBusScheduleDetails',reqParam,function(data){
             //成功回调
             layer.msg(data.msg,{offset: '100px'});
@@ -728,13 +728,13 @@ app.controller('uploadImageController',['$rootScope','$scope','$http','$state','
                     layer.msg('请选择图片格式(.jpg/.jpeg/.png)文件',{offset: '100px'});
                     return;
                 }
-                console.log('upLoad')
+                
                 $scope.isLoadImage = true;
                 $scope.sendImgUrls.push(data.newPath);
                 // var tmpArr = data.newPath.split('/');
                 // tmpArr[2] = host;
                 // var tmpStr = tmpArr.join('/');
-                // console.log(tmpStr)
+                // 
                 $scope.imgUrls.push(data.newPath);
                 $scope.$apply();
             },
@@ -755,7 +755,7 @@ app.controller('uploadImageController',['$rootScope','$scope','$http','$state','
         if($scope.sendImgUrls[2]){
             reqParam.hiethree = $scope.sendImgUrls[2];
         }
-        console.log(reqParam)
+        
         $myHttpService.post('api/product/updateOrderPhoto',reqParam, function(data){
             layer.msg("添加成功！",{offset: '100px'})
             // var reqParam = {

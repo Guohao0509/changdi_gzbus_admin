@@ -26,7 +26,7 @@ app
         //监听路由改变事件，每次路由改变，需要检查一下用户的权限，状态
         $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
             // if($rootScope.map){
-            //     console.log(111111)
+            //     
             //     $rootScope.map.destroy()
             // }
             var urls = toState.name.split('.');
@@ -53,8 +53,8 @@ app
             }
         });
         // $rootScope.$on('$viewContentLoading', function(event, toState, toStateParams, fromState, fromParams){
-        //     console.log(event);
-        //     console.log(toState);
+        //     
+        //     
         // })
         //用户注销
         $rootScope.logout = function(){

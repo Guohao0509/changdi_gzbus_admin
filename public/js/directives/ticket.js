@@ -22,7 +22,6 @@ angular.module('app.directives').directive('ticket', function($document) {
                     phone: scope.ticketInformation.sourcePhone
                 }
                 
-                console.log(ticket);
                 var date = new Date(Number(ticket.date));
                 var year = date.getFullYear();
                 var month = date.getMonth() + 1;
@@ -73,7 +72,6 @@ angular.module('app.directives').directive('ticket', function($document) {
                     couponPrice: scope.ticketInformation.couponPrice,
                     viewaddr: scope.ticketInformation.viewaddr
                 }
-                console.log(scope.ticketInformation);
                 var date = new Date(Number(viewTicket.useDate));
                 var year = date.getFullYear();
                 var month = date.getMonth() + 1;
@@ -124,7 +122,6 @@ angular.module('app.directives').directive('ticket', function($document) {
                 download(type);
             }
             scope.preview = function() { 
-                console.log('打印票')
                 var dataUrl = canvas.toDataURL();  
                 var newImg = document.createElement("img");  
                 newImg.src = dataUrl;  
@@ -136,10 +133,8 @@ angular.module('app.directives').directive('ticket', function($document) {
                  // printWindow.document.appendChild(newImg)
 
                 printWindow.document.getElementById("ticket").onload = function() {
-                    console.log('打印');
                     printWindow.print();
                 }
-                console.log('打印完成')
             } 
             //图片下载操作,指定图片类型
             function download(type) {

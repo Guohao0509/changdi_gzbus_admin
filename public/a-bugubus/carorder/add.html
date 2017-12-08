@@ -110,6 +110,7 @@
                                 <!-- <th>产品ID</th> -->
                                 <th>班次名称</th>
                                 <th>运营时间</th>
+                                <th>排班有效时间</th>
                                 <th>起点</th>
                                 <th>终点</th>
                                 <th>发车地址</th>
@@ -121,7 +122,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="item in dateSchedules" ng-if="item.isShow">
+                            <tr ng-repeat="item in dateSchedules" ng-show="item.isEnable">
                                 <td>
                                     <label class="i-checks m-b-none">
                                         <input type="radio" ng-disabled="item.leftTickets==0" name="selectSchedule" ng-click=selectSchedule(item,$index)><i></i>
@@ -129,6 +130,7 @@
                                 </td>
                                 <td ng-bind="item.bsname"></td>
                                 <td>{{formatWeeks(item)}}</td>
+                                <td>{{item.startDate | date:'yyyy-MM-dd' }}&nbsp;<span ng-show="!!item.startDate">至</span>&nbsp;{{item.endDate | date:'yyyy-MM-dd'}}</td>
                                 <td ng-bind="item.departName"></td>
                                 <td ng-bind="item.arriveName"></td>
                                 <td ng-bind="item.departaddr"></td>

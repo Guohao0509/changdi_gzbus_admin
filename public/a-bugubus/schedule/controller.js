@@ -6,7 +6,46 @@
  */
 app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$filter','$tableListService','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
     $scope.editMode = !!$stateParams.id;//检测有没有ID，判断当前是添加还是编辑，共用一套模板
-
+    $scope.startDateOption = {
+        opened:false,
+        dateOptions:{
+            datepickerMode:'day',
+            showWeeks: false,
+            minMode:'day'
+        },
+        format:"yyyy-MM-dd",
+        disabled:function(date, mode) {
+            return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+        },
+        toggleMin: function() {
+            $scope.minDate = $scope.minDate ? null : new Date();
+        },
+        open:function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.startDateOption.opened = true;
+        }
+    };
+    $scope.endDateOption = {
+        opened:false,
+        dateOptions:{
+            datepickerMode:'day',
+            showWeeks: false,
+            minMode:'day'
+        },
+        format:"yyyy-MM-dd",
+        disabled:function(date, mode) {
+            return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+        },
+        toggleMin: function() {
+            $scope.minDate = $scope.minDate ? null : new Date();
+        },
+        open:function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.endDateOption.opened = true;
+        }
+    };
     if($scope.editMode){
         //编辑模式
         $myHttpService.post("api/buslineSchedule/queryBuslineSchedule",{bsid:$stateParams.id},function(data){
@@ -16,11 +55,13 @@ app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state',
             }
             //$scope.busStopStationmess=data.buslineSchedulePrices;
             //$scope.stopStationMap=data.buslineSchedulePrices;
-            //console.log('编辑模式：'+JSON.stringify(data.buslineSchedulePrices));
+            //
             $scope.stopStationMap=data.buslineSchedulePrices;
 
-            // console.log('默认值：'+JSON.stringify($scope.stopStationMap));
+            // 
             $scope.schedule = data.buslineSchedule;
+            $scope.startDate =$filter('date')($scope.schedule.startDate,'yyyy-MM-dd');
+            $scope.endDate =$filter('date')($scope.schedule.endDate,'yyyy-MM-dd');
             $scope.route = data.busline;
             $scope.bus = data.car;
             $scope.driver = data.driver;
@@ -121,7 +162,7 @@ app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state',
         /*查询经停靠点信息*/
         // $myHttpService.post('api/busline/queryBusline.htm',{lineid:$scope.route.lineid},function(data){
         //     $scope.stopStationList=data.stations;
-        //     console.log('list:'+JSON.stringify(data));
+        //     
         //     /*组合站点*/
         //     var stationArray=[];
         //     //$scope.price={};
@@ -153,7 +194,7 @@ app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state',
         for (var i = $scope.selectWeek.week.length - 1,tmp=[]; i >= 0; i--) {
             tmp.push($scope.selectWeek.week[i].v);
         }
-        console.log(tmp);
+        
         return tmp
     }
     $scope.submit  = function(){
@@ -172,9 +213,12 @@ app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state',
         //     stopStationList.push($scope.stopStationMap[map].stopnumber+"&"+$scope.stopStationMap[map].top.stationname+'&'+$scope.stopStationMap[map].bottom.stationname+"&"+$scope.stopStationMap[map].price+"&"+$scope.stopStationMap[map].driverTime);
         // }
 
-        // console.log(JSON.stringify(stopStationList));
+        // 
         // $scope.schedule.stopStationListMess=stopStationList;
         //$scope.schedule.stopStationListMess=$scope.stopStationMap;
+        if(!($scope.startDate&&$scope.endDate)){
+            return layer.msg('请选择排班有效时间');
+        }
         $scope.schedule.lineid = $scope.route.lineid;
         $scope.schedule.driverid = $scope.driver.driverid;
         $scope.schedule.carid =$scope.bus.carid;
@@ -182,7 +226,14 @@ app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state',
         $scope.schedule.departtime = $filter('date')($scope.schedule.departtimetemp,'HH:mm');
         $scope.schedule.arrivetime = $filter('date')($scope.schedule.arrivetimetemp,'HH:mm');
         $scope.schedule.weeks = $scope.formatWeek();
-        console.log($scope.schedule);
+        if(typeof $scope.startDate == 'string'){
+            $scope.schedule.startDate =  $scope.startDate;
+            $scope.schedule.endDate =  $scope.endDate;
+        }else{
+            $scope.schedule.startDate =  $filter('date')($scope.startDate.getTime(),'yyyy-MM-dd');
+            $scope.schedule.endDate =  $filter('date')($scope.endDate.getTime(),'yyyy-MM-dd');
+        }
+        
         // $scope.schedule.backDeparttime = $filter('date')($scope.schedule.backDeparttimetemp,'HH:mm');
         // $scope.schedule.backArrivetime = $filter('date')($scope.schedule.backArrivetimetemp,'HH:mm');
         if($scope.editMode){
@@ -219,7 +270,7 @@ app.controller('ScheduleListController',['$rootScope','$scope','$http','$state',
     $tableListService.init($scope, options);
 
     $tableListService.get();
-    console.log($scope);
+    
     $scope.delete=function(item){
         layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){
             $myHttpService.post("api/buslineSchedule/deleteBuslineSchedule.htm",item,function(){
