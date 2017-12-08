@@ -5,7 +5,7 @@ app.controller('TripListController',['$scope', '$modal','$state','$http','$myHtt
     };
     $tableListService.init($scope, options);
     $tableListService.get();
-    
+    console.log($scope);
     //删除产品
 
 	$scope.deleteProduct=function(productid) {

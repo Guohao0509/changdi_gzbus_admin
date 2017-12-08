@@ -34,6 +34,7 @@
                     </th> -->
                     <th sort-name ="PRODUCTID">产品ID</th>
                     <th sort-name = "PRODUCTTYPE">班次类型</th>
+                    <th>有效时间</th>
                     <th>用户须知</th>
                     <th>产品关键词</th>
                     <th>推荐图片</th>
@@ -53,6 +54,7 @@
                     <td>
                         <span my-tag my-tags="item.productType"></span>
                     </td>
+                     <td>{{item.startDate | date:'yyyy-MM-dd' }}&nbsp;<span ng-show="!!item.startDate">至</span>&nbsp;{{item.endDate | date:'yyyy-MM-dd'}}</td>
                     <td>
                         <a ng-click="openUserNoticeModal(item.productinfo)">
                             <span class="label label-primary">查看</span>
