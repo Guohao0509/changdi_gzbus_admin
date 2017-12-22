@@ -5,7 +5,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var apiFilter = require('./routes/api-filter');
+
+// var apiFilter = require('./routes/api-filter');
+ var router = require('./routes/api_filter.js');
+
 var authFilter = require('./routes/auth-filter');
 var filesFilter = require('./routes/files-filter.js');
 // var uploadFilter = require('./routes/uploader-filter.js');
@@ -14,28 +17,12 @@ var index = require('./routes/index');
 var compression = require('compression');
 var app = express();
 //schedule
-var schedule = require('node-schedule');
-var fse = require('fs-extra');
-
+var clearFile = require('./modules/clear_file.js');
+clearFile();
 var env=require('./conf.js')
 console.log(env)
 //在每周日晚上0点清除图片;
-var j = schedule.scheduleJob({hour: 0, minute: 0, dayOfWeek: 0}, function(){
-  fse.emptyDir('./public/avatar', function(err){
-    if(err){
-      console.log(err);
-    }else{
-      console.log('avatar is empty');
-    }
-  })
-  fse.emptyDir('./public/excel', function(err){
-    if(err){
-      console.log(err)
-    }else {
-      console.log('excel is empty');
-    }
-  })
-});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -60,7 +47,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/image',imageFilter);
 app.use('/auth',authFilter);
 app.use('/files',filesFilter);
-app.use('/api',apiFilter);
+app.use('/api',router);
+
 
 // app.use('/uploader', uploadFilter);
 

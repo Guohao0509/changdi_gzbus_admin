@@ -81,7 +81,6 @@ app.controller('evaluationController', ['$scope','$myHttpService','$tableListSer
         callback: function(data,scope){
             
             angular.forEach(data.pageResponse.buslineHierarchys, function(item, index){
-                
                 if(item.isShow == '1'){
                     item.isShow = true;
                 }else if(item.isShow == '0'){
@@ -148,7 +147,6 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
         $myHttpService.post('api/product/queryProduct',{productid:$stateParams.id},function(data){
             //成功回调
             //判断是单程还是往返类型，初始化页面
-            
            
             if(data.product.plans){
                 $scope.combine_car = true;
@@ -232,8 +230,6 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
             searchFormId:"View_search_form",
             listUrl:"api/viewinfo/queryViewInfoListByKeyword",
             callback: function(data,scope){
-                
-                
             }
         };
         $tableListService.init($scope, options);
@@ -293,10 +289,10 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
         
         var url = "files/image";
         var file = document.getElementById("file_upload").files[0]
-        if(file.type.indexOf('image/') == -1){
-            layer.msg('上传的文件类型必须是png、jpg或jpeg图片');
-            return;
-        }
+        // if(file.type.indexOf('image/') == -1){
+        //     layer.msg('上传的文件类型必须是png、jpg或jpeg图片');
+        //     return;
+        // }
         if(file.size > 1024*1000){
             layer.msg('上传的图片必须小于1M')
             return;
@@ -422,6 +418,12 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
                 layer.msg('去程路线与返程路线不能一致',{offset: '100px'});
                 return;
             }
+            // if($scope.goLineType && $scope.goLineBs.length == 0){
+            //     return layer.msg('请添加排班');
+            // }
+            // if($scope.backLineType && ($scope.goLineBs.length == 0||$scope.backLineBs.length == 0)){
+            //     return layer.msg('请添加排班');
+            // }
             if($scope.goLineType){
                 reqParam.lineids = $scope.goLine.lineid;
             }else if($scope.backLineType){
@@ -450,7 +452,7 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
             //     reqParam.bsids.push($scope.backLineBs[i].bsid)
             // }
         }
-        
+        console.log(reqParam)
         $myHttpService.post(tripApi,reqParam,function(data){
             //成功回调
             // var reqParam = {
@@ -552,7 +554,7 @@ app.controller('tripDetailModalController', ['$scope', '$modalInstance', 'produc
          $scope.submiting = false;
     });
 }]);
-app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpService','$stateParams','$state', function($scope,$modal,$http,$myHttpService,$stateParams,$state) {
+app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpService','$stateParams','$state','$tableListService', function($scope,$modal,$http,$myHttpService,$stateParams,$state,$tableListService) {
     //日历时间的配置
     // var strStoreDate = window.localStorage? localStorage.getItem("guilvbus"): Cookie.read("guilvbus");
     $scope.init = function() {
@@ -589,6 +591,7 @@ app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpServ
     }
     $scope.selectedDate = function(departDate) {
         departDate = new Date(departDate);
+        //日期类型
         var year = departDate.getFullYear();
         var month = departDate.getMonth()+1;
         var day = departDate.getDate();
@@ -599,11 +602,35 @@ app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpServ
         })
     }
     $scope.loadScheduleTable = function(date,callback) {
-        $myHttpService.post('api/product/queryProductBusScheduleDetails',{departDate:date},function(data){
-            callback&&callback(data);
-            console.log(data);
-        },function() {
-        })
+        // $myHttpService.post('api/product/queryProductBusScheduleDetails',{departDate:date},function(data){
+        //     callback&&callback(data);
+        //     console.log(data);
+        // },function() {
+        // })
+        var options = {
+            searchFormId:"J_search_form",
+            listUrl:"api/product/queryProductBusScheduleDetails",
+            form: {
+                name: 'departDate',
+                value: $scope.departDate
+            },
+            callback: function(scope,data){
+                var tmpDate = new Date(date.split('-')[0],date.split('-')[1]-1,date.split('-')[2]);
+                for(var i = 0; i < data.busDetails.length; i++) {
+                    //判断排班是否再当天运营
+                    for(var k = 0, tmp = ''; k < data.busDetails[i].weeks.length; k++){
+                        tmp += data.busDetails[i].weeks[k].week;
+                    }
+                    if((tmp.indexOf(tmpDate.getDay()+1) != -1 )&&tmpDate.getTime()>data.busDetails[i].startDate&&tmpDate.getTime()<data.busDetails[i].endDate+24*60*60*1000) {
+                        data.busDetails[i].isDisplay = true;
+                    }else {
+                        data.busDetails[i].isDisplay = false;
+                    }
+                }
+            }
+        };
+        $tableListService.init($scope, options);
+        $tableListService.get();
     }
     $scope.deleteSchedule = function(item) {
         
@@ -680,10 +707,9 @@ app.controller('addDailScheduleController', ['$scope', '$modalInstance', 'depart
         $scope.submiting = true;
         var reqParam = {
             departDate: $scope.dailySchedule.departDate,
-            bsid: $scope.dailyschedule.bsid,
+            bsids: [$scope.dailyschedule.bsid]
         }
-        
-        
+        console.log(reqParam)
         $myHttpService.post('api/product/addProductBusScheduleDetails',reqParam,function(data){
             //成功回调
             layer.msg(data.msg,{offset: '100px'});
@@ -698,5 +724,78 @@ app.controller('addDailScheduleController', ['$scope', '$modalInstance', 'depart
             $scope.submiting = false;
         });
     };
-   
+}]);
+
+app.controller('uploadImageController',['$rootScope','$scope','$http','$state','$stateParams','$myHttpService',function($rootScope,$scope,$http,$state,$stateParams,$myHttpService){
+    $scope.imgUrls = [];
+    $scope.sendImgUrls = [];
+    $scope.isLoadImage = false;
+    $scope.uploadByForm = function(callback) {
+        if($scope.imgUrls.length > 3){
+            layer.msg("最多添加3张！",{offset: '100px'});
+            return 
+        }
+        //用form 表单直接 构造formData 对象; 就不需要下面的append 方法来为表单进行赋值了。
+        var formData = new FormData($("#myForm")[0]);
+        // var host = "192.168.5.183:4000";
+        var file = document.getElementById("file_upload").files[0]
+        if(file.type.indexOf('image/') == -1){
+            layer.msg('上传的文件类型必须是png、jpg或jpeg图片');
+            return;
+        }
+        if(file.size > 1024*1000){
+            layer.msg('上传的图片必须小于1M')
+            return;
+        }
+        var url = "files/image";
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            //必须false才会避开jQuery对 formdata 的默认处理,XMLHttpRequest会对 formdata 进行正确的处理
+            processData: false,
+            //必须false才会自动加上正确的Content-Type
+            contentType: false,
+            success: function (data) {
+                if(data.code == -1){
+                    layer.msg('请选择图片格式(.jpg/.jpeg/.png)文件',{offset: '100px'});
+                    return;
+                }
+                
+                $scope.isLoadImage = true;
+                $scope.sendImgUrls.push(data.newPath);
+                // var tmpArr = data.newPath.split('/');
+                // tmpArr[2] = host;
+                // var tmpStr = tmpArr.join('/');
+                // 
+                $scope.imgUrls.push(data.newPath);
+                $scope.$apply();
+            },
+            error: function (data) {
+            }
+        });
+    }
+    $scope.submit = function () {
+        var reqParam = {
+            hieid: $stateParams.id,
+        }
+        if($scope.sendImgUrls[0]){
+            reqParam.hieone = $scope.sendImgUrls[0];
+        }
+        if($scope.sendImgUrls[1]){
+            reqParam.hietwo = $scope.sendImgUrls[1];
+        }
+        if($scope.sendImgUrls[2]){
+            reqParam.hiethree = $scope.sendImgUrls[2];
+        }
+        
+        $myHttpService.post('api/product/updateOrderPhoto',reqParam, function(data){
+            layer.msg("添加成功！",{offset: '100px'})
+            // var reqParam = {
+            //     deleteImages: $scope.sendImgUrls
+            // }
+            // $scope.deleteImage(reqParam);
+            $state.go('app.product.evaluation',{},{reload: true});
+        })
+    }
 }]);

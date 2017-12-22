@@ -14,15 +14,26 @@
                 <label class="col-sm-4 text-md text-right">用户ID</label>
                 <div class="col-sm-8" ng-bind="detail.userid"></div>
             </div>
+            <!-- <div class="row">
+                <label class="col-sm-4 text-md text-right">用户姓名</label>
+                <div class="col-sm-8" ng-bind="detail.username"></div>
+            </div> -->
             <div class="line line-dashed b-b line-lg"></div>
             <div class="row">
-                <label class="col-sm-4 text-md text-right">客户姓名</label>
-                <div class="col-sm-8" ng-bind="detail.name"></div>
+                <label class="col-sm-4 text-md text-right">申请退款时间</label>
+                <div class="col-sm-8" ng-bind="detail.refundTime"></div>
             </div>
             <div class="line line-dashed b-b line-lg"></div>
             <div class="row">
-                <label class="col-sm-4 text-md text-right">客户手机</label>
-                <div class="col-sm-8" ng-bind="detail.userPhone"></div>
+                <label class="col-sm-4 text-md text-right">游客姓名</label>
+                <div ng-if="detail.username != '超级管理'" ng-bind="detail.username" class="col-sm-8"></div>
+                <div ng-if="detail.username == '超级管理'" ng-bind="detail.name" class="col-sm-8"></div>
+            </div>
+            <div class="line line-dashed b-b line-lg"></div>
+            <div class="row">
+                <label class="col-sm-4 text-md text-right">游客手机</label>
+                <div ng-if="detail.username != '超级管理'" ng-bind="detail.phone" class="col-sm-8"></div>
+                <div ng-if="detail.username == '超级管理'" ng-bind="detail.userPhone" class="col-sm-8"></div>
             </div>
             <div class="line line-dashed b-b line-lg"></div>
             <div class="row">

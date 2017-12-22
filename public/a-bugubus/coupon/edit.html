@@ -49,40 +49,46 @@
                     <a href class="btn btn-danger btn-addon" ng-if="!userEditMode&&!selectedUser" ng-click="selectUserToggle()"><i class="fa fa-plus"></i>
                         添加用户
                     </a>
-
-                    <div class="clearfix" ng-if="selectedUser">
-                        <div class="col-sm-2">
+                    <div class="clearfix">
+                        <div class="col-sm-3">
                             <p>用户ID</p>
-                            <p class="text-dark">{{selectedUser.userid}}</p>
                         </div>
                         <div class="col-sm-2">
                             <p>用户名</p>
-                            <p class="text-dark">{{selectedUser.name}}</p>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <p>联系方式</p>
-                            <p class="text-dark">{{selectedUser.phone}}</p>
                         </div>
                          <div class="col-sm-2">
                             <p>性别</p>
-                            <p class="text-dark" ng-if="selectedUser.sex == 0">男</p>
-                            <p class="text-dark" ng-if="selectedUser.sex == 1">女</p>
                         </div>
                         <div class="col-sm-2">
                             <p>注册时间</p>
-                            <p class="text-dark">{{selectedUser.regDate|date:'yyyy/MM/dd HH:mm:ss'}}</p>
+                        </div>
+                    </div>
+                    <div class="line line-dashed b-b line-lg"></div>
+                    <div class="clearfix" ng-repeat="item in selectedUser track by $index" style="height: 40px; line-height:40px;">
+                        <div class="col-sm-3">
+                            {{item.userid}}
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn m-b-xs btn-sm btn-danger btn-addon" style="margin-top:10px;" ng-click="selectUserToggle()"><i class="fa fa-edit"></i>更换用户</button>
+                            {{item.name}}
+                        </div>
+                        <div class="col-sm-3">
+                            {{item.phone}}
+                        </div>
+                         <div class="col-sm-2">
+                            <span class="text-dark" ng-if="item.sex == 0">男</span>
+                            <span class="text-dark" ng-if="item.sex == 1">女</span>
+                        </div>
+                        <div class="col-sm-2">
+                            {{item.regDate|date:'yyyy/MM/dd HH:mm:ss'}}
                         </div>
                     </div>
 
-
-
-
                 </div>
-                <div ng-show="userEditMode">
-                    <div class="line line-dashed b-b line-lg" ng-show="selectedUser"></div>
+                <div>
+                    <div class="line line-dashed b-b line-lg"></div>
                     <form name="userform" class="" id="J_search_form">
                         <div class="row wrapper form-horizontal">
                             <div class="col-sm-1">
@@ -105,7 +111,7 @@
                     </form>
                 </div>
                 <!--选择器-->
-                <div class="bg-light" ng-show="userEditMode" >
+                <div class="bg-light">
                     <div class="table-responsive">
                         <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed">
                             <thead>
@@ -123,10 +129,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="item in pageResponse.rows">
+                            <tr ng-repeat="item in pageResponse.rows track by $index">
                                 <td>
                                     <label class="i-checks m-b-none">
-                                        <input type="radio" name="selectUser" ng-checked="item.checked" ng-click="changeCheck(item)"><i></i>
+                                        <input type="checkbox" name="selectUser" ng-checked="item.checked" ng-click="changeCheck(item)"><i></i>
                                     </label>
                                 </td>
                                 <td ng-bind="item.userid"></td>
@@ -136,12 +142,7 @@
                                     <span ng-show="item.sex=='0'" >男</span>
                                     <span ng-show="item.sex=='1'">女</span>
                                 </td>
-                                
-                                <!-- <td>
-                                    <span ng-show="item.userStatus=='1'">正常</span>
-                                    <span ng-show="item.userStatus=='0'">禁止</span>
-                                </td>
-                                <td ng-bind="item.balance"></td> -->
+                               
                                 <td>{{item.regDate | date:'yyyy/MM/dd HH:mm:ss'}}</td>
                             </tr>
                             </tbody>
@@ -151,15 +152,12 @@
                         <div class="box-body" style="margin:0 15px 0 15px;" table-pagination></div>
                     </footer>
                 </div>
-                <div class="wrapper b-t b-light text-center" ng-show="userEditMode">
-                    <a href class="btn btn-info" ng-click="selectUserToggle()">收起</a>
-                </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2" style="float: right;margin-right: 15px;">
                     <button type="reset" ng-show="!editMode" ng-click="reset()" class="btn btn-default">清空</button>
-                    <button type="submit" ng-click="submit()" ng-disabled="form.$invalid||submiting||missParm" class="btn btn-primary m-l">单个发放</button>
-                     <button type="submit" ng-click="selectAllUser()" ng-disabled="form.$invalid||submiting||selectSingleUser" class="btn btn-danger m-l">全部发放</button>
+                    <button type="submit" ng-click="submit()" ng-disabled="form.$invalid||submiting" class="btn btn-primary m-l">选择发放</button>
+                     <button type="submit" ng-click="selectAllUser()" ng-disabled="form.$invalid||submiting" class="btn btn-danger m-l">全部发放</button>
                 </div>
             </div>
         </div>

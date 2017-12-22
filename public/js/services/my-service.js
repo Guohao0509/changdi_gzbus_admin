@@ -122,6 +122,9 @@ angular.module('app.service',[])
                 if(angular.isDefined($scopeLocal.pageRequest.orderBy)&&$scopeLocal.pageRequest.orderBy!=""){
                     url+="&orderby="+$scopeLocal.pageRequest.orderBy;
                 }
+                if(options.form){
+                    url += '&' + options.form.name + '=' + options.form.value;
+                }
                 $myHttpService.post(url,options.formData,function(data){
                     if(option.multiTable){
                         $scopeLocal[option.multiTable] = data;

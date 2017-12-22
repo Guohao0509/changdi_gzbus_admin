@@ -69,7 +69,7 @@
                                             <label class="label label-danger" ng-click="deleteType($index)">移除</label>
                                         </td>
                                     </tr>
-                                    <tr ng-show="!display.viewTicketType">
+                                    <tr ng-show="ticketType.length<1">
                                         <td colspan="8" style="text-align: center; border-bottom: 1px solid #EAEFF0;">
                                             <a href class="label label-success text-xs" ng-click="addViewticketType()">
                                             <i class="fa fa-plus"></i>

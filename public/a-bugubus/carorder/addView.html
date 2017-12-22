@@ -27,26 +27,9 @@
                             <option value="0" style="display: none;">请选择</option>
                             <option ng-repeat="item in ticketSourceList.sources" value="{{item.ticketSource}}">{{item.ticketSource}}</option>
                         </select>
-
-                         <!-- ng-if="carorder.havePower" -->
-
-                        <!-- <select  class="input-sm form-control"  name="viewOrderStatus" ng-model="carorder.offline">
-                            <option  ng-repeat="item in ticketSourceList.sources" value="{{item.ticketSource}}"  placeholder="选择门店" selected = "selected">
-                               {{item.ticketSource}}
-                            </option>
-                        </select> -->
                     </div>
                 </div>
-                <!-- <div class="form-group">
-                    <label class="col-sm-2 control-label">票据数量<span class="text-danger text-md ">*</span></label></label>
-                    <div class="col-sm-10">
-                        <input type="number"  class="form-control"
-                               name="ticketNum"
-                               ng-model="carorder.ticketNum"
-                               ng-required="true"
-                               >
-                    </div>
-                </div> -->
+                
                 <div class="form-group" ng-if="carorder.needSourceId">
                     <label class="col-sm-1 control-label">来源票ID<span class="text-danger text-md ">*</span></label></label>
                     <div class="col-sm-11">
@@ -92,26 +75,48 @@
             <div class="line line-dashed b-b line-lg pull-in"></div>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <!-- <ul class="nav nav-pills pull-right">
-                      <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref=""><i class="fa fa-plus"></i>添加直通车订单</button></li>
-                    </ul> -->
-                     景点列表
+                    添加景点
                 </div>
-                <form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()" >
-                    <div class="col-sm-5 m-b-xs">
-                        <!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
-                    </div>
-                    <div class="col-sm-3">
-                    </div>
-                    <div class="col-sm-4">
+                <div class="b-light text-center">
+                    <table cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed text-xs">
+                        <thead>
+                            <tr>
+                                <th>景点名称</th>
+                                <th>景点地址</th>
+                                <th>门票类型</th>
+                                <th>数量</th>
+                            </tr>
+                        </thead>
+                        <tbody style="text-align: left;">
+                            <tr ng-repeat="item in addViewOrder">
+                                <td ng-bind="item.viewName"></td>
+                                <td ng-bind="item.viewaddr"></td>
+                                <td>
+                                    {{item.viewPrices[0].viewPriceType}}:&nbsp;&nbsp;{{item.viewPrices[0].viewPrice}}元;&nbsp;&nbsp;折扣:&nbsp;&nbsp; {{item.viewPrices[0].viewCoupon*10}}折
+                                </td>
+                                <td>
+                                    <button style="width: 20px;" ng-click="min(item)">-</button>
+                                    <input type="text" style="width:30px; display: inline-block;text-align: center;" ng-init="item.count = 1" ng-model="item.count">
+                                    <button style="width: 20px;" ng-click="add(item)">+</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+           
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    景点
+                    <form class="row wrapper col-sm-3" style="float: right; padding: 0;" id="D_search_form" ng-submit="pageRequest.getResponse()">
                         <div class="input-group">
                             <input type="text" class="input-sm form-control" name="keyword" placeholder="输入景点名称">
                             <span class="input-group-btn">
-                                <button class="btn btn-sm btn-default" >查询</button>
+                                <button class="btn btn-sm btn-default">查询</button>
                             </span>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
                 <div class="table-responsive" style="overflow: hidden">
                     <table cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed text-xs">
                         <thead>
@@ -119,7 +124,7 @@
                                 <th>选择</th>
                                 <th>景点名称</th>
                                 <th>景点地址</th>
-                                <th>注意事项</th>
+                                <!-- <th>注意事项</th> -->
                                 <th>选择门票类型</th>
                             </tr>
                         </thead>
@@ -127,24 +132,25 @@
                             <tr ng-repeat="item in pageResponse.viewInfos">
                                 <td>
                                     <label class="i-checks m-b-none">
-                                        <input type="radio" name="selectView" ng-click=selectView(item,$index)><i></i>
+                                        <input type="checkbox" ng-checked="item.checked" ng-click="selectView(item)"><i></i>
                                     </label>
                                 </td>
                                 <td ng-bind="item.viewName"></td>
                                 <td ng-bind="item.viewaddr"></td>
-                                <td>
+                                <!-- <td>
                                     <a ng-click="openViewUserModel(item.notice)">
                                         <span class="label label-success">查看</span>
                                     </a>
-                                </td>
-                                <th>
-                                    <select id="select{{$index}}" ng-disabled="disabledSelect != $index" class="form-control" style="padding: 2px;height: auto;">
+                                </td> -->
+                                <td>
+                                    {{item.viewPrices[0].viewPriceType}}:&nbsp;&nbsp;{{item.viewPrices[0].viewPrice}}元;&nbsp;&nbsp;折扣:&nbsp;&nbsp; {{item.viewPrices[0].viewCoupon*10}}折
+                                    <!-- <select id="select{{$index}}" ng-disabled="disabledSelect != $index" class="form-control" style="padding: 2px;height: auto;">
                                         <option value="0" style="display: none;">请选择</option>
                                         <option ng-repeat="price in item.viewPrices" value="{{price.viewPriceId}}" >
                                             {{price.viewPriceType}}:&nbsp;&nbsp;{{price.viewPrice}}元;&nbsp;&nbsp;折扣:&nbsp;&nbsp; {{price.viewCoupon*10}}折
                                         </option>
-                                    </select>
-                                </th>
+                                    </select> -->
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -153,6 +159,7 @@
                     <div class="box-body" table-pagination></div>
                 </footer>
             </div>
+                
             <div class="form-group">
                 <div class="col-sm-offset-2" style="float: right;margin-right: 15px;">
                     <button type="reset" ng-show="!editMode" ng-click="reset()" class="btn btn-default">清空</button>
@@ -162,13 +169,15 @@
         </div>
     </div>
     <div class="row" ng-if="showTicket">
-        <div class="col-sm-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    导出门票<span>共计:&nbsp;&nbsp;{{ticket.couponPrice}}&nbsp;元</span>
-                </div>
-                <div class="panel-body">
-                    <div ticket ticket-information="ticket"></div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                导出门票<span>共计:&nbsp;&nbsp;{{ticket.couponPrice}}&nbsp;元</span>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6 col-lg-4" ng-repeat="item in tickets">
+                        <div ticket ticket-information="item"></div>
+                    </div>
                 </div>
             </div>
         </div>

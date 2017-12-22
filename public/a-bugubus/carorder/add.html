@@ -8,16 +8,6 @@
         </div>
         <div class="panel-body">
             <form class="form-horizontal form-validation" name="form">
-                <!-- <div class="form-group">
-                    <label class="col-sm-2 control-label">用户ID<span class="text-danger text-md ">*</span></label>
-                    <div class="col-sm-10">
-                        <input type="text"  class="form-control"
-                               name="userid"
-                               ng-model="carorder.userid"
-                               ng-required="true"
-                               disabled>
-                    </div>
-                </div> -->
                 <div class="line line-dashed b-b line-lg pull-in"  ng-if="session_user.access == 'systemUser'"></div>
                 <div class="form-group" ng-if="session_user.access == 'systemUser'">
                     <label class="col-sm-1 control-label">线下门店<span class="text-danger text-md ">*</span></label>
@@ -27,26 +17,9 @@
                             <option value="0" style="display: none;">请选择</option>
                             <option ng-repeat="item in ticketSourceList.sources" value="{{item.ticketSource}}">{{item.ticketSource}}</option>
                         </select>
-
-                         <!-- ng-if="carorder.havePower" -->
-
-                        <!-- <select  class="input-sm form-control"  name="viewOrderStatus" ng-model="carorder.offline">
-                            <option  ng-repeat="item in ticketSourceList.sources" value="{{item.ticketSource}}"  placeholder="选择门店" selected = "selected">
-                               {{item.ticketSource}}
-                            </option>
-                        </select> -->
                     </div>
                 </div>
-                <!-- <div class="form-group">
-                    <label class="col-sm-2 control-label">票据数量<span class="text-danger text-md ">*</span></label></label>
-                    <div class="col-sm-10">
-                        <input type="number"  class="form-control"
-                               name="ticketNum"
-                               ng-model="carorder.ticketNum"
-                               ng-required="true"
-                               >
-                    </div>
-                </div> -->
+               
                 <div class="form-group" ng-if="carorder.needSourceId">
                     <label class="col-sm-1 control-label">来源票ID<span class="text-danger text-md ">*</span></label></label>
                     <div class="col-sm-11">
@@ -95,74 +68,127 @@
                     添加排班
                     <span class="text-danger text-md ">*</span>
                 </div>
+                <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed text-xs">
+                    <thead>
+                    <tr>
+                        <th>线路</th>
+                        <th>班次名称</th>
+                        <th>起点</th>
+                        <th>终点</th>
+                        <th>发车地址</th>
+                        <th>车牌号</th>
+                        <th>出发时间</th>
+                        <th>车票价格(元)</th>
+                        <th>数量</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in carorder.schedule track by $index">
+                        <td ng-bind="item.linename"></td>
+                        <td ng-bind="item.bsname"></td>
+                        <td ng-bind="item.departName"></td>
+                        <td ng-bind="item.arriveName"></td>
+                        <td ng-bind="item.departaddr"></td>
+                        <td ng-bind="item.platenum"></td>
+                        <td ng-bind="item.departTime"></td>
+                        <th ng-bind="item.price"></th>
+                        <td>
+                            <button style="width: 20px;display: inline-block" ng-click="min(item)">-</button>
+                            <input type="text" style="width:30px; display: inline-block;text-align: center;" ng-init="item.count = 1" ng-model="item.count">
+                            <button style="width: 20px;display: inline-block" ng-click="add(item)">+</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+                    <!--选择器-->
                 <!-- <div class="wrapper b-light text-center">
                     <a href class="btn btn-danger btn-addon" ng-click="selectScheduleToggle()"><i class="fa fa-plus"></i>
                         添加排班
                     </a>
                 </div> -->
-                <div class="bg-light">
-                    
-                    <div class="table-responsive" ng-if="departDate">
-                        <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed">
-                            <thead>
-                            <tr>
-                                <th>选择班次</th>
-                                <!-- <th>产品ID</th> -->
-                                <th>班次名称</th>
-                                <th>运营时间</th>
-                                <th>排班有效时间</th>
-                                <th>起点</th>
-                                <th>终点</th>
-                                <th>发车地址</th>
-                                <th>车牌号</th>
-                                <th>出发时间</th>
-                                <th>车票价格(元)</th>
-                                <th>时长</th>
-                                <th>余票/总票数</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="item in dateSchedules" ng-show="item.isEnable">
-                                <td>
-                                    <label class="i-checks m-b-none">
-                                        <input type="radio" ng-disabled="item.leftTickets==0" name="selectSchedule" ng-click=selectSchedule(item,$index)><i></i>
-                                    </label>
-                                </td>
-                                <td ng-bind="item.bsname"></td>
-                                <td>{{formatWeeks(item)}}</td>
-                                <td>{{item.startDate | date:'yyyy-MM-dd' }}&nbsp;<span ng-show="!!item.startDate">至</span>&nbsp;{{item.endDate | date:'yyyy-MM-dd'}}</td>
-                                <td ng-bind="item.departName"></td>
-                                <td ng-bind="item.arriveName"></td>
-                                <td ng-bind="item.departaddr"></td>
-                                <td ng-bind="item.platenum"></td>
-                                <td ng-bind="item.departTime"></td>
-                                <th ng-bind="item.price"></th>
-                                <th>{{item.drivetime}} 分</th>
-                                <td>
-                                   剩 {{item.leftTickets}} 张 / {{item.totalTickets}} 张
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div class="bg-light" style="margin-top:20px;">
+                    <div class="panel panel-default" ng-show="departDate">
+                        <div class="panel-heading">
+                            &nbsp;&nbsp;排班
+                            <form class="row wrapper col-sm-3" style="float: right; padding: 0;" id="J_search_form">
+                                <div class="input-group">
+                                    <input type="text" class="input-sm form-control" name="keyword" placeholder="请输入线路名称" ng-model="search_context">
+                                    <span class="input-group-btn">
+                                    <button class="btn btn-sm btn-default" ng-click="pageRequest.getResponse()" type="button">查询</button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="">
+                            <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed text-xs">
+                                <thead>
+                                <tr>
+                                    <th>选择班次</th>
+                                    <th>线路</th>
+                                    <th>班次名称</th>
+                                    <th>运营时间</th>
+                                    <th>排班有效时间</th>
+                                    <th>起点</th>
+                                    <th>终点</th>
+                                    <th>发车地址</th>
+                                    <th>车牌号</th>
+                                    <th>出发时间</th>
+                                    <th>车票价格(元)</th>
+                                    <th>时长</th>
+                                    <th>余票/总票数</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="item in pageResponse.busDetails track by $index">
+                                    <td>
+                                        <label class="i-checks m-b-none" ng-show="item.isDisplay">
+                                            <input type="checkbox" ng-checked="item.checked" ng-disabled="item.leftTickets==0" name="selectSchedule" ng-click="selectSchedule(item,$index)"><i></i>
+                                        </label>
+                                        <span class="label label-danger" ng-show="!item.isDisplay">不在运营时间</span>
+                                    </td>
+                                    <td ng-bind="item.linename"></td>
+                                    <td ng-bind="item.bsname"></td>
+                                    <td>{{formatWeeks(item)}}</td>
+                                    <td>{{item.startDate | date:'yyyy-MM-dd' }}&nbsp;<span ng-show="!!item.startDate">至</span>&nbsp;{{item.endDate | date:'yyyy-MM-dd'}}</td>
+                                    <td ng-bind="item.departName"></td>
+                                    <td ng-bind="item.arriveName"></td>
+                                    <td ng-bind="item.departaddr"></td>
+                                    <td ng-bind="item.platenum"></td>
+                                    <td ng-bind="item.departTime"></td>
+                                    <th ng-bind="item.price"></th>
+                                    <th>{{item.drivetime}} 分</th>
+                                    <td>
+                                        剩 {{item.leftTickets}} 张 / {{item.totalTickets}} 张
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <footer class="panel-footer">
+                            <div class="box-body" table-pagination></div>
+                        </footer>
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom: 60px;">
                 <div class="col-sm-offset-2" style="float: right;margin-right: 15px;">
                     <button type="reset" ng-show="!editMode" ng-click="reset()" class="btn btn-default">清空</button>
-                    <button type="submit" ng-click="submit()" ng-disabled="submiting||missParm||overDeadLineTime" class="btn btn-primary m-l">提交</button>
+                    <button type="submit" ng-click="submit()" ng-disabled="submiting" class="btn btn-primary m-l">提交</button>
                 </div>
             </div>
         </div>
     </div>
     <div class="row" ng-if="showTicket">
-        <div class="col-sm-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    导出车票<span>共计:&nbsp;&nbsp;{{ticket.payPrice}}&nbsp;元</span>
-                </div>
-                <div class="panel-body">
-                    <div ticket ticket-information="ticket"></div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                导出车票<span>共计:&nbsp;&nbsp;{{ticket.payPrice}}&nbsp;元</span>
+            </div>
+            <div class="panel-body" >
+                <div class="row">
+                    <div class="col-md-6 col-lg-4" ng-repeat="item in tickets">
+                        <div ticket ticket-information="item"></div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -15,15 +15,15 @@ var filter = function(req,res,next){
       sourceLogin: [
         'api/vieworder/ticketsource/queryTicketSourceListByKeyword',
         'api/vieworder/queryViewOrderListByKeyword',
-        'api/vieworder/updateViewOrderPictureShow',
-        'api/vieworder/applyRefund',
-        'api/vieworder/offlineTicketsRefund',
-        'api/vieworder/product/queryProductBusScheduleDetails',
-        'api/vieworder/insertViewOrder',
-        'api/vieworder/updateViewOrderPhoto',
+        'api/vieworder/updateViewOrderPictureShow',//
+        'api/vieworder/applyRefund',//
+        'api/vieworder/offlineTicketsRefund',//
+        'api/vieworder/product/queryProductBusScheduleDetails',//
+        'api/vieworder/insertViewOrder',//
+        'api/vieworder/updateViewOrderPhoto',//
         'api/vieworder/queryTicketOrderListByKeyword',
-        'api/vieworder/queryViewInfoListByKeyword',
-        'api/vieworder/insertTicketOrder',
+        'api/vieworder/queryViewInfoListByKeyword',//
+        'api/vieworder/insertTicketOrder',//
         'api/vieworder/ticketorder/applyDoorTicketRefund',
         'api/vieworder/ticketorder/offlineDoorTicketsRefund',
         'files/excel',

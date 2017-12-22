@@ -203,7 +203,7 @@ app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state',
         }
         $scope.schedule.lineid = $scope.route.lineid;
         $scope.schedule.driverid = $scope.driver.driverid;
-        $scope.schedule.carid =$scope.bus.carid;
+        $scope.schedule.carid = $scope.bus.carid;
         $scope.schedule.platenum = $scope.bus.platenum;
         $scope.schedule.departtime = $filter('date')($scope.schedule.departtimetemp,'HH:mm');
         $scope.schedule.arrivetime = $filter('date')($scope.schedule.arrivetimetemp,'HH:mm');

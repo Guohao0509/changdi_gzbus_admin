@@ -4,7 +4,8 @@
 		    
      		 景点订单列表
      		 <ul class="nav nav-pills pull-right">
-	            <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="downloadApp()"><i class="glyphicon glyphicon-save"></i>下载验票APP</button></li>
+				<li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="downloadApp()"><i class="glyphicon glyphicon-save"></i>下载验票APP</button></li>
+				<li style=" padding-top:4px; padding-right:15px" ng-click="openDownloadExcelModel()"><button class="btn m-b-xs btn-sm btn-info btn-addon"><i class="fa fa-file-excel-o"></i>导出到Excel</button></li>
 	        </ul>
 	        <div ng-if="isShowApk" style="position:absolute; top:0; right:150px;border: 1px solid #ddd;z-index: 1000;" >
             	<img src="img/apk.png" alt="">
@@ -25,26 +26,33 @@
         		</div>
       		</div> -->
       		<div class="row wrapper form-horizontal" >
-                <div class="col-sm-1"  ng-if="session_user.access == 'systemUser'">
+                <div class="col-sm-1"  ng-if="session_user.access == 'systemUser'" style="margin-bottom: 20px;">
                     <label class="control-label f12">景点名称</label>
                 </div>
-                <div class="col-sm-3"  ng-if="session_user.access == 'systemUser'">
+                <div class="col-sm-3"  ng-if="session_user.access == 'systemUser'" style="margin-bottom: 20px;">
                     <input type="text" class="form-control" name="keyword" placeholder="请输入景点名称">
                 </div>
-                <div class="col-sm-1">
+                <div class="col-sm-1" style="margin-bottom: 20px;">
                     <label class="control-label f12">有效时间</label>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="margin-bottom: 20px;">
                     <input type="text" placeholder="注册时间如2017-01-01" class="input-sm form-control" ng-click="viewOrder.open($event)" datepicker-popup="{{viewOrder.format}}" name="newTime" ng-model="newTime" is-open="viewOrder.opened" datepicker-options="viewOrder.dateOptions" close-text="关闭" clear-text="清空"  current-text="今天" />
                 </div>
-                <div class="col-sm-1">
-                    <label class="control-label f12">有效时间</label>
+                <div class="col-sm-1" style="margin-bottom: 20px;">
+                    <label class="control-label f12">票据校验码</label>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="margin-bottom: 20px;">
                     <input type="text" class="form-control" name="ticketCode" placeholder="请输入票据校验码">
+				</div>
+				<div class="col-sm-1">
+                    <label class="control-label f12">游客信息</label>
                 </div>
+				<div class="col-sm-3" >
+                    <input type="text" class="form-control" name="userinfo" placeholder="请输入游客手机号/订单号">
+				</div>
+				
             	<div class="col-sm-4 col-sm-offset-8">
-                    <button class="btn btn-sm btn-primary pull-right" style="margin-top: 20px;">搜索</button>
+                    <button class="btn btn-sm btn-primary pull-right">搜索</button>
                 </div>
             </div>
     	</form>
@@ -52,27 +60,16 @@
 	      	<table cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed text-xs">
 	        	<thead>
 	        		<tr>
-	          			<!-- <th>
-	          				<label class="i-checks m-b-none">
-		              			<input type="checkbox"><i></i>
-		            		</label>
-	          			</th> -->
 						<th sort-name = "ORDERID">订单号</th>
 						<th sort-name = "CREATETIME">订单创建时间</th>
 						<th sort-name = "USEDATE">使用日期</th>
 						<th sort-name = "VIEW_NAME">景区</th>
-						<!-- <th sort-name = "DRIVERNAME">司机</th>
-						<th sort-name = "BSID">班次ID</th> -->
-						<!-- <th sort-name = "ROUTE">路线</th> -->
-						<!-- <th sort-name = "USERID">用户ID</th> -->
-						<th sort-name = "USERNAME">用户名</th>
-						<th sort-name = "PHONE">手机号</th>
-						<th sort-name = "TICKET_PRICE">票价</th>
-						<th sort-name = "VIEW_PRICE_TYPE">类型</th>
-						<th sort-name = "VIEW_COUPON">折扣</th>
-						<th>实付价格</th>
-						<!-- <th sort-name = "ORDERSCORE">订单评分</th>
-						<th sort-name = "ORDERHIE">订单评价</th> -->
+						<th>游客姓名</th>
+						<th>游客手机号</th>
+						<th sort-name = "TICKET_PRICE" ng-if="session_user.access == 'systemUser'">票价</th>
+						<th sort-name = "VIEW_PRICE_TYPE" ng-if="session_user.access == 'systemUser'">类型</th>
+						<th ng-if="session_user.access == 'systemUser'" sort-name = "VIEW_COUPON">折扣</th>
+						<th ng-if="session_user.access == 'systemUser'">实付价格</th>
 						<th>门票状态</th>
 						<th sort-name = "TICKET_CODE">票据校验码</th>
 						<th>操作</th>
@@ -85,12 +82,18 @@
 						<td>{{item.useDate | date: 'yyyy-MM-dd'}}</td>
 						<td ng-bind="item.viewName"></td>
 						<!-- <td ng-bind="item.userid"></td> -->
-						<td ng-bind="item.username"></td>
-						<td ng-bind="item.phone"></td>
-						<td ng-bind="item.ticketPrice"></td>
-						<td ng-bind="item.viewPriceType"></td>
-						<td ng-bind="item.viewCoupon"></td>
-						<td ng-bind="item.couponPrice"></td>
+						<td>
+							<span ng-if="item.username != '超级管理'" ng-bind="item.username"></span>
+							<span ng-if="item.username == '超级管理'" ng-bind="item.name"></span>
+						</td>
+						<td>
+							<span ng-if="item.username != '超级管理'" ng-bind="item.phone"></span>
+							<span ng-if="item.username == '超级管理'" ng-bind="item.userPhone"></span>
+						</td>
+						<td ng-bind="item.ticketPrice" ng-if="session_user.access == 'systemUser'"></td>
+						<td ng-bind="item.viewPriceType" ng-if="session_user.access == 'systemUser'"></td>
+						<td ng-bind="item.viewCoupon" ng-if="session_user.access == 'systemUser'"></td>
+						<td ng-bind="item.couponPrice" ng-if="session_user.access == 'systemUser'"></td>
 						<td>
 							<span ng-if="item.ticketStatus == 1">未付费</span>
 							<span ng-if="item.ticketStatus == 2">已付费未使用</span>

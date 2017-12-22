@@ -4,6 +4,9 @@
             添加评论图片
         </div>
         <div class="panel-body">
+            <div ng-repeat="item in ticket">
+                <div ticket ticket-information="item"></div>
+            </div>
             <div class="row">
                 <form id="myForm">
                     <div class="form-group">

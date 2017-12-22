@@ -5,7 +5,7 @@
  * @description 统计相关的控制器，收益统计，用户统计
  */
 
-app.controller('StatisticController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$filter','$tableListService','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
+app.controller('StatisticController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$filter','$tableListService','$myHttpService','$modal', function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService,$modal){
     $scope.d = [ [1,6.5],[2,6.5],[3,7],[4,8],[5,7.5],[6,7],[7,6.8],[8,7],[9,7.2],[10,7],[11,6.8],[12,7] ];
     function getDateByDays(days,date){
         if(days==undefined){
@@ -82,10 +82,6 @@ app.controller('StatisticController',['$rootScope','$scope','$http','$state','$l
 
     //请求列表数据和表格数据 定义插件重绘的标志；
     $scope.queryStatitstic = function(){
-        // console.log({
-        //     startDate:$scope.startDate instanceof Date?$filter('date')($scope.startDate,'yyyy-MM-dd'):$scope.startDate,
-        //     endDate:$scope.endDate instanceof Date?$filter('date')($scope.endDate,'yyyy-MM-dd'):$scope.endDate
-        // })
         $myHttpService.post("api/trade/getDayStatisticsDate",{
             startDate:$scope.startDate instanceof Date?$filter('date')($scope.startDate,'yyyy-MM-dd'):$scope.startDate,
             endDate:$scope.endDate instanceof Date?$filter('date')($scope.endDate,'yyyy-MM-dd'):$scope.endDate
@@ -105,11 +101,81 @@ app.controller('StatisticController',['$rootScope','$scope','$http','$state','$l
 
         options. formData = {
             startDate:$scope.startDate instanceof Date?$filter('date')($scope.startDate,'yyyy-MM-dd'):$scope.startDate,
-                endDate:$scope.endDate instanceof Date?$filter('date')($scope.endDate,'yyyy-MM-dd'):$scope.endDate
+            endDate:$scope.endDate instanceof Date?$filter('date')($scope.endDate,'yyyy-MM-dd'):$scope.endDate
         }
         //初始化表格配置
         $tableListService.init($scope, options);
         $scope.pageRequest.getResponse();
     }
     $scope.queryStatitstic();
+    $scope.openDownloadProfitExcelModel = function(){
+        var TicketOrderExcelModel = $modal.open({
+            templateUrl: 'a-bugubus/carorder/ticketOrderExcel.html',
+            controller: 'downloadProfitExcelController',
+            size: 'md',
+            resolve: {
+                totalnum: function () {
+                    return $scope.pageResponse.totalnum;
+                }
+            }
+        });
+    }
+}]);
+
+//下载收益excel
+app.controller('downloadProfitExcelController', ['$scope', '$myHttpService', '$modalInstance', 'totalnum', '$filter',function($scope, $myHttpService, $TicketOrderExcelModel, totalnum, $filter) {
+    $scope.ok = function () {
+        $TicketOrderExcelModel.close();
+    };
+    $scope.export = function() {
+        var reqParam = {
+            startTime: $filter('date')($scope.startDate,'yyyy-MM-dd'),
+            endTime: $filter('date')($scope.endDate,'yyyy-MM-dd'),
+            totalnum: 99999
+        }
+        console.log(reqParam);
+        $myHttpService.post('api/profit/getProfitExcel',reqParam,function(data) {
+            window.location.href = data.path;
+        })
+    }
+    $scope.startDateOption = {
+        opened:false,
+        dateOptions:{
+            datepickerMode:'day',
+            showWeeks: false,
+            minMode:'day'
+        },
+        format:"yyyy-MM-dd",
+        disabled:function(date, mode) {
+            return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+        },
+        toggleMin: function() {
+            $scope.minDate = $scope.minDate ? null : new Date();
+        },
+        open:function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.startDateOption.opened = true;
+        }
+    };
+    $scope.endDateOption = {
+        opened:false,
+        dateOptions:{
+            datepickerMode:'day',
+            showWeeks: false,
+            minMode:'day'
+        },
+        format:"yyyy-MM-dd",
+        disabled:function(date, mode) {
+            return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+        },
+        toggleMin: function() {
+            $scope.minDate = $scope.minDate ? null : new Date();
+        },
+        open:function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.endDateOption.opened = true;
+        }
+    };
 }]);

@@ -38,6 +38,9 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             收益统计
+            <ul class="nav nav-pills pull-right">
+	            <li style=" padding-top:4px; padding-right:15px" ng-click="openDownloadProfitExcelModel()"><button class="btn m-b-xs btn-sm btn-info btn-addon"><i class="fa fa-file-excel-o"></i>导出到Excel</button></li>
+	        </ul>
         </div>
         <form class="" id="J_search_form" ng-submit="queryStatitstic()">
             <div class="row wrapper  form-horizontal ">
@@ -90,18 +93,20 @@
                     <thead>
                     <tr>
                         <th sort-name ="countTime">日期</th>
-                        <th sort-name ="rechargeOrderMon">包车收益</th>
-                        <th sort-name ="rechargeOrderNum">直通车收益</th>
+                        <th sort-name ="monthTicketMon">包车收益</th>
+                        <th sort-name ="rechargeOrderMon">直通车收益</th>
+                        <th sort-name ="doorOrderMon">门票收益</th>
                         <th sort-name ="dayTotalMon">日收益</th>
-                        <th sort-name ="hisTotalNum">历史总收益</th>
+                        <th sort-name ="hisTotalMon">历史总收益</th>
                         <th sort-name ="sumlimit">时间段总收益</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="item in pageResponse.rows">
-                        <td ng-bind="item.countTime| date:'yyyy/MM/dd'"></td>
+                        <td ng-bind="item.countTime | date:'yyyy/MM/dd'"></td>
                         <td ng-bind="item.monthTicketMon"></td>
                         <td ng-bind="item.rechargeOrderMon"></td>
+                        <td ng-bind="item.doorOrderMon"></td>
                         <td ng-bind="item.dayTotalMon"></td>
                         <td ng-bind="item.hisTotalMon"></td>
                         <td ng-bind="item.sumlimit"></td>

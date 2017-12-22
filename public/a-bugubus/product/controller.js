@@ -714,7 +714,7 @@ app.controller('uploadImageController',['$rootScope','$scope','$http','$state','
             layer.msg('上传的图片必须小于1M')
             return;
         }
-        var url = "files/image";
+        var url = "api/files/image";
         $.ajax({
             url: url,
             type: 'POST',

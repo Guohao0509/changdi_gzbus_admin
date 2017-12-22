@@ -10,7 +10,7 @@
      		 </a>
      		 <ul class="nav nav-pills pull-right">
 	            <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="app.carorder.add"><i class="fa fa-plus"></i>添加线下车票</button></li>
-	            <li style=" padding-top:4px; padding-right:15px" ng-click="exportToExcel()"><button class="btn m-b-xs btn-sm btn-info btn-addon"><i class="fa fa-file-excel-o"></i>导出到Excel</button></li>
+	            <li style=" padding-top:4px; padding-right:15px" ng-click="openDownloadCarOrderExcelModel()"><button class="btn m-b-xs btn-sm btn-info btn-addon"><i class="fa fa-file-excel-o"></i>导出到Excel</button></li>
 	        </ul>
 		</div>
     	<form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()" style="padding-top:0;padding-bottom: 0;">
@@ -29,10 +29,10 @@
 	      	</div> -->
             <div class="row wrapper form-horizontal">
 
-                <div class="col-sm-1" ng-if="session_user.access == 'systemUser'">
+                <div class="col-sm-1" ng-if="session_user.access == 'systemUser'"  style="margin-bottom: 20px;">
                     <label class="control-label f12">票据来源</label>
                 </div>
-                <div class="col-sm-3" ng-if="session_user.access == 'systemUser'">
+                <div class="col-sm-3" ng-if="session_user.access == 'systemUser'"  style="margin-bottom: 20px;">
                     <!-- <input id="ticketSource" type="text" class="input-sm form-control"  name="ticketSource" placeholder="请输入票据来源" ng-model="orderList.ticketSource"> -->
                     <input id="ticketSource" type="text" name="ticketSource" ng-model="carorder.tmpOfflineId" style="display: none;">
                     <select class="form-control" ng-init="carorder.offline = '0'" ng-model="carorder.offline" ng-required="true" ng-change="showSourceid()">
@@ -40,22 +40,28 @@
 	                    <option ng-repeat="item in ticketSourceList.sources" value="{{item.ticketSource}}">{{item.ticketSource}}</option>
 	                </select>
                 </div>
-                <div class="col-sm-1">
+                <div class="col-sm-1"  style="margin-bottom: 20px;">
                     <label class="control-label f12">支付状态</label>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-3"  style="margin-bottom: 20px;">
                     <select  class="input-sm form-control"  name="viewOrderStatus" ng-init="orderList.viewOrderStatu = '0'" ng-model="orderList.viewOrderStatu">
                         <option ng-repeat="viewOrderStatu in viewOrderStatus" value="{{viewOrderStatu}}"  placeholder="支付状态" selected = "selected">
                            {{selectname[viewOrderStatu]}}
                         </option>
                     </select>
                 </div>
-                 <div class="col-sm-1">
+                 <div class="col-sm-1"  style="margin-bottom: 20px;">
                     <label class="control-label f12">车票ID</label>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-3"  style="margin-bottom: 20px;">
                     <input type="text" class="form-control" name="ticketid" placeholder="请输入车票ID">
+				</div>
+				<div class="col-sm-1"  style="margin-bottom: 20px;">
+                    <label class="control-label f12">游客信息</label>
                 </div>
+				<div class="col-sm-3"  style="margin-bottom: 20px;">
+                    <input type="text" class="form-control" name="keyword" placeholder="请输入游客手机号/订单号">
+				</div>
             	<div class="col-sm-4 col-sm-offset-8">
                     <button class="btn btn-sm btn-primary pull-right" style="margin-top: 15px;">搜索</button>
                 </div>
@@ -67,11 +73,12 @@
 	        		<tr>
 	          			<th sort-name = "VIEWORDERID">订单ID</th>
 						<th sort-name = "TICKETSOURCE">票据来源</th>
-						<th sort-name = "USERNAME">用户名</th>
+						<!-- <th sort-name = "USERNAME">用户名</th> -->
 						<th>订单创建时间</th>
+						<th>游客姓名</th>
+						<th>游客手机号</th>
 						<th sort-name = "DEPARTDATE" sort-type="desc">发班日期</th>
 						<th sort-name = "DEPARTTIME">发车时间</th>
-						<th sort-name = "REFUNDTIME">申请退款时间</th>
 						<th sort-name = "ORDERPRICE">票价</th>
 						<th sort-name = "PAYPRICE">实付</th>
 						<th sort-name = "HAVECOUPON">是否使用优惠券</th>
@@ -85,14 +92,23 @@
 		        	<tr ng-repeat="item in pageResponse.viewOrders">
 		        		<td ng-bind="item.viewOrderid"></td>
 						<td ng-bind="item.ticketSource"></td>
-						<td ng-bind="item.username"></td>
+						<!-- <td>
+							<span ng-if="item.username != '超级管理'" ng-bind="item.username"></span>
+						</td> -->
 						<td>{{item.createTime | date: 'yyyy-MM-dd HH:MM'}}</td>
 						<!-- <td>
 							<span ng-if="item.haveTicket == 1" class="label label-warning">门票</span>
 						</td> -->
+						<td>
+							<span ng-if="item.username != '超级管理'" ng-bind="item.username"></span>
+							<span ng-if="item.username == '超级管理'" ng-bind="item.name"></span>
+						</td>
+						<td>
+							<span ng-if="item.username != '超级管理'" ng-bind="item.phone"></span>
+							<span ng-if="item.username == '超级管理'" ng-bind="item.userPhone"></span>
+						</td>
 						<td>{{item.departDate | date: 'yyyy-MM-dd'}}</td>
 						<td ng-bind="item.departTime"></td>
-						<td>{{item.refundTime | date: 'yyyy-MM-dd HH:MM'}}</td>
 						<td ng-bind="item.price"></td>
 						<td ng-bind="item.payPrice"></td>
 						<!-- <td>

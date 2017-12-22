@@ -36,45 +36,46 @@ app.controller('CouponListController',['$scope','$http','$state','$tableListServ
  * 优惠券编辑控制器
  */
 app.controller('CouponEditController',['$scope','$myHttpService','$tableListService','$state','$filter',function($scope,$myHttpService,$tableListService,$state,$filter){
-    //唤出用户选择列表
-    $scope.selectUserToggle= function(){
-        $scope.userEditMode= !$scope.userEditMode;
-        if($scope.userEditMode){
-            $tableListService.init($scope,{
-                searchFormId:"J_search_form",
-                listUrl:"api/user/queryUserListByKeword.htm",
-                callback: function($scope,data){
-                    if($scope.selectedUser){
-                        angular.forEach(data.rows,function(item,index){
-                            if(item.userid == $scope.selectedUser.userid){
-                                item.checked = true;
-                            }else{
-                                item.checked = false;
-                            }
-                        })
+    $scope.selectedUser = [];
+    $tableListService.init($scope,{
+        searchFormId:"J_search_form",
+        listUrl:"api/user/queryUserListByKeword.htm",
+        callback: function($scope,data){
+            for(var i = 0; i < data.rows.length; i++) {
+                for(var j = 0; j < $scope.selectedUser.length; j++) {
+                    if($scope.selectedUser[j].userid == data.rows[i].userid){
+                        data.rows[i].checked = true;
                     }
                 }
-            });
-            $tableListService.get();
+            }
         }
-    };
-
+    });
+    $tableListService.get();
     //在未选择用户时禁止提交按钮
-    $scope.missParm = true;
+   
     //选择用户(单选)
     $scope.changeCheck = function(item) {
         //被选择的用户
-        $scope.selectedUser = item;
-        //选择用户时开启提交按钮
-        $scope.missParm = false;
-        $scope.userEditMode= !$scope.userEditMode;
-        $scope.selectSingleUser = true;
+        console.log($scope.selectedUser)
+        if(item.checked) {
+            for(var i = 0; i < $scope.selectedUser.length; i++){
+                if(item.userid == $scope.selectedUser[i].userid){
+                    $scope.selectedUser.splice(i, 1);
+                    item.checked = false;
+                }
+            }
+        }else {
+            item.checked = true;
+            $scope.selectedUser.push(item);
+        }
     }
+
+    //提交所有用户
     $scope.selectAllUser = function() {
         $scope.submiting = true;
         var reqParm = {
             couponMoney: $scope.coupon.discount,
-            overDate:$filter('date')($scope.deadlineDate, 'yyyy-MM-dd HH:mm:ss')
+            overDate:$filter('date')($scope.deadlineDate, 'yyyy-MM-dd')
         }
         $myHttpService.post("api/buslinecoupon/insertBuslineCouponForAllUser",reqParm,function(data){
             //成功回调
@@ -84,7 +85,7 @@ app.controller('CouponEditController',['$scope','$myHttpService','$tableListServ
              $scope.submiting = false;
         });
     }
-    //提交优惠券表单到服务器
+    //提交单个或者多个用户优惠券表单到服务器
     $scope.submit = function(){
         //防止网络不好造成的重复提交
         var currentDate = new Date().getTime();
@@ -93,15 +94,30 @@ app.controller('CouponEditController',['$scope','$myHttpService','$tableListServ
             layer.msg('日期小于当天',{offset: '100px'});
             return;
         }
-        $scope.submiting = true;
-        var reqParam = {
-            couponMoney: $scope.coupon.discount,
-            username: $scope.selectedUser.name,
-            userid: $scope.selectedUser.userid,
-            commPhone: $scope.selectedUser.phone,
-            overDate:$filter('date')($scope.deadlineDate, 'yyyy-MM-dd')
+        if($scope.selectedUser.length == 0){
+            layer.msg('请添加用户',{offset: '100px'});
+            return;
         }
-        $myHttpService.post("api/buslinecoupon/insertBuslineCoupon",reqParam,function(data){
+        // if($scope.regDate == undefined){
+        //     layer.msg('请选择优惠券有效期',{offset: '100px'});
+        //     return;
+        // }
+        // if($scope.coupon.discount == undefined){
+        //     layer.msg('请填写优惠券金额',{offset: '100px'});
+        //     return;
+        // }
+        $scope.submiting = true;
+        for(var i = 0, buslineCoupons = []; i < $scope.selectedUser.length; i++) {
+            buslineCoupons.push({
+                couponMoney: $scope.coupon.discount,
+                overDate:$filter('date')($scope.deadlineDate, 'yyyy-MM-dd'),
+                username: $scope.selectedUser[i].name,
+                userid: $scope.selectedUser[i].userid,
+                commPhone: $scope.selectedUser[i].phone
+            })
+        }
+        console.log({data: JSON.stringify({buslineCoupons: buslineCoupons})});
+        $myHttpService.post("api/buslinecoupon/insertBuslineCoupon",{data: JSON.stringify({buslineCoupons: buslineCoupons})},function(data){
             //成功回调
             layer.msg(data.msg,{offset: '100px'});
             $state.go("app.coupon.edit",{},{reload:true});

@@ -8,7 +8,7 @@ var prod = {
 };
 var dev = {
 	"host": "http://111.230.129.41:8080",
-  	"domain": "http://111.230.129.41:5050",
+  	"domain": "http://192.168.0.101:5050",
   	"projectName": "guizhoubus",
 	"env": "win32"
 	

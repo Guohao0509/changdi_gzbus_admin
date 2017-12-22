@@ -28,9 +28,10 @@ angular.module('app.directives').directive('ticket', function($document) {
                 var day = date.getDate();
                 var departDate = year + ' 年 ' + month + ' 月 ' + day + ' 日 ';
 
-                var barcode = document.getElementById('barcodeCanvas');
-                
-                JsBarcode('#barcodeCanvas',ticket.barcode);
+                // var barcode = document.getElementById('barcodeCanvas');
+                var barcode = element.children('.barcodeCanvas')[0];
+               
+                JsBarcode(barcode, ticket.barcode);
 
                 var imgSrc = barcode.toDataURL();
                 var img = new Image();
@@ -38,7 +39,7 @@ angular.module('app.directives').directive('ticket', function($document) {
                 img.src = '../../img/ticket.png';
                 var barcodeImg = new Image();
                 barcodeImg.src = imgSrc;
-                var canvas = document.getElementById('canvas');
+                var canvas = element.children('.canvas')[0];
                 var ctx = canvas.getContext('2d');
                 img.onload = function() {  
                     ctx.drawImage(img, 0, 0,700,1100);
@@ -78,10 +79,11 @@ angular.module('app.directives').directive('ticket', function($document) {
                 var day = date.getDate();
                 var departDate = year + ' 年 ' + month + ' 月 ' + day + ' 日 ';
 
-                var barcode = document.getElementById('barcodeCanvas');
+                var barcode = element.children('.barcodeCanvas')[0];
+                console.log(barcode)
                 // barcode.id = 'barcode';
                 // console.log(barcode)
-                JsBarcode('#barcodeCanvas',viewTicket.ticketCode);
+                JsBarcode(barcode, viewTicket.ticketCode);
 
                 var imgSrc = barcode.toDataURL();
                 var img = new Image();
@@ -89,7 +91,7 @@ angular.module('app.directives').directive('ticket', function($document) {
                 img.src = '../../img/view_ticket.png';
                 var barcodeImg = new Image();
                 barcodeImg.src = imgSrc;
-                var canvas = document.getElementById('canvas');
+                var canvas = element.children('.canvas')[0];
                 var ctx = canvas.getContext('2d');
                 img.onload = function() {  
                     ctx.drawImage(img, 0, 0,700,1100);
@@ -116,7 +118,8 @@ angular.module('app.directives').directive('ticket', function($document) {
             }
             
 
-            var btn1 = document.getElementById('btn1');
+               
+                var btn1 = element.children('.btn1')[0];
             btn1.onclick = function () {
                 var type = 'png';
                 download(type);

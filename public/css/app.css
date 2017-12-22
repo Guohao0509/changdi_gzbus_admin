@@ -5337,3 +5337,6 @@ td.completed:before {
   font-weight: bold;
   font-size: 14px;
 }
+.mgt-20 {
+  margin-top: 20px;
+}
