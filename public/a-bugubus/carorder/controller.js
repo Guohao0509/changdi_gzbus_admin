@@ -302,7 +302,6 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
             callback: function(scope,data){
                 for(var i = 0; i < data.busDetails.length; i++) {
                     //判断排班是否再当天运营
-                    console.log();
                     for(var k = 0, tmp = ''; k < data.busDetails[i].weeks.length; k++){
                         tmp += data.busDetails[i].weeks[k].week;
                     }
@@ -433,6 +432,7 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
         // $scope.ticket = data.viewOrders;s
         $scope.tickets = data.viewOrders;
         $scope.showTicket = true;
+
     }
     //时间选择器的配置
     $scope.scheduleTime = {

@@ -9,8 +9,9 @@ var prod = {
 };
 var dev = {
 	"env": 'win32',
-	"host": "http://111.230.129.41:8080",
-  	"domain": "http://192.168.0.101:5050",
-  	"projectName": "guizhoubus"
+	"host": "http://192.168.5.223:8080",
+  	"domain": "http://192.168.5.41:5050",
+  	"projectName": "bus"
 };
-module.exports = os.platform() == 'linux' ? prod : dev;
+
+module.exports = os.platform() == prod.env ? prod : dev;

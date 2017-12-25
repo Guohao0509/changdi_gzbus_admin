@@ -9,6 +9,7 @@ angular.module('app.directives').directive('ticket', function($document) {
         },
         link: function(scope, element, attrs) {
             var ticket = {}, viewTicket = {};
+            console.log('ticketInformation')
             if(scope.ticketInformation.barcode){//车票
                 ticket = {
                     viewOrderid: scope.ticketInformation.viewOrderid,
@@ -21,7 +22,8 @@ angular.module('app.directives').directive('ticket', function($document) {
                     car: scope.ticketInformation.platenum,
                     phone: scope.ticketInformation.sourcePhone
                 }
-                
+                console.log('ticket')
+                console.log(ticket)
                 var date = new Date(Number(ticket.date));
                 var year = date.getFullYear();
                 var month = date.getMonth() + 1;

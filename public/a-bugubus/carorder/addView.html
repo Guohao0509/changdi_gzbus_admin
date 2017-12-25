@@ -171,11 +171,12 @@
     <div class="row" ng-if="showTicket">
         <div class="panel panel-default">
             <div class="panel-heading">
-                导出门票<span>共计:&nbsp;&nbsp;{{ticket.couponPrice}}&nbsp;元</span>
+                导出门票
+                <!-- <span>共计:&nbsp;&nbsp;{{ticket.couponPrice}}&nbsp;元</span> -->
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-6 col-lg-4" ng-repeat="item in tickets">
+                    <div class="col-md-6 col-lg-4" ng-repeat="item in tickets" style="margin-bottom: 60px;">
                         <div ticket ticket-information="item"></div>
                     </div>
                 </div>
