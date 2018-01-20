@@ -7,11 +7,9 @@
 /**
  * @author 郭浩
  * @date 2017-8-09
- * @descriptions 膜拜大神
  */
-/**
- * 司机列表控制器
- */
+
+//司机列表控制器
 app.controller('DriverListController',['$rootScope','$scope','$http','$state','$localStorage','$tableListService','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$tableListService,$myHttpService){
     //全选
     // var selected = false;
@@ -21,12 +19,16 @@ app.controller('DriverListController',['$rootScope','$scope','$http','$state','$
     //         item.selected = selected;
     //     });
     // }
+    
+    //配置搜索列表的选项
     var options = {
         searchFormId:"J_search_form",
         listUrl:"api/driver/queryDriversByKeyword.htm"
     };
     $tableListService.init($scope, options);
     $tableListService.get();
+
+    //删除
     $scope.delete=function(item){
         layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){
             $myHttpService.post("api/driver/deleteDriver.htm",item,function(){
@@ -39,9 +41,7 @@ app.controller('DriverListController',['$rootScope','$scope','$http','$state','$
     }
 }]);
 
-/**
- * 司机编辑控制器
- */
+//司机编辑控制器
 app.controller('DriverEditController',['$rootScope','$scope','$myHttpService','$state','$localStorage','$stateParams','$filter','md5','$timeout',function($rootScope,$scope,$myHttpService,$state,$localStorage,$stateParams,$filter,md5,$timeout){
     $scope.editMode = !!$stateParams.id;//检测有没有ID，判断当前是添加还是编辑，共用一套模板
     if($scope.editMode){//编辑模式
@@ -57,7 +57,10 @@ app.controller('DriverEditController',['$rootScope','$scope','$myHttpService','$
                 $state.go('app.driver.list');
             },3000)
         });
+
+        //提交司机表单
         $scope.submit = function(){
+            var submiting = true;
             $scope.tmpDriver = angular.copy($scope.driver);
             if( $scope.tmpDriver.loginpwd!=""){
                 $scope.tempPwd  = $scope.tmpDriver.loginpwd;
@@ -70,9 +73,10 @@ app.controller('DriverEditController',['$rootScope','$scope','$myHttpService','$
                     $state.go('app.driver.list');
                 },1000)
             },function(){
-                // $scope.driver.loginpwd=$scope.tempPwd;
+                submiting = false;
             });
         };
+
         $scope.delete=function(item){
             layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){
                 $myHttpService.post("api/driver/deleteDriver.htm",item,function(){
@@ -89,6 +93,7 @@ app.controller('DriverEditController',['$rootScope','$scope','$myHttpService','$
         //提交添加司机的表单
         $scope.submit = function(){
             //提交表单到服务器地址
+            var submiting = true;
             $scope.tempPwd  = $scope.driver.loginpwd;
             $scope.tmpDriver = angular.copy($scope.driver)
              $scope.tmpDriver.loginpwd=md5.createHash($scope.tmpDriver.loginpwd);

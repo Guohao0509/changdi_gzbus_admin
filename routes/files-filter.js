@@ -10,7 +10,6 @@ var domain = require('../conf.js').domain;
 var host = require('../conf.js').host;
 
 //上传图片
-
 router.post('/image', function(req, res) {
 	var TITLE = 'upload';
 	var AVATAR_UPLOAD_FOLDER = '/avatar/';
@@ -19,13 +18,11 @@ router.post('/image', function(req, res) {
   	form.uploadDir = 'public' + AVATAR_UPLOAD_FOLDER;     //设置上传目录
  	form.keepExtensions = true;     //保留后缀
   	form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
-
   	form.parse(req, function(err, fields, files) {
 		if (err) {
 	  		res.send({"code":-1,"data":"上传失败，请重新上传"});
 		 	return;
 		}
-
 		var extName = '';  //后缀名
 		switch (files.fulAvatar.type) {
 	  		case 'image/pjpeg':
@@ -46,13 +43,13 @@ router.post('/image', function(req, res) {
 	  		res.send({"code":-1,"data":"上传失败，请重新上传"})
 	  		return;
 		}
-
+		//构造一个随机的文件名
 		var avatarName = TITLE + '_' + new Date().getTime() + '_' + Math.floor(Math.random()*1000) + '.' + extName;
 		//图片写入地址；
 		var newPath = form.uploadDir + avatarName;
 		//显示地址；
 		var showUrl = domain + AVATAR_UPLOAD_FOLDER + avatarName;
-		try{
+		try{//同步的写入方法
 		    fs.renameSync(files.fulAvatar.path, newPath);
 		}catch(e){
 			console.log(e);

@@ -1,10 +1,6 @@
 <div class="wrapper-md" ng-controller="ViewOrderListController">
   	<div class="panel panel-default">
     	<div class="panel-heading">
-		    <!-- <ul class="nav nav-pills pull-right">
-		      <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref=""><i class="fa fa-plus"></i>添加直通车订单</button></li>
-		    </ul> -->
-     		
      		<a ui-sref="app.carorder.list" style="margin-right: 30px;color: #777;">
      		 	直通车订单列表
      		</a>
@@ -15,25 +11,11 @@
 	        </ul>
 		</div>
     	<form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()">
-      		<!-- <div class="col-sm-5 m-b-xs"> -->
-        		<!-- <button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button> -->
-      		<!-- </div>
-	      	<div class="col-sm-3">
-	      	</div>
-      		<div class="col-sm-4">
-        		<div class="input-group">
-          			<input type="text" class="input-sm form-control" name="keyword" placeholder="输入景点名称">
-          			<span class="input-group-btn">
-            			<button class="btn btn-sm btn-default" >查询</button>
-          			</span>
-        		</div>
-      		</div> -->
       		<div class="row wrapper form-horizontal">
       			<div class="col-sm-1" ng-if="session_user.access == 'systemUser'">
                     <label class="control-label f12">票据来源</label>
                 </div>
                 <div class="col-sm-3" ng-if="session_user.access == 'systemUser'">
-                    <!-- <input id="ticketSource" type="text" class="input-sm form-control"  name="ticketSource" placeholder="请输入票据来源" ng-model="orderList.ticketSource"> -->
                     <input id="ticketSource" type="text" name="ticketSourceId" ng-model="carorder.tmpOfflineId" style="display: none;">
                     <select class="form-control" ng-init="carorder.offline = '0'" ng-model="carorder.offline" ng-required="true" ng-change="showSourceid()">
 	                    <option value="0" style="display: none;">请选择</option>
@@ -69,13 +51,11 @@
 	        		<tr>
 						<th sort-name = "ORDERID">订单号</th>
 						<th>票据来源</th>
+						<th>来源票ID</th>
 						<th sort-name = "CREATETIME">订单创建时间</th>
 						<th sort-name = "USEDATE">使用时间</th>
 						<th sort-name = "VIEW_NAME">景区</th>
-						
 						<th sort-name = "TICKETSTATUS">门票状态</th>
-						<th sort-name = "USERNAME">用户名</th>
-						<th sort-name = "PHONE">手机号</th>
 						<th>游客姓名</th>
 						<th>游客手机号</th>
 						<th sort-name = "TICKET_PRICE">票价</th>
@@ -91,6 +71,7 @@
 		        	<tr ng-repeat="item in pageResponse.ticketOrders">
 						<td ng-bind="item.orderid"></td>
 						<td ng-bind="item.ticketSource"></td>
+						<td ng-bind="item.sourceid"></td>
 						<td>{{item.createTime | date: 'yyyy-MM-dd'}}</td>
 						<td>{{item.useDate | date: 'yyyy-MM-dd'}}</td>
 						<td ng-bind="item.viewName"></td>
@@ -101,10 +82,14 @@
 							<span ng-if="item.ticketStatus == 4">正在退款</span>
 							<span ng-if="item.ticketStatus == 5">已退款</span>
 						</td>
-						<td ng-bind="item.username"></td>
-						<td ng-bind="item.phone"></td>
-						<td ng-bind="item.name"></td>
-						<td ng-bind="item.userPhone"></td>
+						<td>
+							<span ng-if="item.username != '超级管理'" ng-bind="item.username"></span>
+							<span ng-if="item.username == '超级管理'" ng-bind="item.name"></span>
+						</td>
+						<td>
+							<span ng-if="item.username != '超级管理'" ng-bind="item.phone"></span>
+							<span ng-if="item.username == '超级管理'" ng-bind="item.userPhone"></span>
+						</td>
 						<td ng-bind="item.ticketPrice"></td>
 						<td ng-bind="item.viewPriceType"></td>
 						<td ng-bind="item.viewCoupon"></td>

@@ -25,14 +25,10 @@
 	      	<table cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light">
 	        	<thead>
 			        <tr>
-			          	<!-- <th>
-			            	<label class="i-checks m-b-none">
-			              		<input type="checkbox" ng-click="selectAll()"><i></i>
-			            	</label>
-			          	</th> -->
 						<th sort-name ="CARID">车辆编号</th>
 						<th sort-name ="PLATE_NUM">车牌号码</th>
 						<th sort-name ="CARTYPE">车辆类型</th>
+						<th>座位数</th>
 						<th sort-name ="VIN">车架号</th>
 						<th>obd设备号</th>
 						<th sort-name ="COMPANY">所属公司</th>
@@ -44,11 +40,6 @@
 		        </thead>
 	        	<tbody>
 			        <tr ng-repeat="item in pageResponse.carinfo">
-		         	 	<!-- <td>
-			            	<label class="i-checks m-b-none">
-			              	<input type="checkbox" ng-model="item.selected"><i></i>
-			            	</label>
-			          	</td> -->
 			          	<td ng-bind="item.carid"></td>
 			          	<td ng-bind="item.platenum"></td>
 			          	
@@ -65,7 +56,8 @@
 				            <div ng-show="item.cartype =='3'">
 				              	<span class="label label-danger">14座商务车</span>
 				            </div>
-			          	</td>
+						</td>
+						<td ng-bind="item.seatnum"></td>
 			          	<td ng-bind="item.vin"></td>
 			          	<td ng-bind="item.imei"></td>
 			          	<td ng-bind="item.company"></td>

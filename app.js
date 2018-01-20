@@ -8,20 +8,20 @@ var bodyParser = require('body-parser');
 
 // var apiFilter = require('./routes/api-filter');
  var router = require('./routes/api_filter.js');
-
 var authFilter = require('./routes/auth-filter');
 var filesFilter = require('./routes/files-filter.js');
-// var uploadFilter = require('./routes/uploader-filter.js');
-// var exportExcel = require('./routes/export-excel.js');
+
 var index = require('./routes/index');
 var compression = require('compression');
 var app = express();
-//schedule
+
+//schedule 在每周日晚上0点清除图片;
 var clearFile = require('./modules/clear_file.js');
 clearFile();
+
+//判断是linux环境还是windows环境，来访问不同的后端服务
 var env=require('./conf.js')
 console.log(env)
-//在每周日晚上0点清除图片;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -42,16 +42,14 @@ app.use(session({
   saveUninitialized: true,
   rolling: true
 }));
+
 //app.use('/',index);
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use('/image',imageFilter);
+
+//filter
 app.use('/auth',authFilter);
 app.use('/files',filesFilter);
 app.use('/api',router);
-
-
-// app.use('/uploader', uploadFilter);
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -61,7 +59,6 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
-
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
@@ -84,12 +81,11 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
-
-module.exports = app;
-// 设置端口号 3000
+// module.exports = app;
+// 设置端口号 5050
 app.set('port', process.env.PORT || '5050');
+
 // 监听端口 app.get() 获取设置值
 app.listen(app.get('port'), function() {
-  console.log('HaHa.... Start at the port: ' + app.get('port'));
+  console.log('Start at the port: ' + app.get('port'));
 });

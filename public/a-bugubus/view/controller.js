@@ -16,17 +16,16 @@ app.controller('ViewListController',['$scope','$http','$state','$myHttpService',
     $tableListService.init($scope, options);
     $tableListService.get();
     
-     $scope.delete=function(itemid){
-        
-            layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){
-                $myHttpService.post("api/viewinfo/deleteViewInfo",{viewid: itemid},function(){
-                    layer.msg("删除成功！",{offset: '100px'})
-                    $state.go("app.view.list",{},{reload: true});
-                });
-            },function(index){
-                layer.close(index);
+    $scope.delete=function(itemid){
+        layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){
+            $myHttpService.post("api/viewinfo/deleteViewInfo",{viewid: itemid},function(){
+                layer.msg("删除成功！",{offset: '100px'})
+                $state.go("app.view.list",{},{reload: true});
             });
-        }
+        },function(index){
+            layer.close(index);
+        });
+    }
 	$scope.openViewPriceModel = function(viewPrices){
         var ViewPriceModel = $modal.open({
             templateUrl: 'a-bugubus/view/price_detail.html',
@@ -75,6 +74,7 @@ app.controller('ViewListController',['$scope','$http','$state','$myHttpService',
             }
         });
     }
+   
 }]);
 app.controller('ViewPriceController', ['$scope', '$modalInstance', 'viewPrices',function($scope, $ViewUserModel, viewPrices) {
     $scope.viewPrices = viewPrices;
@@ -154,6 +154,22 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
         $scope.tmpAddtion.price = '';
         $scope.display.viewTicketType = false;
     }
+    //获取天鹅湖门票信息
+    $scope.getTianEHuList = function() {
+        console.log(1)
+        $myHttpService.post("api/ticketsource/getTickOpeTicketList",{},function(data){
+            $scope.ticketType.push({
+                viewPriceType: data.tickbName,
+                viewPrice: data.price,
+                viewCoupon: '1',
+                tickbID: data.tickbID,
+                tickID: data.tickID
+            })
+            $scope.view.saleType = '1';
+        },function(e){
+           console.log(e)
+        });
+    }
     //删除票类型
     $scope.deleteType = function(index) {
         $scope.ticketType.splice(index, 1);
@@ -163,7 +179,7 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
         $scope.display.addViewAccess = true;
     }
     //取消添加门票类型和账号 type?addViewAccess:viewTicketType
-     $scope.cancel = function(type){
+    $scope.cancel = function(type){
         $scope.display[type] = false;
         switch (type) {
             case 'addViewAccess':
@@ -200,7 +216,6 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
         };
         //获取司机内容
         $myHttpService.post("api/viewinfo/queryViewInfo",$scope.view,function(data){
-            
             $scope.view = data.viewInfo;
             $scope.ticketType = data.viewPrices;
             $scope.admin = data.viewAdmins;
@@ -223,6 +238,7 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
                 layer.msg('请添加门票类型');
                 return;
             }
+            console.log({data: JSON.stringify(reqParam)});
             $myHttpService.post("api/viewinfo/updateViewInfo",{data: JSON.stringify(reqParam)},function(data){
                 $state.go('app.view.list',{},{reload: true});
                 
@@ -241,10 +257,9 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
                 layer.msg('请添加门票类型');
                 return;
             }
-            
+            console.log({data: JSON.stringify(reqParam)});
             $myHttpService.post("api/viewinfo/insertViewInfo",{data: JSON.stringify(reqParam)},function(data){
                  $state.go('app.view.add', {} ,{reload: true});
-            	
             });
         }
     }

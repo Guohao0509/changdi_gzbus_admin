@@ -1,9 +1,6 @@
 <div class="wrapper-md" ng-controller="CarOrderListController">
   	<div class="panel panel-default">
     	<div class="panel-heading">
-		    <!-- <ul class="nav nav-pills pull-right">
-		      <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref=""><i class="fa fa-plus"></i>添加直通车订单</button></li>
-		    </ul> -->
      		 直通车订单列表
      		 <a ui-sref="app.carorder.view_list" style="margin-left: 30px;color: #777;">
      		 	景区门票订单
@@ -14,26 +11,11 @@
 	        </ul>
 		</div>
     	<form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()" style="padding-top:0;padding-bottom: 0;">
-	      	<!-- <div class="col-sm-5 m-b-xs">
-	        	<button class="btn m-b-xs btn-sm btn-default btn-addon" disabled><i class="fa fa-trash-o"></i>批量删除</button>
-	      	</div>
-			<div class="col-sm-3">
-			</div>
-	      	<div class="col-sm-4">
-	       	 	<div class="input-group">
-	          		<input type="text" class="input-sm form-control" name="keyword" placeholder="输入订单相关信息">
-	          		<span class="input-group-btn">
-	            		<button class="btn btn-sm btn-default">查询</button>
-	          		</span>
-	        	</div>
-	      	</div> -->
             <div class="row wrapper form-horizontal">
-
                 <div class="col-sm-1" ng-if="session_user.access == 'systemUser'"  style="margin-bottom: 20px;">
                     <label class="control-label f12">票据来源</label>
                 </div>
                 <div class="col-sm-3" ng-if="session_user.access == 'systemUser'"  style="margin-bottom: 20px;">
-                    <!-- <input id="ticketSource" type="text" class="input-sm form-control"  name="ticketSource" placeholder="请输入票据来源" ng-model="orderList.ticketSource"> -->
                     <input id="ticketSource" type="text" name="ticketSource" ng-model="carorder.tmpOfflineId" style="display: none;">
                     <select class="form-control" ng-init="carorder.offline = '0'" ng-model="carorder.offline" ng-required="true" ng-change="showSourceid()">
 	                    <option value="0" style="display: none;">请选择</option>
@@ -73,7 +55,7 @@
 	        		<tr>
 	          			<th sort-name = "VIEWORDERID">订单ID</th>
 						<th sort-name = "TICKETSOURCE">票据来源</th>
-						<!-- <th sort-name = "USERNAME">用户名</th> -->
+						<th sort-name = "SOURCEID">来源票ID</th>
 						<th>订单创建时间</th>
 						<th>游客姓名</th>
 						<th>游客手机号</th>
@@ -83,7 +65,6 @@
 						<th sort-name = "PAYPRICE">实付</th>
 						<th sort-name = "HAVECOUPON">是否使用优惠券</th>
 						<th sort-name = "VIEW_ORDER_STATUS">订单状态</th>
-						<th sort-name = "SOURCEID">来源票ID</th>
 						<th>打印车票</th>
 						<th>操作</th>
 					</tr>
@@ -92,13 +73,8 @@
 		        	<tr ng-repeat="item in pageResponse.viewOrders">
 		        		<td ng-bind="item.viewOrderid"></td>
 						<td ng-bind="item.ticketSource"></td>
-						<!-- <td>
-							<span ng-if="item.username != '超级管理'" ng-bind="item.username"></span>
-						</td> -->
+						<td ng-bind="item.sourceid"></td>
 						<td>{{item.createTime | date: 'yyyy-MM-dd HH:MM'}}</td>
-						<!-- <td>
-							<span ng-if="item.haveTicket == 1" class="label label-warning">门票</span>
-						</td> -->
 						<td>
 							<span ng-if="item.username != '超级管理'" ng-bind="item.username"></span>
 							<span ng-if="item.username == '超级管理'" ng-bind="item.name"></span>
@@ -111,19 +87,6 @@
 						<td ng-bind="item.departTime"></td>
 						<td ng-bind="item.price"></td>
 						<td ng-bind="item.payPrice"></td>
-						<!-- <td>
-							<a ng-if="!item.images[0]" ui-sref="app.carorder.uploadimage({id:item.viewOrderid})">
-							  	<span class="label btn-info">上传图片</span>
-							</a>
-							<a ng-if="item.images[0]" ng-click="openCarorderImageModal(item.images)">
-							  	<span class="label btn-success">查看图片</span>
-							</a>
-						</td>
-						<td>
-							<label class="i-checks m-b-none">
-							  	<input type="checkbox" ng-model="item.isShow" ng-click="isShow(item.viewOrderid, item.isShow)"><i></i>
-							</label>
-						</td> -->
 						<td>
 							<span ng-if="item.haveCoupon == 'false'">否</span>
 							<span ng-if="item.haveCoupon == 'true'">是</span>
@@ -135,7 +98,6 @@
 							<span ng-if="item.viewOrderStatus == 4">正在退款</span>
 							<span ng-if="item.viewOrderStatus == 5">已退款</span>
 						</td>
-						<td ng-bind="item.sourceid"></td>
 						<td>
 							<a ng-click="printTicket(item)" ng-if="item.viewOrderStatus == 2">
 							  	<span class="label btn-success">打印车票</span>

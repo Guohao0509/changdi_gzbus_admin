@@ -159,44 +159,28 @@ app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state',
     $scope.changeRoute= function(item){
         $scope.route=item;
         $scope.routeEditMode = false;
-        /*查询经停靠点信息*/
-        // $myHttpService.post('api/busline/queryBusline.htm',{lineid:$scope.route.lineid},function(data){
-        //     $scope.stopStationList=data.stations;
-        //     
-        //     /*组合站点*/
-        //     var stationArray=[];
-        //     //$scope.price={};
-        //     for(var s=0;s<$scope.stopStationList.length-1;s++){
-        //         stationArray.push(
-        //             {
-        //                 stopnumber:s+1,
-        //                 top:$scope.stopStationList[s],
-        //                 bottom:$scope.stopStationList[s+1],
-        //             }
-        //         );
-        //     }
-        //     $scope.stopStationMap=stationArray;
-
-        // })
     }
 
+    //更换绑定的司机
     $scope.changeDriver= function(item){
         $scope.driver=item;
         $scope.driverEditMode = false;
     };
+
+    //更换绑定的车辆
     $scope.changeBus= function(item){
         $scope.bus=item;
         $scope.busEditMode = false;
     };
 
     $scope.formatWeek = function(){
-        
         for (var i = $scope.selectWeek.week.length - 1,tmp=[]; i >= 0; i--) {
             tmp.push($scope.selectWeek.week[i].v);
         }
-        
         return tmp
     }
+
+    //表单提交
     $scope.submit  = function(){
         if(!($scope.startDate&&$scope.endDate)){
             return layer.msg('请选择排班有效时间');
@@ -208,18 +192,18 @@ app.controller('ScheduleEditController',['$rootScope','$scope','$http','$state',
         $scope.schedule.departtime = $filter('date')($scope.schedule.departtimetemp,'HH:mm');
         $scope.schedule.arrivetime = $filter('date')($scope.schedule.arrivetimetemp,'HH:mm');
         $scope.schedule.weeks = $scope.formatWeek();
-        if(typeof $scope.startDate == 'string'){
+
+        //判断排班的有效时间是否选取;
+        if(typeof $scope.startDate == 'string'){//开始时间
             $scope.schedule.startDate =  $scope.startDate;
         }else{
             $scope.schedule.startDate =  $filter('date')($scope.startDate.getTime(),'yyyy-MM-dd');
         }
-        if(typeof $scope.endDate == 'string'){
+        if(typeof $scope.endDate == 'string'){//结束时间
             $scope.schedule.endDate =  $scope.endDate;
         }else{
             $scope.schedule.endDate =  $filter('date')($scope.endDate.getTime(),'yyyy-MM-dd');
         }
-        
-        
         // $scope.schedule.backDeparttime = $filter('date')($scope.schedule.backDeparttimetemp,'HH:mm');
         // $scope.schedule.backArrivetime = $filter('date')($scope.schedule.backArrivetimetemp,'HH:mm');
         if($scope.editMode){

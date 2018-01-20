@@ -1,14 +1,4 @@
-/**
- * @author 周快
- * @date 2016-10-13
- * @version 1.0.0
- * @descriptions 针对排班管理的控制器
- */
-/**
- * @author 郭浩
- * @date 2017-10-13
- * @descriptions 添加车辆obd
- */
+//添加车辆的控制器
 app.controller('BusEditController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$myHttpService','$timeout',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$myHttpService,$timeout){
     $scope.editMode = !!$stateParams.id;//检测有没有ID，判断当前是添加还是编辑，共用一套模板
     if($scope.editMode){//编辑模式
@@ -28,6 +18,7 @@ app.controller('BusEditController',['$rootScope','$scope','$http','$state','$loc
                 },1000)
             });
         };
+        //删除
         $scope.delete=function(item){
             layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){
                 $myHttpService.post("api/car/deleteCarinfo.htm",item,function(){
@@ -39,7 +30,6 @@ app.controller('BusEditController',['$rootScope','$scope','$http','$state','$loc
             },function(index){
                 layer.close(index);
             });
-
         }
     }else{ //添加模式
         $scope.bus = {
@@ -52,15 +42,15 @@ app.controller('BusEditController',['$rootScope','$scope','$http','$state','$loc
         $scope.submit = function(){
             $scope.submiting = true;
             //提交表单到服务器地址
-            if($scope.bus.cartype == '0'){
-                $scope.bus.seatnum = 46
-            }else if($scope.bus.cartype == '1'){
-                $scope.bus.seatnum = 32
-            }else if($scope.bus.cartype == '2'){
-                $scope.bus.seatnum = 19
-            }else if($scope.bus.cartype == '3'){
-                $scope.bus.seatnum = 13
-            }
+            // if($scope.bus.cartype == '0'){
+            //     $scope.bus.seatnum = 46
+            // }else if($scope.bus.cartype == '1'){
+            //     $scope.bus.seatnum = 32
+            // }else if($scope.bus.cartype == '2'){
+            //     $scope.bus.seatnum = 19
+            // }else if($scope.bus.cartype == '3'){
+            //     $scope.bus.seatnum = 13
+            // }
             $myHttpService.post("api/car/insertCarinfo.htm",$scope.bus,function(data){
                 $scope.submiting = false;
                 layer.msg("添加成功！",{offset: '100px'});
@@ -71,23 +61,23 @@ app.controller('BusEditController',['$rootScope','$scope','$http','$state','$loc
         }
     }
 }]);
-/**
- * 线路列表控制器
- */
+
+// 车辆列表控制器
 app.controller('BusListController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$filter','$tableListService','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
     //全选
-    var selected = false;
-    $scope.selectAll = function(){
-        selected = !selected;
-        angular.forEach($scope.content,function(item){
-            item.selected = selected;
-        });
-    }
+    // var selected = false;
+    // $scope.selectAll = function(){
+    //     selected = !selected;
+    //     angular.forEach($scope.content,function(item){
+    //         item.selected = selected;
+    //     });
+    // }
     //搜索分页选项
     var options = {
         searchFormId:"J_search_form",
         listUrl:"api/car/queryCarlistByKeyword.htm"
     };
+    //删除
     $scope.delete=function(item){
         layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){
             $myHttpService.post("api/car/deleteCarinfo.htm",item,function(){
@@ -99,11 +89,12 @@ app.controller('BusListController',['$rootScope','$scope','$http','$state','$loc
         },function(index){
             layer.close(index);
         });
-
     }
     $tableListService.init($scope, options);
     $tableListService.get();
 }]);
+
+//获取车辆的位置的控制器
 app.controller('BusPositionController', ['$scope','$rootScope','$stateParams',function($scope, $rootScope,$stateParams) {
     //获取位置信息
     var carPosition = $stateParams.carPosition;

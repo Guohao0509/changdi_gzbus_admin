@@ -128,6 +128,10 @@ app.controller('downloadProfitExcelController', ['$scope', '$myHttpService', '$m
         $TicketOrderExcelModel.close();
     };
     $scope.export = function() {
+        if($scope.startDate == undefined || $scope.endDate == undefined) {
+            layer.msg('请选择正确的时间段')
+            return;
+        }
         var reqParam = {
             startTime: $filter('date')($scope.startDate,'yyyy-MM-dd'),
             endTime: $filter('date')($scope.endDate,'yyyy-MM-dd'),

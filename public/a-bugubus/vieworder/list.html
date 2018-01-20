@@ -61,6 +61,7 @@
 	        	<thead>
 	        		<tr>
 						<th sort-name = "ORDERID">订单号</th>
+						<th>来源票ID</th>
 						<th sort-name = "CREATETIME">订单创建时间</th>
 						<th sort-name = "USEDATE">使用日期</th>
 						<th sort-name = "VIEW_NAME">景区</th>
@@ -78,6 +79,7 @@
 	        	<tbody>
 		        	<tr ng-repeat="item in pageResponse.ticketOrders">
 						<td ng-bind="item.orderid"></td>
+						<td ng-bind="item.sourceid"></td>
 						<td>{{item.createTime | date: 'yyyy-MM-dd HH:MM:ss'}}</td>
 						<td>{{item.useDate | date: 'yyyy-MM-dd'}}</td>
 						<td ng-bind="item.viewName"></td>

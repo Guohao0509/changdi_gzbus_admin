@@ -370,6 +370,7 @@
                                         <th>车牌号</th>
                                         <!-- <th>线路名称</th> -->
                                         <th>发车时间</th>
+                                        
                                         <!-- <th>单价</th> -->
                                         <th>操作</th>
                                     </tr>
@@ -397,7 +398,7 @@
                                     <tr  ng-if="!goLineBs[0]">
                                         <td colspan="8" style="text-align: center;" class="text-danger">请绑定排班</td>
                                     </tr>
-                                    <tr>
+                                    <tr ng-if="!goLineBs[0]">
                                         <td colspan="8" style="text-align: center; border-bottom: 1px solid #EAEFF0;">
                                             <a href class="label label-success text-xs" ng-click="bindSchedule('goLineBs')">
                                             <i class="fa fa-plus"></i>
@@ -446,7 +447,7 @@
                                         <tr  ng-if="!backLineBs[0]">
                                             <td colspan="8" style="text-align: center" class="text-danger">请绑定排班</td>
                                         </tr>
-                                        <tr>
+                                        <tr ng-if="!backLineBs[0]">
                                             <td colspan="8" style="text-align: center;border-bottom: 1px solid #EAEFF0">
                                                 <a href class="label label-info text-xs" ng-click="bindSchedule('backLineBs')"><i class="fa fa-plus"></i>绑定排班</a>
                                             </td>
@@ -476,6 +477,7 @@
                                         <th>车牌号</th>
                                         <th>线路名称</th>
                                         <th>发车时间</th>
+                                        <th>有效时间</th>
                                         <th>单价</th>
                                         <!-- <th>操作</th> -->
                                     </tr>
@@ -494,6 +496,7 @@
                                         <td  ng-bind="item.platenum"></td>
                                         <td  ng-bind="item.linename"></td>
                                         <td  ng-bind="item.departtime"></td>
+                                        <td>{{item.startDate | date:'yyyy-MM-dd' }}&nbsp;<span ng-show="!!item.startDate">至</span>&nbsp;{{item.endDate | date:'yyyy-MM-dd'}}</td>
                                         <td  ng-bind="item.price"></td>
                                     </tr>
                                     <tr  ng-if="!buslineSchedules[0]">

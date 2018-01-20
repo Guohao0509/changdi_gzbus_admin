@@ -3,7 +3,7 @@
  * @author    郭浩
  * @usage     <div my-calendar change-date="{{changeDate}}" select-date="selectDate()"></div>
  * @param     change-date: Array[Number]
- * @param     select-date: function
+ * @param     select-date: callback
 */
 
 angular.module('app.directives').directive('myCalendar', [function() {
@@ -12,8 +12,8 @@ angular.module('app.directives').directive('myCalendar', [function() {
 		replace: true,
 		templateUrl: '../../tpl/blocks/calender.html',
 		scope: {
-			changeDate: '=',
-			selectDate: '&'
+			changeDate: '=',//双向数据绑定
+			selectDate: '&' //回掉函数
 		},
 		controller: function($scope) {
 		},
@@ -30,31 +30,30 @@ angular.module('app.directives').directive('myCalendar', [function() {
 				  	}
 				};
 			})();
+			//监听changeDate的变化
 			scope.$watch('changeDate', function(newVal, oldVal) {
 				showCalendarData();
 			});
+			//获取一个格式化好的时间格式
 			function getDateStr(date) {
 				var _year = date.getFullYear();
 				var _month = date.getMonth() + 1;// 月从0开始计数
 				var _d = date.getDate();
-				 
 				_month = (_month > 9) ? ("" + _month) : ("0" + _month);
 				_d = (_d > 9) ? ("" + _d) : ("0" + _d);
 				return _year + _month + _d;
 			}
-
+			//将数据展示在日历中
 			function showCalendarData() {
 				var _year = dateObj.getDate().getFullYear();
 				var _month = dateObj.getDate().getMonth() + 1;
 				var _dateStr = getDateStr(dateObj.getDate());
 				var _date = dateObj.getDate().getDate();
-
 				var currentDate = new Date();
 				var currentDay = currentDate.getDate();
 				var currenYear = currentDate.getFullYear();
 				var currenMonth = currentDate.getMonth();
 				var dateTime = new Date(currenYear, currenMonth, currentDay).getTime();
-
 				var _tds = 42;
 				var _firstDay = new Date(_year, _month - 1, 1);  // 当前月第一天
 
@@ -64,7 +63,6 @@ angular.module('app.directives').directive('myCalendar', [function() {
 				// 设置表格中的日期数据
 		    	scope.dateArr = [];
 		    	var trArr = [];
-
 				for(var i = 1; i <= _tds; i++) {
 					var _thisDay = new Date(_year, _month - 1, i - _firstDay.getDay());
 					var _thisDayStr = getDateStr(_thisDay);
@@ -94,7 +92,8 @@ angular.module('app.directives').directive('myCalendar', [function() {
 						}
 					}
     			}
-		  	}
+			}
+			//判断是否为当月
 		  	function isThisMonth(arr, currenMonth) {
 				var len = arr.length;
 				var tmpFirst = new Date(arr[0].date);
@@ -113,13 +112,13 @@ angular.module('app.directives').directive('myCalendar', [function() {
 					return false;
 				}
 			}
+			//上个月
 			scope.toPrevMonth = function(){
 				var date = dateObj.getDate();
 				dateObj.setDate(new Date(date.getFullYear(), date.getMonth() - 1, 1));
 				showCalendarData();
 			}
- 
-			//点击下个月图标触发
+			//下个月
 			scope.toNextMonth = function(){
 				var date = dateObj.getDate();
 				dateObj.setDate(new Date(date.getFullYear(), date.getMonth() + 1, 1));
@@ -127,9 +126,6 @@ angular.module('app.directives').directive('myCalendar', [function() {
 			}
 			scope.click = function(date){
 				scope.selectDate(date);
-				for(var i = 0; i < scope.dateArr.length; i++){
-					// if(data == )					
-				}					
 			}
 		}
 	}

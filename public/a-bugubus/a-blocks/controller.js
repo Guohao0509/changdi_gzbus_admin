@@ -2,7 +2,6 @@ app.controller('uploadImageController',['$rootScope','$scope','$http','$state','
     $scope.imgUrls = [];
     $scope.sendImgUrls = [];
     $scope.isLoadImage = false;
-    $myHttpService.post
     $scope.uploadByForm = function(callback) {
         if($scope.imgUrls.length > 3){
             layer.msg("最多添加3张！",{offset: '100px'});

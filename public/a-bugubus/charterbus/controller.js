@@ -116,14 +116,6 @@ app.controller('Charterbus',['$scope','$myHttpService','$modal','$tableListServi
         pagesize:10
     };
 
-    /*查询所有信息*/
-    //$myHttpService.post('api/charterOrder/queryAllCharterCase',$scope.charterlist, function(data){
-    //    /*接收用户信息*/
-    //    $scope.querycharterlist=data;
-    //});
-    /*转行代驾类型*/
-
-
     /*详情窗口*/
     $scope.charterdetail=function(charterid){
         $modal.open({
@@ -140,11 +132,11 @@ app.controller('Charterbus',['$scope','$myHttpService','$modal','$tableListServi
 
 }]);
 
-/*包车的用户详情窗口*/
+//包车的用户详情窗口
 app.controller('charterdetail',['$scope', '$modalInstance', 'charterid','$myHttpService',function($scope, $chartermodel,charterid,$myHttpService){
-///*    /!*查询用户详情*!/
     $myHttpService.post('api/charterOrder/CharterCaseDetails',{charterid:charterid},function(data){
-        $scope.data=data;
+        $scope.data=data.charter;
+        console.log(data);
     });
 
     /*代驾转型*/
@@ -158,7 +150,7 @@ app.controller('charterdetail',['$scope', '$modalInstance', 'charterid','$myHttp
     };
 }]);
 
-/*包车编辑控制器*/
+//包车编辑控制器
 app.controller('charterbusEditController',['$scope','$myHttpService','$stateParams','$filter','$state',function($scope,$myHttpService,$stateParams,$filter,$state){
     $scope.editMode = !!$stateParams.charterid;//检测有没有ID，判断当前是添加还是编辑，共用一套模板
     if($scope.editMode) {//编辑模式
@@ -167,7 +159,7 @@ app.controller('charterbusEditController',['$scope','$myHttpService','$statePara
         };
         /*获取包车详情信息*/
         $myHttpService.post('api/charterOrder/CharterCaseDetails',$scope.charter,function(data){
-            $scope.charters=data;
+            $scope.charters=data.charter;
             /*对类型进行转换*/
             $scope.charterinfo={
               true:'是',

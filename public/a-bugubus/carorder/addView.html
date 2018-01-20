@@ -8,21 +8,10 @@
         </div>
         <div class="panel-body">
             <form class="form-horizontal form-validation" name="form">
-                <!-- <div class="form-group">
-                    <label class="col-sm-2 control-label">用户ID<span class="text-danger text-md ">*</span></label>
-                    <div class="col-sm-10">
-                        <input type="text"  class="form-control"
-                               name="userid"
-                               ng-model="carorder.userid"
-                               ng-required="true"
-                               disabled>
-                    </div>
-                </div> -->
                 <div class="line line-dashed b-b line-lg pull-in"  ng-if="session_user.access == 'systemUser'"></div>
                 <div class="form-group" ng-if="session_user.access == 'systemUser'">
                     <label class="col-sm-1 control-label">线下门店<span class="text-danger text-md ">*</span></label>
                     <div class="col-sm-11" ng-click="loadTicketSource()">
-                        <!-- <input class="form-control" type="text" ng-model="ticketSourceName" ng-if="!carorder.havePower" disabled> -->
                         <select class="form-control" ng-init="carorder.offline = '0'" ng-model="carorder.offline" ng-required="true" ng-change="showSourceid()">
                             <option value="0" style="display: none;">请选择</option>
                             <option ng-repeat="item in ticketSourceList.sources" value="{{item.ticketSource}}">{{item.ticketSource}}</option>
@@ -124,7 +113,6 @@
                                 <th>选择</th>
                                 <th>景点名称</th>
                                 <th>景点地址</th>
-                                <!-- <th>注意事项</th> -->
                                 <th>选择门票类型</th>
                             </tr>
                         </thead>
@@ -137,19 +125,8 @@
                                 </td>
                                 <td ng-bind="item.viewName"></td>
                                 <td ng-bind="item.viewaddr"></td>
-                                <!-- <td>
-                                    <a ng-click="openViewUserModel(item.notice)">
-                                        <span class="label label-success">查看</span>
-                                    </a>
-                                </td> -->
                                 <td>
                                     {{item.viewPrices[0].viewPriceType}}:&nbsp;&nbsp;{{item.viewPrices[0].viewPrice}}元;&nbsp;&nbsp;折扣:&nbsp;&nbsp; {{item.viewPrices[0].viewCoupon*10}}折
-                                    <!-- <select id="select{{$index}}" ng-disabled="disabledSelect != $index" class="form-control" style="padding: 2px;height: auto;">
-                                        <option value="0" style="display: none;">请选择</option>
-                                        <option ng-repeat="price in item.viewPrices" value="{{price.viewPriceId}}" >
-                                            {{price.viewPriceType}}:&nbsp;&nbsp;{{price.viewPrice}}元;&nbsp;&nbsp;折扣:&nbsp;&nbsp; {{price.viewCoupon*10}}折
-                                        </option>
-                                    </select> -->
                                 </td>
                             </tr>
                         </tbody>
@@ -172,7 +149,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 导出门票
-                <!-- <span>共计:&nbsp;&nbsp;{{ticket.couponPrice}}&nbsp;元</span> -->
+                <span>共计:&nbsp;&nbsp;{{totalMoney}}&nbsp;元</span>
             </div>
             <div class="panel-body">
                 <div class="row">

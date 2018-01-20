@@ -4,45 +4,49 @@ angular.module('app.directives').directive('ticket', function($document) {
         replace: true,
         templateUrl: '../../tpl/blocks/ticket.html',
         scope: {
-            ticketInformation: '=',
-            // selectDate: '&',
+            // = 双向数据绑定
+            // & 绑定一个方法
+            ticketInformation: '=',//接收一个票据对象
         },
         link: function(scope, element, attrs) {
             var ticket = {}, viewTicket = {};
             console.log('ticketInformation')
-            if(scope.ticketInformation.barcode){//车票
+            console.log(scope.ticketInformation)
+            if(scope.ticketInformation.viewOrderid){//车票
                 ticket = {
-                    viewOrderid: scope.ticketInformation.viewOrderid,
-                    start: scope.ticketInformation.departName,
-                    startAddr: scope.ticketInformation.departaddr,
-                    end: scope.ticketInformation.arriveName,
-                    date: scope.ticketInformation.departDate,
-                    time: scope.ticketInformation.departTime,
-                    barcode: scope.ticketInformation.barcode, 
-                    car: scope.ticketInformation.platenum,
-                    phone: scope.ticketInformation.sourcePhone
+                    viewOrderid: scope.ticketInformation.viewOrderid,//订单ID
+                    start: scope.ticketInformation.departName,//出发地
+                    startAddr: scope.ticketInformation.departaddr,//出发得详细地址
+                    end: scope.ticketInformation.arriveName,//到达地
+                    date: scope.ticketInformation.departDate,//出发日期
+                    time: scope.ticketInformation.departTime,//出发时间
+                    barcode: scope.ticketInformation.ticketCode,//票据校验码
+                    car: scope.ticketInformation.platenum,//车牌号
+                    phone: scope.ticketInformation.sourcePhone//客服电话
                 }
-                console.log('ticket')
-                console.log(ticket)
+                //格式化一个日期时间
                 var date = new Date(Number(ticket.date));
                 var year = date.getFullYear();
                 var month = date.getMonth() + 1;
                 var day = date.getDate();
                 var departDate = year + ' 年 ' + month + ' 月 ' + day + ' 日 ';
 
-                // var barcode = document.getElementById('barcodeCanvas');
+                //画条形码
                 var barcode = element.children('.barcodeCanvas')[0];
-               
                 JsBarcode(barcode, ticket.barcode);
-
+                //将画好得canvas转为base64格式
                 var imgSrc = barcode.toDataURL();
                 var img = new Image();
+                //来解决跨域问题
                 img.crossOrigin="anonymous";
+                //车票得背景图
                 img.src = '../../img/ticket.png';
-                var barcodeImg = new Image();
+                var barcodeImg = new Image();//创建一个图片，src为base64个格式的条形码
                 barcodeImg.src = imgSrc;
                 var canvas = element.children('.canvas')[0];
+                //将这个canvas转成base64格式，画在另一个canvas上
                 var ctx = canvas.getContext('2d');
+                //在图片加载完成的时候执行绘制票的回调函数
                 img.onload = function() {  
                     ctx.drawImage(img, 0, 0,700,1100);
                     ctx.fillStyle = '#0068B7';
@@ -62,31 +66,29 @@ angular.module('app.directives').directive('ticket', function($document) {
                     ctx.fillText(ticket.phone,200,1032);
                     ctx.drawImage(barcodeImg, 100, 600, 500, 200);
                 }
-            }else if(scope.ticketInformation.ticketCode) {//门票
+            }else if(scope.ticketInformation.orderid) {//门票
                 viewTicket = {
-                    orderid: scope.ticketInformation.orderid,
-                    couponPrice: scope.ticketInformation.couponPrice,
-                    sourcePhone: scope.ticketInformation.sourcePhone,
-                    ticketCode: scope.ticketInformation.ticketCode,
-                    useDate: scope.ticketInformation.useDate,
-                    viewName: scope.ticketInformation.viewName,
-                    viewPriceType: scope.ticketInformation.viewPriceType,
-                    ticketPrice: scope.ticketInformation.ticketPrice,
-                    couponPrice: scope.ticketInformation.couponPrice,
-                    viewaddr: scope.ticketInformation.viewaddr
+                    orderid: scope.ticketInformation.orderid,//门票的订单
+                    couponPrice: scope.ticketInformation.couponPrice,//实付的价格
+                    sourcePhone: scope.ticketInformation.sourcePhone,//客服电话
+                    ticketCode: scope.ticketInformation.ticketCode,//票据校验码
+                    useDate: scope.ticketInformation.useDate,//使用时间
+                    viewName: scope.ticketInformation.viewName,//景区的名称
+                    viewPriceType: scope.ticketInformation.viewPriceType,//门票的类型
+                    ticketPrice: scope.ticketInformation.ticketPrice,//门票的价格
+                    viewaddr: scope.ticketInformation.viewaddr//景区的地址
                 }
+                //格式化时间
                 var date = new Date(Number(viewTicket.useDate));
                 var year = date.getFullYear();
                 var month = date.getMonth() + 1;
                 var day = date.getDate();
                 var departDate = year + ' 年 ' + month + ' 月 ' + day + ' 日 ';
-
+                
+                //创建条形码
                 var barcode = element.children('.barcodeCanvas')[0];
-                console.log(barcode)
-                // barcode.id = 'barcode';
-                // console.log(barcode)
                 JsBarcode(barcode, viewTicket.ticketCode);
-
+                //将条形码转为base64格式然后绘制到底图上
                 var imgSrc = barcode.toDataURL();
                 var img = new Image();
                 img.crossOrigin="anonymous";
@@ -118,34 +120,30 @@ angular.module('app.directives').directive('ticket', function($document) {
                     ctx.fillText(viewTicket.sourcePhone,200,1032);
                 }
             }
-            
-
                
-                var btn1 = element.children('.btn1')[0];
-            btn1.onclick = function () {
+            var btn1 = element.children('.btn1')[0];
+            btn1.onclick = function() {
                 var type = 'png';
                 download(type);
             }
+
+            //预览
             scope.preview = function() { 
                 var dataUrl = canvas.toDataURL();  
                 var newImg = document.createElement("img");  
                 newImg.src = dataUrl;  
-                /* document.body.appendChild(newImg);  */  
-                /* window.open(newImg.src); */  
+                //在新的窗口打开浏览器进去图片的预览和打印
                 var printWindow = window.open(newImg);
-                    // printWindow.document.write();   
                 printWindow.document.write('<img src="'+newImg.src+'" id="ticket"/>')
-                 // printWindow.document.appendChild(newImg)
-
                 printWindow.document.getElementById("ticket").onload = function() {
                     printWindow.print();
                 }
             } 
-            //图片下载操作,指定图片类型
+            //图片下载操作,指定图片类型 此方法为百度，原理未知
             function download(type) {
                 //设置保存图片的类型
                 var imgdata = canvas.toDataURL(type);
-                //将mime-type改为image/octet-stream,强制让浏览器下载
+                //将mime-type改为image/octet-stream,让浏览器下载
                 var fixtype = function (type) {
                     type = type.toLocaleLowerCase().replace(/jpg/i, 'jpeg');
                     var r = type.match(/png|jpeg|bmp|gif/)[0];
@@ -173,14 +171,13 @@ angular.module('app.directives').directive('ticket', function($document) {
                         return 'Safari'; 
                     }
                 }
+                //万恶的兼容性，此方法为百度，原理完全看不懂
                 var base64Img2Blob = function(code){
                     var parts = code.split(';base64,');
                     var contentType = parts[0].split(':')[1];
                     var raw = window.atob(parts[1]);
                     var rawLength = raw.length;
-
                     var uInt8Array = new Uint8Array(rawLength);
-
                     for (var i = 0; i < rawLength; ++i) {
                       uInt8Array[i] = raw.charCodeAt(i);
                     }

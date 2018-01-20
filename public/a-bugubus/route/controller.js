@@ -271,7 +271,6 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
         })
     }
     function openInfo(item) {
-        // 
         // var info = '<div class="pannal" style="padding: 5px;"><div>经度 :'+item.location.lng+' 纬度 :'+item.location.lat+'</div><div>地址 :'+item.formattedAddress+'</div><a ng-click="add()" class="label label-info pull-right">点击添加</a>';
 
         // var div = $compile(info)($scope);
@@ -428,9 +427,8 @@ app.controller('RouteEditController',['$compile','$rootScope','$scope','$http','
     }
     $scope.$on('')
 }]);
-/**
- * 线路列表控制器
- */
+
+//线路列表控制器
 app.controller('RouteListController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$filter','$tableListService','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
     //全选
     // var selected = false;
@@ -441,37 +439,11 @@ app.controller('RouteListController',['$rootScope','$scope','$http','$state','$l
     //     });
     // }
 
-    /*批量删除*/
-    //$scope.deleteRow=function(){
-    //    //获取选中的行数据
-    //    for(var j =0;j<$scope.pageResponse.buslines.length;j++) {
-    //        if ($scope.pageResponse.buslines[j].selected) {
-    //            //封装charterid
-    //            $scope.deletelineid = {
-    //                lineid:$scope.pageResponse.buslines[j].lineid
-    //            };
-    //
-    //            layer.confirm('您确定要删除选中的信息吗？', {icon: 3, title:'提示'},function(){
-    //                //请求服务
-    //                $myHttpService.post('api/busline/deleteBusline.htm',{lineid: $scope.deletelineid.lineid},function(data){
-    //                    layer.msg("删除成功！", {offset: '100px'});
-    //                    $state.go("app.charterbus.operationadmin", {}, {reload: true});
-    //                });
-    //            },function(index){
-    //                layer.close(index);
-    //            });
-    //            return false;
-    //        }else{layer.msg('请选择删除的信息')}
-    //
-    //    }
-    //
-    //};
-
+    //线路列表搜索配置
     var options = {
         searchFormId:"J_search_form",
         listUrl:"api/busline/queryBuslineByKeyword.htm"
     };
-
 
     $scope.delete=function(item){
         layer.confirm('您确定要删除吗？', {icon: 3, title:'提示'},function(){
@@ -486,26 +458,21 @@ app.controller('RouteListController',['$rootScope','$scope','$http','$state','$l
     $tableListService.init($scope, options);
     $tableListService.get();
 }]);
-/**
 
- * 线路列表控制器
-
- */
-
+//线路列表控制器
 app.controller('RouteCreateListController',['$rootScope','$scope','$http','$state','$localStorage','$stateParams','$filter','$tableListService','$myHttpService',function($rootScope,$scope,$http,$state,$localStorage,$stateParams,$filter,$tableListService,$myHttpService){
     //全选
-    var selected = false;
-    $scope.selectAll = function(){
-        selected = !selected;
-        angular.forEach($scope.pageResponse.buslines,function(item){
-            item.selected = selected;
-        });
-    }
+    // var selected = false;
+    // $scope.selectAll = function(){
+    //     selected = !selected;
+    //     angular.forEach($scope.pageResponse.buslines,function(item){
+    //         item.selected = selected;
+    //     });
+    // }
     var options = {
         searchFormId:"J_search_form",
         listUrl:"api/busline/queryApplyBuslinesByKeyword.htm"
     };
     $tableListService.init($scope, options);
     $tableListService.get();
-
 }]);

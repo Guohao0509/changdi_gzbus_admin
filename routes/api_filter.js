@@ -1,15 +1,19 @@
 var express = require('express');
 var router = express.Router();
 var domain = require('../conf.js').domain; // http://111.230.129.41:5050
-var staticPath = '/public/';
+
+/* issue
+ * 无法接收一个文件读写的路径，目前是在模块中写死
+ */
 
 //请求代理模块
 var httpProxy = require('./http-proxy.js');
-
 //json 转 excel 的模块
 var jsonToExcel = require('../modules/json_to_excel.js');
 //上传文件的模块
 var upload = require('../modules/upload_file.js');
+//json 和 xml的转换
+var xml = require('../modules/xml_transfer.js');
 
 //门店获取车票订单的Excel;
 router.post('/vieworder/getCarOrderExcel', function(req, res) {
@@ -23,45 +27,47 @@ router.post('/vieworder/getCarOrderExcel', function(req, res) {
     }
     //构造新的url
     url += 'offset=0&pagesize=' + reqParam.pagesize + '&startTime=' + reqParam.startTime + '&endTime=' + reqParam.endTime;
-	if(req.session.access == 'sourceLogin'){
+    //如果是门店的用户
+    if(req.session.access == 'sourceLogin'){
         url += '&ticketSource=' + req.session.user.ticketSourceId;
     }
     httpProxy(url, {},function(data){
-        data = JSON.parse(data);
-        var viewOrders = data.data.viewOrders, len = data.data.viewOrders.length;
-        for(var i = 0; i < len; i++) {
-            //格式化订单创建时间
-            if(typeof viewOrders[i].createTime != 'undefined') {
-                viewOrders[i].createTime = new Date(Number(viewOrders[i].createTime)).toLocaleString();
-            }
-            //格式化是否使用优惠券
-            if(typeof viewOrders[i].haveCoupon != 'undefined') {
-                viewOrders[i].haveCoupon = viewOrders[i].haveCoupon == 'true' ? '使用' : '未使用';
-            }
-            //格式化出发日期
-            if(typeof viewOrders[i].departDate != 'undefined') {
-                viewOrders[i].departDate = new Date(Number(viewOrders[i].departDate)).toLocaleDateString();
-            }
-            //格式化门票状态
-            if(typeof viewOrders[i].viewOrderStatus != 'undefined') {
-                if (viewOrders[i].viewOrderStatus == 1) {
-                    viewOrders[i].viewOrderStatus = '未付费';
-                }else if(viewOrders[i].viewOrderStatus == 2) {
-                    viewOrders[i].viewOrderStatus = '已付费未使用';
-                }else if(viewOrders[i].viewOrderStatus == 3) {
-                    viewOrders[i].viewOrderStatus = '已使用';
-                }else if(viewOrders[i].viewOrderStatus == 4) {
-                    viewOrders[i].viewOrderStatus = '正在退款';
-                }else if(viewOrders[i].viewOrderStatus == 5) {
-                    viewOrders[i].viewOrderStatus = '已退款';
+        data = JSON.parse(data); //先解析数据
+        if(data.code == 0){
+            var viewOrders = data.data.viewOrders, len = data.data.viewOrders.length;
+            for(var i = 0; i < len; i++) {
+                //格式化订单创建时间
+                if(typeof viewOrders[i].createTime != 'undefined') {
+                    viewOrders[i].createTime = new Date(Number(viewOrders[i].createTime)).toLocaleString();
+                }
+                //格式化是否使用优惠券
+                if(typeof viewOrders[i].haveCoupon != 'undefined') {
+                    viewOrders[i].haveCoupon = viewOrders[i].haveCoupon == 'true' ? '使用' : '未使用';
+                }
+                //格式化出发日期
+                if(typeof viewOrders[i].departDate != 'undefined') {
+                    viewOrders[i].departDate = new Date(Number(viewOrders[i].departDate)).toLocaleDateString();
+                }
+                //格式化门票状态
+                if(typeof viewOrders[i].viewOrderStatus != 'undefined') {
+                    if (viewOrders[i].viewOrderStatus == 1) {
+                        viewOrders[i].viewOrderStatus = '未付费';
+                    }else if(viewOrders[i].viewOrderStatus == 2) {
+                        viewOrders[i].viewOrderStatus = '已付费未使用';
+                    }else if(viewOrders[i].viewOrderStatus == 3) {
+                        viewOrders[i].viewOrderStatus = '已使用';
+                    }else if(viewOrders[i].viewOrderStatus == 4) {
+                        viewOrders[i].viewOrderStatus = '正在退款';
+                    }else if(viewOrders[i].viewOrderStatus == 5) {
+                        viewOrders[i].viewOrderStatus = '已退款';
+                    }
                 }
             }
-        }
-        if(data.code == 0){
+            //将构造好的json转为excel
 			jsonToExcel({
                 name: '直通车订单列表',
                 data: viewOrders,
-                keyWords: {
+                keyWords: { // 字段映射表
                     "viewOrderid": "直通车订单ID",
                     "createTime": "订单创建时间",
                     "viewOrderStatus": "订单状态",
@@ -95,7 +101,7 @@ router.post('/vieworder/getCarOrderExcel', function(req, res) {
                 res.end();
             })
 		}else {
-            res.send({"code":"-1","data":"下载失败1"});
+            res.send(data);
 			res.end();
         }
       },function(data){
@@ -119,36 +125,36 @@ router.post('/vieworder/getTicketSourceViewOrderExcel', function(req, res) {
     }
     httpProxy(url, {} ,function(data){
         data = JSON.parse(data);
-        var ticketOrders = data.data.ticketOrders, len = data.data.ticketOrders.length;
-        for(var i = 0; i < len; i++) {
-            //格式化订单创建时间
-            if(typeof ticketOrders[i].createTime != 'undefined') {
-                ticketOrders[i].createTime = new Date(Number(ticketOrders[i].createTime)).toLocaleString();
-            }
-            //格式化是否使用优惠券
-            if(typeof ticketOrders[i].haveCoupon != 'undefined') {
-                ticketOrders[i].haveCoupon = ticketOrders[i].haveCoupon == 'true' ? '使用' : '未使用';
-            }
-            //格式化出发日期
-            if(typeof ticketOrders[i].useDate != 'undefined') {
-                ticketOrders[i].useDate = new Date(Number(ticketOrders[i].useDate)).toLocaleDateString();
-            }
-            //格式化门票状态
-            if(typeof ticketOrders[i].ticketStatus != 'undefined') {
-                if (ticketOrders[i].ticketStatus == 1) {
-                    ticketOrders[i].ticketStatus = '未付费';
-                }else if(ticketOrders[i].ticketStatus == 2) {
-                    ticketOrders[i].ticketStatus = '已付费未使用';
-                }else if(ticketOrders[i].ticketStatus == 3) {
-                    ticketOrders[i].ticketStatus = '已使用';
-                }else if(ticketOrders[i].ticketStatus == 4) {
-                    ticketOrders[i].ticketStatus = '正在退款';
-                }else if(ticketOrders[i].ticketStatus == 5) {
-                    ticketOrders[i].ticketStatus = '已退款';
+        if(data.code == 0) {
+            var ticketOrders = data.data.ticketOrders, len = data.data.ticketOrders.length;
+            for(var i = 0; i < len; i++) {
+                //格式化订单创建时间
+                if(typeof ticketOrders[i].createTime != 'undefined') {
+                    ticketOrders[i].createTime = new Date(Number(ticketOrders[i].createTime)).toLocaleString();
+                }
+                //格式化是否使用优惠券
+                if(typeof ticketOrders[i].haveCoupon != 'undefined') {
+                    ticketOrders[i].haveCoupon = ticketOrders[i].haveCoupon == 'true' ? '使用' : '未使用';
+                }
+                //格式化出发日期
+                if(typeof ticketOrders[i].useDate != 'undefined') {
+                    ticketOrders[i].useDate = new Date(Number(ticketOrders[i].useDate)).toLocaleDateString();
+                }
+                //格式化门票状态
+                if(typeof ticketOrders[i].ticketStatus != 'undefined') {
+                    if (ticketOrders[i].ticketStatus == 1) {
+                        ticketOrders[i].ticketStatus = '未付费';
+                    }else if(ticketOrders[i].ticketStatus == 2) {
+                        ticketOrders[i].ticketStatus = '已付费未使用';
+                    }else if(ticketOrders[i].ticketStatus == 3) {
+                        ticketOrders[i].ticketStatus = '已使用';
+                    }else if(ticketOrders[i].ticketStatus == 4) {
+                        ticketOrders[i].ticketStatus = '正在退款';
+                    }else if(ticketOrders[i].ticketStatus == 5) {
+                        ticketOrders[i].ticketStatus = '已退款';
+                    }
                 }
             }
-        }
-        if(data.code == 0) {
 			jsonToExcel({
                 name: '景区门票订单列表',
                 data: ticketOrders,
@@ -183,7 +189,7 @@ router.post('/vieworder/getTicketSourceViewOrderExcel', function(req, res) {
                 res.end();
             })
 		}else {
-            res.send({"code":"-1","data":"下载失败1"});
+            res.send(data);
 			res.end();
         }
     },function(data){
@@ -225,6 +231,7 @@ router.post('/ticketorder/getViewOrderExcel', function(req, res) {
 	}
     //构造新的url
     url += 'offset=0&pagesize=' + reqParam.pagesize + '&startTime='+ reqParam.startTime + '&endTime=' + reqParam.endTime;
+    //如果是景区用户，则不能看到门票的票价信息
     if(req.session.access == 'viewLogin'){
         url += '&viewid=' + req.session.user.viewid;
         delete keyWords.viewCoupon;
@@ -236,36 +243,36 @@ router.post('/ticketorder/getViewOrderExcel', function(req, res) {
     }
     httpProxy(url, {} ,function(data){
         data = JSON.parse(data);
-        var ticketOrders = data.data.ticketOrders, len = data.data.ticketOrders.length;
-        for(var i = 0; i < len; i++) {
-            //格式化订单创建时间
-            if(typeof ticketOrders[i].createTime != 'undefined') {
-                ticketOrders[i].createTime = new Date(Number(ticketOrders[i].createTime)).toLocaleString();
-            }
-            //格式化是否使用优惠券
-            if(typeof ticketOrders[i].haveCoupon != 'undefined') {
-                ticketOrders[i].haveCoupon = ticketOrders[i].haveCoupon == "true" ? '使用' : '未使用';
-            }
-            //格式化出发日期
-            if(typeof ticketOrders[i].useDate != 'undefined') {
-                ticketOrders[i].useDate = new Date(Number(ticketOrders[i].useDate)).toLocaleDateString();
-            }
-            //格式化门票状态
-            if(typeof ticketOrders[i].ticketStatus != 'undefined') {
-                if (ticketOrders[i].ticketStatus == 1) {
-                    ticketOrders[i].ticketStatus = '未付费';
-                }else if(ticketOrders[i].ticketStatus == 2) {
-                    ticketOrders[i].ticketStatus = '已付费未使用';
-                }else if(ticketOrders[i].ticketStatus == 3) {
-                    ticketOrders[i].ticketStatus = '已使用';
-                }else if(ticketOrders[i].ticketStatus == 4) {
-                    ticketOrders[i].ticketStatus = '正在退款';
-                }else if(ticketOrders[i].ticketStatus == 5) {
-                    ticketOrders[i].ticketStatus = '已退款';
+        if(data.code == 0) {
+            var ticketOrders = data.data.ticketOrders, len = data.data.ticketOrders.length;
+            for(var i = 0; i < len; i++) {
+                //格式化订单创建时间
+                if(typeof ticketOrders[i].createTime != 'undefined') {
+                    ticketOrders[i].createTime = new Date(Number(ticketOrders[i].createTime)).toLocaleString();
+                }
+                //格式化是否使用优惠券
+                if(typeof ticketOrders[i].haveCoupon != 'undefined') {
+                    ticketOrders[i].haveCoupon = ticketOrders[i].haveCoupon == "true" ? '使用' : '未使用';
+                }
+                //格式化出发日期
+                if(typeof ticketOrders[i].useDate != 'undefined') {
+                    ticketOrders[i].useDate = new Date(Number(ticketOrders[i].useDate)).toLocaleDateString();
+                }
+                //格式化门票状态
+                if(typeof ticketOrders[i].ticketStatus != 'undefined') {
+                    if (ticketOrders[i].ticketStatus == 1) {
+                        ticketOrders[i].ticketStatus = '未付费';
+                    }else if(ticketOrders[i].ticketStatus == 2) {
+                        ticketOrders[i].ticketStatus = '已付费未使用';
+                    }else if(ticketOrders[i].ticketStatus == 3) {
+                        ticketOrders[i].ticketStatus = '已使用';
+                    }else if(ticketOrders[i].ticketStatus == 4) {
+                        ticketOrders[i].ticketStatus = '正在退款';
+                    }else if(ticketOrders[i].ticketStatus == 5) {
+                        ticketOrders[i].ticketStatus = '已退款';
+                    }
                 }
             }
-        }
-        if(data.code == 0) {
 			jsonToExcel({
                 name: '景区门票订单列表',
                 data: data.data.ticketOrders,
@@ -280,7 +287,7 @@ router.post('/ticketorder/getViewOrderExcel', function(req, res) {
                 res.end();
             })
 		}else {
-            res.send({"code":"-1","data":"下载失败1"});
+            res.send(data);
 			res.end();
         }
       },function(data){
@@ -301,15 +308,14 @@ router.post('/profit/getProfitExcel', function(req, res) {
     url += 'offset=0&pagesize=' + reqParam.pagesize + '&startDate='+ reqParam.startTime + '&endDate=' + reqParam.endTime;
     httpProxy(url, {} ,function(data){
         data = JSON.parse(data);
-        var rows = data.data.rows, len = data.data.rows.length;
-        for(var i = 0; i < len; i++) {
-            //格式化日期
-            if(typeof rows[i].countTime != 'undefined') {
-                rows[i].countTime = new Date(Number(rows[i].countTime)).toLocaleDateString();
-            }
-           
-        }
         if(data.code == 0) {
+            var rows = data.data.rows, len = data.data.rows.length;
+            for(var i = 0; i < len; i++) {
+                //格式化日期
+                if(typeof rows[i].countTime != 'undefined') {
+                    rows[i].countTime = new Date(Number(rows[i].countTime)).toLocaleDateString();
+                }
+            }
 			jsonToExcel({
                 name: '收益列表',
                 data: rows,
@@ -372,7 +378,7 @@ router.post('/file/uploadFile', function(req, res) {
 
 //门店登录，获取票据来源
 router.post('/vieworder/ticketsource/queryTicketSourceListByKeyword', function(req, res) {
-    var url = req.originalUrl.substring(14,req.originalUrl.length);
+    var url = req.originalUrl.substring(14,req.originalUrl.length); //将api/vieworder切掉
     httpProxy(url,req.body,function(data){
         res.send(data);
         res.end();
@@ -384,7 +390,7 @@ router.post('/vieworder/ticketsource/queryTicketSourceListByKeyword', function(r
 
 //门店登录，对门票进行退票 线上
 router.post('/vieworder/ticketorder/applyDoorTicketRefund', function(req, res) {
-    var url = req.originalUrl.substring(14,req.originalUrl.length);
+    var url = req.originalUrl.substring(14,req.originalUrl.length);//将api/vieworder切掉
     httpProxy(url,req.body,function(data){
         res.send(data);
         res.end();
@@ -396,7 +402,7 @@ router.post('/vieworder/ticketorder/applyDoorTicketRefund', function(req, res) {
 
 //门店登录，对门票进行退票 线下
 router.post('/vieworder/ticketorder/offlineDoorTicketsRefund', function(req, res) {
-    var url = req.originalUrl.substring(14,req.originalUrl.length);
+    var url = req.originalUrl.substring(14,req.originalUrl.length);//将api/vieworder切掉
     httpProxy(url,req.body,function(data){
         res.send(data);
         res.end();
@@ -408,7 +414,7 @@ router.post('/vieworder/ticketorder/offlineDoorTicketsRefund', function(req, res
 
 //门店登录， 对线下添加票据请求进行转发
 router.post('/vieworder/product/queryProductBusScheduleDetails', function(req, res) {
-    var url = req.originalUrl.substring(14,req.originalUrl.length);
+    var url = req.originalUrl.substring(14,req.originalUrl.length);//将api/vieworder切掉
     httpProxy(url,req.body,function(data){
         res.send(data);
         res.end();
@@ -420,7 +426,7 @@ router.post('/vieworder/product/queryProductBusScheduleDetails', function(req, r
 
 //门店登录，对车票订单订单列表数据进行过滤
 router.post('/vieworder/queryViewOrderListByKeyword', function(req, res) {
-    var url = req.originalUrl.substring(4,req.originalUrl.length);
+    var url = req.originalUrl.substring(4,req.originalUrl.length);//将api切掉
     if(req.session.access == 'sourceLogin'){
 		url += '&ticketSource=' + req.session.user.ticketSourceId;
     }
@@ -436,7 +442,7 @@ router.post('/vieworder/queryViewOrderListByKeyword', function(req, res) {
 
 //门店登录，对门票订单列表数据进行过滤
 router.post('/vieworder/queryTicketOrderListByKeyword', function(req, res) {
-    var url = req.originalUrl.substring(4,req.originalUrl.length);
+    var url = req.originalUrl.substring(4,req.originalUrl.length);//将api切掉
     if(req.session.access == 'sourceLogin'){
         url += '&ticketSourceId=' + req.session.user.ticketSourceId;
     }
@@ -450,7 +456,48 @@ router.post('/vieworder/queryTicketOrderListByKeyword', function(req, res) {
     });
 });
 
-//api接口的访问过滤
+//天鹅湖景区门票列表
+router.post('/ticketsource/getTickOpeTicketList', function(req, res) {
+    var url = 'http://220.197.187.4:8000/tickope/TickHandler.ashx';
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var time = date.toTimeString().split(' ')[0];
+    var requestTime = year + '-' + month + '-' + day + ' ' + time; 
+    var reqParam = {
+        request: {
+            header: {
+                accountId: "GYLYJ01",
+                serviceName: "GetTickList",
+                requestTime: requestTime,
+                version: "1.0",
+                sign: "E67221F73E886C1364F21D5BB24907D6"
+            }
+        }
+    }
+    xml.builder(reqParam, function(xmlData) {
+        httpProxy(url,xmlData,function(data){
+            xml.parser(data, function(jsonData) {
+                if(jsonData.response.header.resultCode == '0000') {
+                    res.send({code: 0, data: jsonData.response.body.TickDetail});
+                    res.end();
+                }else {
+                    res.send({code: -1, data: {msg: '查询可售门票失败'}});
+                    res.end();
+                }
+            });
+        },function(data){
+            res.send(data);
+            res.end();
+        });
+    }, function(e) {
+        console.log(e);
+    });
+    
+})
+
+//api其他接口的访问过滤
 router.post('/*', function(req, res) {
     var url = req.originalUrl;
     if(req.session.access == 'handletoken'){//如果是系统用户，则可以访问所有接口

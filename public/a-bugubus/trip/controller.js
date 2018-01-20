@@ -1,3 +1,4 @@
+//产品列表的控制器
 app.controller('TripListController',['$scope', '$modal','$state','$http','$myHttpService','$tableListService', function($scope, $modal,$state,$http,$myHttpService,$tableListService) {
 	var options = {
         searchFormId:"J_search_form",
@@ -59,6 +60,8 @@ app.controller('TripListController',['$scope', '$modal','$state','$http','$myHtt
         });
     }
 }]);
+
+//查看产品图片的模态框
 app.controller('tripShowImageController', ['$scope', '$modalInstance', 'imageUrl',function($scope, $tripShowImageModel, imageUrl) {
     $scope.imgUrls = [];
     $scope.title = '产品图片'
@@ -67,12 +70,16 @@ app.controller('tripShowImageController', ['$scope', '$modalInstance', 'imageUrl
         $tripShowImageModel.close();
     };
 }]);
+
+//用户须知查看的模态框
 app.controller('userNoticeController', ['$scope', '$modalInstance', 'notice',function($scope, $Noticemodel, notice) {
     $scope.productinfo = notice;
     $scope.ok = function () {
         $Noticemodel.close();
     };
 }]);
+
+//产品评论的控制器
 app.controller('evaluationController', ['$scope','$myHttpService','$tableListService','$modal',function($scope, $myHttpService,$tableListService,$modal) {
     
     var options = {
@@ -119,6 +126,8 @@ app.controller('evaluationController', ['$scope','$myHttpService','$tableListSer
         })
     }
 }]);
+
+//产品订单管理图片展示的模态框
 app.controller('carorderShowImageController', ['$scope', '$modalInstance', 'imageUrls',function($scope, $showImageModel, imageUrls) {
 
     $scope.imgUrls = imageUrls;
@@ -127,6 +136,8 @@ app.controller('carorderShowImageController', ['$scope', '$modalInstance', 'imag
         $showImageModel.close();
     };
 }]);
+
+//添加产品的控制器
 app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpService','$tableListService','$state',function($scope,$stateParams,$http,$myHttpService,$tableListService,$state) {
     //判断是否是编辑模式,共用一个模板
     var editMode = !!$stateParams.id;
@@ -204,15 +215,14 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
 		};
 	    $tableListService.init($scope, options);
 	    $tableListService.get();
-
 	}
     //加载线路详情
     $scope.queryBusline = function(lineid, callback) {
         $myHttpService.post('api/busline/queryBusline',{lineid: lineid},function(data){
             //成功回调
             callback&&callback(data);
-        },function(){
-            
+        },function(err){
+            console.log(err);
         });
     }
     //切换是否显示线路表
@@ -241,7 +251,6 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
     }
     //选择景区并绑定给产品
     $scope.selectView = function(view) {
-        
         $scope.view.view = view;
         $scope.closeViewTable();
     }
@@ -278,15 +287,14 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
         $scope.routeEditMode = false;
         $scope.isShowSchedules = false;
         if($scope.goLine&&$scope.goLineType){
-             $scope.missParam = false;
+            $scope.missParam = false;
         }else if($scope.goLine&&$scope.backLine&&$scope.backLineType) {
-             $scope.missParam = false;
+            $scope.missParam = false;
         }
     }
     $scope.uploadByForm = function() {
         //用form 表单直接 构造formData 对象; 就不需要下面的append 方法来为表单进行赋值了。
         var formData = new FormData($("#myForm")[0]);
-        
         var url = "files/image";
         var file = document.getElementById("file_upload").files[0]
         // if(file.type.indexOf('image/') == -1){
@@ -320,7 +328,6 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
     }
 
     $scope.bindSchedule = function(lineType) {
-        
         var lineid;
         if(lineType == 'goLineBs'){
             lineid = $scope.goLine.lineid;
@@ -331,10 +338,8 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
         $myHttpService.post("api/product/queryBuslineScheduleByLineid",{lineid: lineid},function(data){
             $scope.buslineSchedules = data.buslineSchedules;
             $scope.isShowSchedules = true;
-            
         });
     }
-
     $scope.selectSchedule = function(item) {
         $scope.isShowSchedules = false;
         var isSameBs = false;
@@ -359,7 +364,6 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
             angular.forEach($scope.backLineBs,function(element, index) {
                 // statements
                 if(angular.equals(element,item)&&$scope.goLineBs[index]&&angular.equals($scope.goLineBs[index],$scope.goLineBs[gindex])){
-                    
                     return isSameBs = true;
                 }
             });
@@ -368,7 +372,6 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
             layer.msg('请勿重复添加');
             return;
         }
-        
         if($scope.bsType == 'goLineBs'){
             $scope.goLineBs.push(item);
         }else if($scope.bsType == 'backLineBs'){
@@ -379,8 +382,6 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
     $scope.submit = function(){
         //防止网络不好造成的重复提交
         $scope.submiting = true;
-        //判断线路是否相等
-        
         //判断往返排班是否一一对应
         var reqParam = {
             productinfo: $scope.userNotice,
@@ -391,7 +392,6 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
             titleName: $scope.product.titleName,
             photoPath: $scope.product.photoPath
         }
-        
         if($scope.product.isPush == undefined || !$scope.product.isPush){
         	reqParam.isPush = 'false';
         }else {
@@ -429,6 +429,14 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
             }else if($scope.backLineType){
                 reqParam.lineids = $scope.goLine.lineid+'&'+$scope.backLine.lineid;
             }
+            if($scope.backLineType){
+                if($scope.goLineBs[0].startDate != $scope.backLineBs[0].startDate||$scope.goLineBs[0].endDate != $scope.backLineBs[0].endDate ) {
+                    layer.msg('请选择排班有效日期相同的去程和返程');
+                    $scope.submiting = false;
+                    return;
+                }
+            }
+            //判断去返排班相同;
             reqParam.bsids = [];
             var len = $scope.goLineBs.length > $scope.backLineBs.length ? $scope.goLineBs.length : $scope.backLineBs.length;
             for(var i = 0; i < len; i ++){
@@ -448,17 +456,10 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
                     reqParam.bsids.push(tmp1+'&'+tmp2)
                 }
             }
-            // for(var i = 0; i < $scope.backLineBs.length; i ++){
-            //     reqParam.bsids.push($scope.backLineBs[i].bsid)
-            // }
+           
         }
-        console.log(reqParam)
+        
         $myHttpService.post(tripApi,reqParam,function(data){
-            //成功回调
-            // var reqParam = {
-            //     deleteImages: [$scope.sendImgUrl]
-            // }
-            // $scope.deleteImage(reqParam);
             layer.msg(data.msg,{offset: '100px'});
             if(editMode){
                 $state.go('app.trip.list',{},{reload: true});
@@ -469,26 +470,11 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
              $scope.submiting = false;
         });
     }
-    // $scope.deleteImage = function(deleteImages){
-    //     $myHttpService.post('files/deleteImage',deleteImages,function(data){
-    //     },function(){
-    //     });
-    // };
-    //重置按钮
+   
     $scope.reset = function() {
-    	// $scope.missParam = true;
-    	// $scope.product = null;
-     //    $scope.goLine = null;
-     //    $scope.backLine = null;
-     //    $scope.userNotice = null;
         $state.go('app.trip.add',{},{reload: true});
     }
-    //选在单程按钮时初始化页面
-    /*
-        goLineType: 选择单程模式
-        backLineType: 选择往返模式
-        isShowSelectedTable: 是否显示被选择的线路的列表
-    */
+   
     $scope.returnType = function() {
         $scope.goCarType = false
         $scope.backCarType = true
@@ -522,6 +508,8 @@ app.controller('tripAddController',['$scope','$stateParams','$http','$myHttpServ
         bs.splice(index,1);
     }
 }])
+
+//产品详情的控制器
 app.controller('tripDetailModalController', ['$scope', '$modalInstance', 'productid','$myHttpService',function($scope, $TripModel , productid,$myHttpService) {
     $scope.ok = function () {
         $TripModel.close();
@@ -554,6 +542,8 @@ app.controller('tripDetailModalController', ['$scope', '$modalInstance', 'produc
          $scope.submiting = false;
     });
 }]);
+
+//排班详情的控制器
 app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpService','$stateParams','$state','$tableListService', function($scope,$modal,$http,$myHttpService,$stateParams,$state,$tableListService) {
     //日历时间的配置
     // var strStoreDate = window.localStorage? localStorage.getItem("guilvbus"): Cookie.read("guilvbus");
@@ -670,6 +660,8 @@ app.controller('dailyScheduleController',['$scope','$modal','$http','$myHttpServ
     //     $scope.departDate = $stateParams.departDate;
     // }
 }]);
+
+//添加每日排班的控制器
 app.controller('addDailScheduleController', ['$scope', '$modalInstance', 'departDate','$myHttpService','$tableListService','$state',function($scope, $AddDailScheduleModal, departDate,$myHttpService,$tableListService,$state) {
     $scope.dailySchedule = {};
     $scope.dailySchedule.departDate = departDate;
@@ -726,6 +718,7 @@ app.controller('addDailScheduleController', ['$scope', '$modalInstance', 'depart
     };
 }]);
 
+//上传图片的控制器
 app.controller('uploadImageController',['$rootScope','$scope','$http','$state','$stateParams','$myHttpService',function($rootScope,$scope,$http,$state,$stateParams,$myHttpService){
     $scope.imgUrls = [];
     $scope.sendImgUrls = [];

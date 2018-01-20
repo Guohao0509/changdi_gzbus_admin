@@ -1,11 +1,3 @@
-/**
- * @author 郭浩
- * @date 2017-7-11
- * @version 1.0.0
- * @descriptions 直通车订单管理界面的控制器
- */
-
-
 //直通车订单控制器
 app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableListService','$myHttpService','$modal','$state',function($rootScope,$scope,$http,$tableListService,$myHttpService,$modal,$state){
     $scope.orderList = {};//订单列表
@@ -286,12 +278,6 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
     }
     //加载排班数据
     $scope.loadScheduleTable = function(date,callback) {
-        // $myHttpService.post('api/vieworder/product/queryProductBusScheduleDetails',{departDate:date},function(data){
-        //     var tmpData = [];
-        //     callback&&callback(data);
-        // },function() {
-
-        // })
         var options = {
             searchFormId:"J_search_form",
             listUrl:"api/product/queryProductBusScheduleDetails",
@@ -333,25 +319,6 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
     })
     //选择具体排班
     $scope.selectSchedule = function(schedule,$index) {
-        // schedule.checked = true;
-        // //dataMs schedule.departdate的毫秒数，判断发车时间与购票时间
-        // var dateMs = schedule.departdate;
-        // var tmpTimeArr = schedule.departTime.split(':');
-        // var dateMs = dateMs + (Number(tmpTimeArr[0])*60 + Number(tmpTimeArr[1]))*60*1000;
-        // function checkDeadLineTime(dateMs){//检查是否过时的函数
-        //     var currentTime = new Date().getTime();
-        //     if((dateMs - currentTime) < 0){
-        //         $scope.overDeadLineTime = true;
-        //         return true;
-        //     }else{
-        //         $scope.overDeadLineTime = false;
-        //         return false;
-        //     }
-        // }
-        // if(checkDeadLineTime(dateMs)){
-        //     layer.msg('您选择的车辆已发车,请重新选择',{offset:'100px'});
-        //     return;
-        // }
         if(schedule.checked == true) {
             schedule.checked = false;
             for(var i = 0; i < $scope.carorder.schedule.length; i++){
@@ -389,7 +356,6 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
         var departDate = year+'-'+month+'-'+day;
         var reqParam = {
             userid: $scope.carorder.userid,
-            // count: $scope.carorder.ticketNum,
             ticketSource: $scope.carorder.offline,
             departDate: departDate,
             bdids: []
@@ -431,8 +397,12 @@ app.controller('addCarOrderController',['$scope','$rootScope','$http','$state','
     $scope.creatTicket = function(data){
         // $scope.ticket = data.viewOrders;s
         $scope.tickets = data.viewOrders;
+        $scope.totalMoney = 0;
+        for(var i = 0; i < data.viewOrders.length; i++) {
+            $scope.totalMoney += data.viewOrders[i].payPrice*100;
+        }
+        $scope.totalMoney/=100;
         $scope.showTicket = true;
-
     }
     //时间选择器的配置
     $scope.scheduleTime = {
@@ -484,7 +454,7 @@ app.controller('uploadImageController',['$rootScope','$scope','$http','$state','
     $scope.uploadByForm = function(callback) {
         if($scope.imgUrls.length > 3){
             layer.msg("最多添加3张！",{offset: '100px'});
-            return 
+            return;
         }
         //用form 表单直接 构造formData 对象; 就不需要下面的append 方法来为表单进行赋值了。
         var formData = new FormData($("#myForm")[0]);
@@ -495,7 +465,7 @@ app.controller('uploadImageController',['$rootScope','$scope','$http','$state','
             return;
         }
         if(file.size > 1024*1000){
-            layer.msg('上传的图片必须小于1M')
+            layer.msg('上传的图片必须小于1M');
             return;
         }
         var url = "files/image";
@@ -514,10 +484,6 @@ app.controller('uploadImageController',['$rootScope','$scope','$http','$state','
                 }
                 $scope.isLoadImage = true;
                 $scope.sendImgUrls.push(data.newPath);
-                // var tmpArr = data.newPath.split('/');
-                // tmpArr[2] = host;
-                // var tmpStr = tmpArr.join('/');
-                // 
                 $scope.imgUrls.push(data.newPath);
                 $scope.$apply();
             },
@@ -699,7 +665,6 @@ app.controller('addViewOrderController',['$scope','$rootScope','$http','$state',
                     }else if(data.needSourceId == '1'){
                         needSourceId = true;
                     }
-
                     if(data.ticketSource == $scope.carorder.offline){
                         $scope.carorder.needSourceId = needSourceId;
                     }
@@ -791,8 +756,6 @@ app.controller('addViewOrderController',['$scope','$rootScope','$http','$state',
         var month = $scope.departDate.getMonth()+1;
         var day = $scope.departDate.getDate();
         var departDate = year+'-'+month+'-'+day;
-        
-        
         var reqParam = {
             userid: $scope.carorder.userid,
             // count: $scope.carorder.ticketNum,
@@ -802,7 +765,6 @@ app.controller('addViewOrderController',['$scope','$rootScope','$http','$state',
         for(var i = 0; i < $scope.addViewOrder.length; i++) {
             reqParam.viewPriceIds.push($scope.addViewOrder[i].viewPrices[0].viewPriceId + '&' +  $scope.addViewOrder[i].count) 
         }
-
         if($scope.carorder.sourceid){
             reqParam.sourceid = $scope.carorder.sourceid;
         }
@@ -823,7 +785,7 @@ app.controller('addViewOrderController',['$scope','$rootScope','$http','$state',
             layer.msg('请选票据来源',{offset:'100px'});
             return;
         }
-        
+        console.log(reqParam)
         $myHttpService.post('api/vieworder/insertTicketOrder',reqParam, function(data){
             layer.msg("添加成功！",{offset: '100px'});
             // $state.go('app.carorder.list',{},{reload: true});
@@ -834,6 +796,11 @@ app.controller('addViewOrderController',['$scope','$rootScope','$http','$state',
     //购票完成之后打赢车票
     $scope.creatTicket = function(data){
         $scope.tickets = data.ticketOrders;
+        $scope.totalMoney = 0;
+        for(var i = 0; i < data.ticketOrders.length; i++) {
+            $scope.totalMoney += data.ticketOrders[i].couponPrice*100;
+        }
+        $scope.totalMoney/=100;
         $scope.showTicket = true;
     }
     //配置时间选择项
@@ -876,6 +843,10 @@ app.controller('downloadCarOrderExcelController', ['$scope', '$myHttpService', '
         $CarOrderExcelModel.close();
     };
     $scope.export = function() {
+        if($scope.startDate == undefined || $scope.endDate == undefined) {
+            layer.msg('请选择正确的时间段')
+            return;
+        }
         var reqParam = {
             startTime: $filter('date')($scope.startDate,'yyyy-MM-dd'),
             endTime: $filter('date')($scope.endDate,'yyyy-MM-dd'),
@@ -935,6 +906,10 @@ app.controller('downloadTicketOrderExcelController', ['$scope', '$myHttpService'
         $TicketOrderExcelModel.close();
     };
     $scope.export = function() {
+        if($scope.startDate == undefined || $scope.endDate == undefined) {
+            layer.msg('请选择正确的时间段')
+            return;
+        }
         var reqParam = {
             startTime: $filter('date')($scope.startDate,'yyyy-MM-dd'),
             endTime: $filter('date')($scope.endDate,'yyyy-MM-dd'),
@@ -965,14 +940,17 @@ app.controller('downloadTicketOrderExcelController', ['$scope', '$myHttpService'
             $scope.startDateOption.opened = true;
         }
     };
+
     $scope.endDateOption = {
         opened:false,
+
         dateOptions:{
             datepickerMode:'day',
             showWeeks: false,
             minMode:'day'
         },
         format:"yyyy-MM-dd",
+
         disabled:function(date, mode) {
             return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
         },
@@ -984,5 +962,6 @@ app.controller('downloadTicketOrderExcelController', ['$scope', '$myHttpService'
             $event.stopPropagation();
             $scope.endDateOption.opened = true;
         }
+
     };
 }]);

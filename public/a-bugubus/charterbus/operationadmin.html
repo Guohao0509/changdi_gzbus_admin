@@ -1,9 +1,6 @@
 <div class="wrapper-md" ng-controller="Charterbus">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <!--<ul class="nav nav-pills pull-right">
-              <li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="app.bus.add"><i class="fa fa-plus"></i>添加车票</button></li>
-            </ul>-->
             包车管理
         </div>
         <form  name="charterform" id="J_charter_form"  ng-submit="pageRequest.getResponse()" >
@@ -55,12 +52,10 @@
 
             <div class="row wrapper form-horizontal" style="padding-top:0px;">
                 <div class="col-sm-5">
-                   <!--  <button class="btn btn-sm btn-default btn-addon" type="button" ng-click="deleteRow()"><i class="fa fa-trash-o"></i>批量删除</button> -->
                 </div>
                 <div class="col-sm-3">
                 </div>
                 <div class="col-sm-4  ">
-                    <!-- <button class="btn btn-sm btn-default pull-right m-l"  id="restData">清除</button> -->
                     <button class="btn btn-sm btn-primary pull-right"  >搜索</button>
                 </div>
             </div>
@@ -69,11 +64,6 @@
             <table  cellpadding="0" cellspacing="0" border="0" class=" dataTable table table-striped b-t b-light table-condensed text-xs">
                 <thead>
                 <tr>
-                    <!-- <th>
-                        <label class="i-checks m-b-none">
-                            <input type="checkbox" ng-click="selectAll()"><i></i>
-                        </label>
-                    </th> -->
                     <th class="hidden">工单号</th>
                     <th sort-name ="COMMUNICATE_NAME">联系人</th>
                     <th sort-name ="COMMUNICATE_MOBILE">联系方式</th>
@@ -91,14 +81,8 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="item in pageResponse.rows">
-                   <!--  <td>
-                        <label class="i-checks m-b-none">
-                            <input type="checkbox"  ng-model="item.selected"><i></i>
-                        </label>
-                    </td> -->
                     <td hidden ng-bind="item.charterid"></td>
                     <td ng-bind="item.commName"></td>
-                    <!--<td ng-bind=""></td>-->
                     <td ng-bind="item.commMobile"></td>
                     <td ng-bind="item.startLocation"></td>
                     <td ng-bind="item.endLocation"></td>
@@ -127,9 +111,6 @@
                            data-original-title="编辑">
                             <span class="label label-primary">编辑</span>
                         </a>
-                       <!--  <a ng-click="charterdetail(item.charterid)" data-original-title="编辑">
-                            <span class="label label-primary">详情</span>
-                        </a> -->
                     </td>
                 </tr>
                 </tbody>

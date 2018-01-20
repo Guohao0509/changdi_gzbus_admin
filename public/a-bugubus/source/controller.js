@@ -33,6 +33,7 @@ app.controller('addTicketSourceController', ['$scope','$myHttpService', '$state'
            	ticketSourceId: $stateParams.id
         };
         $myHttpService.post("api/ticketsource/queryTicketSource",reqParam,function(data){
+            
         	$scope.source = {
         		ticketSource: data.ticketSource.ticketSource,
         		sourceUser: data.ticketSource.sourceUser,
@@ -61,7 +62,8 @@ app.controller('addTicketSourceController', ['$scope','$myHttpService', '$state'
 			reqParam.needSourceId = '0';
 		}else if($scope.source.needSourceId || $scope.source.needSourceId == 'true'){
 			reqParam.needSourceId = '1';
-		}
+        }
+        console.log(reqParam)
 		if($scope.editMode){
             reqParam.ticketSourceId = $stateParams.id;
             $myHttpService.post('api/ticketsource/updateTicketSource', reqParam, function(data){

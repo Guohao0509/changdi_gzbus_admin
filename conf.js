@@ -1,5 +1,5 @@
 //根据服务器环境判断是否为生产环境
-const os = require('os');
+const os = require('os'); // 系统信息模块
 
 var prod = {
 	"env": 'linux',
@@ -9,7 +9,7 @@ var prod = {
 };
 var dev = {
 	"env": 'win32',
-	"host": "http://192.168.5.223:8080",
+	"host": "http://wxcdtest.happyev.com",
   	"domain": "http://192.168.5.41:5050",
   	"projectName": "bus"
 };
