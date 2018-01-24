@@ -100,8 +100,14 @@
                                 </tbody>
                             </table>
                     </div>
-                    <div class="col-sm-2">
-                        <button ng-click="getTianEHuList()">获取景区门票信息</button>
+                    <!-- <div class="col-sm-2">
+                        <select class="form-control" ng-init="view.ticketInfo = '0'" ng-model="view.ticketInfo">
+                            <option value="0" style="display: none;">请选择</option>
+                            <option value="1">天鹅湖</option>
+                        </select>
+                    </div> -->
+                    <div class="col-sm-1">
+                        <a ng-click="getTianEHuList()" class="btn btn-success">获取门票信息</a>
                     </div>
                 </div>
                  <!-- <div class="form-group">

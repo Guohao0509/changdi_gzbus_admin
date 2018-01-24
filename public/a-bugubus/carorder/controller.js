@@ -8,8 +8,6 @@ app.controller('CarOrderListController',['$rootScope','$scope','$http','$tableLi
         size: '9999',
         multiTable: 'ticketSourceList',
         callback: function(scope, data){
-            
-            
             data.sources.unshift({
                 ticketSource: "线上",
                 ticketSourceId: "线上"

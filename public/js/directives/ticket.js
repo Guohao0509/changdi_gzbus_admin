@@ -78,6 +78,9 @@ angular.module('app.directives').directive('ticket', function($document) {
                     ticketPrice: scope.ticketInformation.ticketPrice,//门票的价格
                     viewaddr: scope.ticketInformation.viewaddr//景区的地址
                 }
+                if(scope.ticketInformation.qrcodeid) {
+                    viewTicket.qrcodeid = scope.ticketInformation.qrcodeid;
+                }
                 //格式化时间
                 var date = new Date(Number(viewTicket.useDate));
                 var year = date.getFullYear();
@@ -87,17 +90,34 @@ angular.module('app.directives').directive('ticket', function($document) {
                 
                 //创建条形码
                 var barcode = element.children('.barcodeCanvas')[0];
-                JsBarcode(barcode, viewTicket.ticketCode);
+                if(scope.ticketInformation.qrcodeid) {
+                    var qrcode = new QRCode(barcode, {
+                        text: viewTicket.qrcodeid,
+                        width: 128,
+                        height: 128,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+                    var barcodeImg = $(barcode).children('img')[0];
+                    var img = new Image();
+                    img.crossOrigin="anonymous";
+                    img.src = '../../img/view_ticket.png';
+                    console.log(barcodeImg);
+                }else {
+                    JsBarcode(barcode, viewTicket.ticketCode);
+                    var imgSrc = barcode.toDataURL();
+                    var barcodeImg = new Image();
+                    barcodeImg.src = imgSrc;
+                    var img = new Image();
+                    img.crossOrigin="anonymous";
+                    img.src = '../../img/view_ticket.png';
+                }
                 //将条形码转为base64格式然后绘制到底图上
-                var imgSrc = barcode.toDataURL();
-                var img = new Image();
-                img.crossOrigin="anonymous";
-                img.src = '../../img/view_ticket.png';
-                var barcodeImg = new Image();
-                barcodeImg.src = imgSrc;
+                
                 var canvas = element.children('.canvas')[0];
                 var ctx = canvas.getContext('2d');
-                img.onload = function() {  
+                img.onload = function() {
                     ctx.drawImage(img, 0, 0,700,1100);
                     ctx.fillStyle = '#0068B7';
                     ctx.font="bold 40px Arial";
@@ -114,7 +134,13 @@ angular.module('app.directives').directive('ticket', function($document) {
                     ctx.fillText(viewTicket.ticketPrice+"  元",230, 410);
                     ctx.fillText('实付价格：',100, 480);
                     ctx.fillText(viewTicket.couponPrice+"  元",230, 480);
-                    ctx.drawImage(barcodeImg, 100, 600, 500, 200);
+                    setTimeout(function(){
+                        if(scope.ticketInformation.qrcodeid) {
+                            ctx.drawImage(barcodeImg, 200, 550, 300, 300);
+                        }else {
+                            ctx.drawImage(barcodeImg, 100, 600, 500, 200);
+                        }
+                    },200)
                     ctx.font="20px Arial";
                     ctx.fillStyle = '#757575';
                     ctx.fillText(viewTicket.sourcePhone,200,1032);
@@ -200,10 +226,13 @@ angular.module('app.directives').directive('ticket', function($document) {
                 }
                 var filename;
                 if(ticket.viewOrderid){
+                    console.log("ticket.viewOrderid");
                     filename = ticket.viewOrderid + '.' + type;
                 }else if(viewTicket.orderid){
-                    filename = ticket.orderid + '.' + type;
+                    console.log("viewTicket.orderid");
+                    filename = viewTicket.orderid + '.' + type;
                 }
+                console.log(filename)
                 saveFile(imgdata, filename);
             }
         }

@@ -84,9 +84,9 @@
                                     {{item.viewPrices[0].viewPriceType}}:&nbsp;&nbsp;{{item.viewPrices[0].viewPrice}}元;&nbsp;&nbsp;折扣:&nbsp;&nbsp; {{item.viewPrices[0].viewCoupon*10}}折
                                 </td>
                                 <td>
-                                    <button style="width: 20px;" ng-click="min(item)">-</button>
+                                    <button style="width: 20px;" ng-click="min(item)" ng-disabled="item.saleType == '1'">-</button>
                                     <input type="text" style="width:30px; display: inline-block;text-align: center;" ng-init="item.count = 1" ng-model="item.count">
-                                    <button style="width: 20px;" ng-click="add(item)">+</button>
+                                    <button style="width: 20px;" ng-click="add(item)" ng-disabled="item.saleType == '1'">+</button>
                                 </td>
                             </tr>
                         </tbody>
