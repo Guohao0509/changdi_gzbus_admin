@@ -156,19 +156,22 @@ app.controller('ViewAddController',['$scope','$http','$state','$myHttpService','
     }
     //获取天鹅湖门票信息
     $scope.getTianEHuList = function() {
-        console.log(1)
-        $myHttpService.post("api/ticketsource/getTickOpeTicketList",{},function(data){
-            $scope.ticketType.push({
-                viewPriceType: data.tickbName,
-                viewPrice: data.price,
-                viewCoupon: '1',
-                tickbID: data.tickbID,
-                tickID: data.tickID
-            })
-            $scope.view.saleType = '1';
-        },function(e){
-           console.log(e)
-        });
+        if($scope.view.ticketInfo == '1') {
+            $myHttpService.post("api/ticketsource/getTickOpeTicketList",{},function(data){
+                $scope.ticketType.push({
+                    viewPriceType: data.tickbName,
+                    viewPrice: data.price,
+                    viewCoupon: '1',
+                    tickbID: data.tickbID,
+                    tickID: data.tickID
+                })
+                $scope.view.saleType = '1';
+            },function(e){
+                console.log(e)
+            });
+        }else {
+            layer.msg('请选择对接景区');
+        }
     }
     //删除票类型
     $scope.deleteType = function(index) {

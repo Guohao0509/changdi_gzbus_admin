@@ -4,12 +4,10 @@
 		    
      		 景点订单列表
      		 <ul class="nav nav-pills pull-right">
-				<li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="downloadApp()"><i class="glyphicon glyphicon-save"></i>下载验票APP</button></li>
+				<li style=" padding-top:4px; padding-right:15px"><button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="openDownloadApkModel()"><i class="glyphicon glyphicon-save"></i>下载验票APP</button></li>
 				<li style=" padding-top:4px; padding-right:15px" ng-click="openDownloadExcelModel()"><button class="btn m-b-xs btn-sm btn-info btn-addon"><i class="fa fa-file-excel-o"></i>导出到Excel</button></li>
 	        </ul>
-	        <div ng-if="isShowApk" style="position:absolute; top:0; right:150px;border: 1px solid #ddd;z-index: 1000;" >
-            	<img src="img/apk.png" alt="">
-            </div>
+	        
 		</div>
     	<form class="row wrapper" id="J_search_form" ng-submit="pageRequest.getResponse()">
       		<!-- <div class="col-sm-5 m-b-xs"> -->
@@ -61,7 +59,7 @@
 	        	<thead>
 	        		<tr>
 						<th sort-name = "ORDERID">订单号</th>
-						<th>来源票ID</th>
+						<th>三方订单ID</th>
 						<th sort-name = "CREATETIME">订单创建时间</th>
 						<th sort-name = "USEDATE">使用日期</th>
 						<th sort-name = "VIEW_NAME">景区</th>

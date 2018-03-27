@@ -1,0 +1,13 @@
+<div>
+    <div class="row padder-l">
+        <div class="col-md-5">
+            开始时间
+            <input type="text" name="startTime" placeholder="开始日期如2017-01-01" class="input-sm form-control" ng-click="startDateOption.open($event)" datepicker-popup="{{startDateOption.format}}" ng-model="startDate" is-open="startDateOption.opened" datepicker-options="startDateOption.dateOptions" close-text="关闭" clear-text="清空"  current-text="今天" />
+        </div>
+        <div class="col-md-5" >
+            结束时间
+            <input type="text" name="endTime" placeholder="结束日期如2017-01-31" class="input-sm form-control" ng-click="endDateOption.open($event)" datepicker-popup="{{endDateOption.format}}" ng-model="endDate" is-open="endDateOption.opened" datepicker-options="endDateOption.dateOptions" close-text="关闭" clear-text="清空"  current-text="今天" />
+        </div>
+        <button class="btn btn-info btn-sm"ng-click="export()">导出</button>
+    </div>
+</div>

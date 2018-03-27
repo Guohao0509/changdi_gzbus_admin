@@ -61,6 +61,14 @@ app.controller('ViewOrderController',['$scope','$http','$state','$myHttpService'
             }
         });
     }
+    //打开下载Apk的模态框
+    $scope.openDownloadApkModel = function(){
+        var ApkModel = $modal.open({
+            templateUrl: 'a-bugubus/vieworder/apk.html',
+            controller: 'downloadApkController',
+            size: 'sm'
+        });
+    }
 }]);
 
 //下载excel的模态框
@@ -126,5 +134,12 @@ app.controller('downloadExcelController', ['$scope', '$myHttpService', '$modalIn
             $event.stopPropagation();
             $scope.endDateOption.opened = true;
         }
+    };
+}]);
+
+//下载apk的模态框
+app.controller('downloadApkController', ['$scope', '$myHttpService', '$modalInstance', '$filter','$tableListService',function($scope, $myHttpService, $ApkModel, $filter,$tableListService) {
+    $scope.ok = function () {
+        $ApkModel.close();
     };
 }]);

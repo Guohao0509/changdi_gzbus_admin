@@ -73,6 +73,7 @@ router.post('/vieworder/getCarOrderExcel', function(req, res) {
                     "viewOrderStatus": "订单状态",
                     "userid": "用户ID",
                     "username": "用户名",
+                    "name": "客户姓名",
                     "price": "车票价格",
                     "payPrice": "实付价格",
                     "haveCoupon": "是否使用优惠券",
@@ -89,7 +90,7 @@ router.post('/vieworder/getCarOrderExcel', function(req, res) {
                     "drivetime": "行驶时间",
                     "departName": "出发地",
                     "arriveName": "目的地",
-                    "ticketSourceId": "票来源ID",
+                    "sourceid": "三方订单ID",
                     "ticketSource": "票来源",
                     "sourcePhone": "票来源客服电话"
                 }
@@ -166,6 +167,7 @@ router.post('/vieworder/getTicketSourceViewOrderExcel', function(req, res) {
                     "viewaddr": "景区地址",
                     "userid": "用户ID",
                     "username": "用户姓名",
+                    "name": "客户姓名",
                     "phone": "用户手机号",
                     "viewPriceType": "门票类型",
                     "ticketPrice": "票价",
@@ -175,7 +177,7 @@ router.post('/vieworder/getTicketSourceViewOrderExcel', function(req, res) {
                     "ticketStatus": "门票状态",
                     "vrelecode": "票据校验码",
                     "useDate": "门票使用时间",
-                    "ticketSourceId": "票来源ID",
+                    "sourceid": "三方订单ID",
                     "ticketSource": "票来源",
                     "sourcePhone": "票来源客服电话"
                 }
@@ -220,7 +222,7 @@ router.post('/ticketorder/getViewOrderExcel', function(req, res) {
         "ticketStatus": "门票状态",
         "vrelecode": "票据校验码",
         "useDate": "门票使用时间",
-        "ticketSourceId": "票来源ID",
+        "sourceid": "三方订单ID",
         "ticketSource": "票来源",
         "sourcePhone": "票来源客服电话"
     }
