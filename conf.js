@@ -9,8 +9,8 @@ var prod = {
 };
 var dev = {
 	"env": 'win32',
-	"host": "http://wxcdtest.happyev.com",
-  	"domain": "http://192.168.5.41:5050",
+	"host": "http://192.168.5.225:3000",
+  "domain": "http://192.168.5.71:5050",
   	"projectName": "bus"
 };
 
